@@ -1,0 +1,52 @@
+<?php
+require_once "../common/db.php";
+require_once "../conf/db.php";
+# return host informations
+$con=getConnection($servername,$username,$password,$dbname);
+
+
+if (  isset($_GET["hostname"]) && "get_host_info"==$_GET["action"]  ) {
+  $host=$_GET["hostname"];
+  $sql="select * from hosts_informations where timestamp=(select max(timestamp) from hosts_informations where hostname='$host') and hostname='$host';";
+  $result=mysqli_query($con,$sql);
+  while ($row = $result->fetch_assoc()) {
+    $last_seen=$row["timestamp"];
+    $hw_vendor=$row["hw_vendor"];
+    $hw_model=$row["hw_model"];
+    $memory_size=$row["memory_size"];
+    $cpu_model=$row["cpu_model"];
+    $cpu_mhz=$row["cpu_mhz"];
+    $cpu_cores=$row["cpu_cores"];
+    $cpu_threads=$row["cpu_threads"];
+    $nic=$row["nic"];
+    $hbas=$row["hbas"];
+    $is_in_maintenance=$row["is_in_maintenance"];
+    $boot_time=$row["boot_time"];
+    $host_name=$row["host_name"];
+    $product_name=$row["product_name"];
+    $product_fullname=$row["product_fullname"];
+    $product_version=$row["product_version"];
+    $os_type=$row["os_type"];
+?>
+    <table class="tbl_host_info">
+      <tr><th>Last seen timestamp</th><td><?php print $last_seen ?></td></tr>
+      <tr><th>Hostname</th><td><?php print $host_name ?></td></tr>
+      <tr><th>Boot time</th><td><?php print $boot_time?></td></tr>
+      <tr><th>Product name</th><td><?php print $product_name ?></td></tr>
+      <tr><th>Product fullname</th><td><?php print $product_fullname ?></td></tr>
+      <tr><th>Product version</th><td><?php print $product_version ?></td></tr>
+      <tr><th>OS type</th><td><?php print $os_type ?></td></tr>
+    </table>
+
+    <table class="tbl_hw_info">
+     <tr><th>CPU model</th><td><?php print $cpu_model ?></td></tr>
+     <tr><th>CPU cores</th><td><?php print $cpu_cores ?></td></tr>
+     <tr><th>CPU mhz</th><td><?php print $cpu_mhz ?></td></tr>
+     <tr><th>CPU threads</th><td><?php print $cpu_threads ?></td></tr>
+     <tr><th>Memory</th><td><?php print $memory_size ?></td></tr>
+    </table>
+
+<?php
+  }
+}
+?>
