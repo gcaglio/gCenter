@@ -17,17 +17,17 @@ body{
   margin-left:10px;
 }
 
-#main_content_pane{
+#main_container{
   float:right;
   width:80%;
 }
 
-#main_content_pane table th {
+#main_container table th {
   text-align:left;
   width:30%;
 }
 
-#main_content_pane table {
+#main_container table {
   width:80%;
 }
 

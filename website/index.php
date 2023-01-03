@@ -18,6 +18,29 @@ $con=getConnection($servername,$username,$password,$dbname);
         //alert( data );
        });
       }
+     
+      function updateContentPaneVmInfo(host,vmid){
+        $("#main_content_pane_message").html("");
+        $.get( "manage_get_vm_informations.php?hostname=" + host + "&vmid=" + vmid + "&action=get_vm_info", function( data ) {
+        $( "#main_content_pane" ).html( data );
+        //alert( data );
+       });
+      }	
+
+      function poweronVm(host,vmid){
+	$.get( "manage_vm_status.php?hostname=" + host + "&vmid=" + vmid + "&action=power_on", function( data ) {
+          $( "#main_content_pane_message" ).html( data );
+        //alert( data );
+       });
+      }      
+
+      function poweroffVm(host,vmid){
+        $.get( "manage_vm_status.php?hostname=" + host + "&vmid=" + vmid + "&action=power_off", function( data ) {
+          $( "#main_content_pane_message" ).html( data );
+        //alert( data );
+       });
+      }
+      
     </script>
   </head>
   <body>
@@ -39,14 +62,16 @@ $con=getConnection($servername,$username,$password,$dbname);
 
 <?php
   # recupero le vm
-  $vm_sql="select name, guest_os from virtual_machines where timestamp=(select max(timestamp) from virtual_machines where hostname='$host') and hostname='$host';";
+  $vm_sql="select name, vmid, hostname,guest_os from virtual_machines where timestamp=(select max(timestamp) from virtual_machines where hostname='$host') and hostname='$host';";
   $vm_result=mysqli_query($con,$vm_sql);
   while ($row = $vm_result->fetch_assoc()) {
 	  $vm=$row["name"];
+	  $host=$row["hostname"];
 	  $guestos=$row["guest_os"];
+	  $vmid=trim($row["vmid"]);
 ?>
     <div class="li_vm">
-      <?php print $vm ?>
+      <span onclick="updateContentPaneVmInfo('<?php print $host ?>','<?php print $vmid ?>')"><?php print $vm; ?></span><br/>
     </div><!--vm-->
 <?php
   }
@@ -78,7 +103,12 @@ $con=getConnection($servername,$username,$password,$dbname);
 
   </div><!--navigation-->
 
-  <div id="main_content_pane">
+  <div id="main_container">
+    <div id="main_content_pane_message">
+    </div>
+    <div id="main_content_pane">
+    </div>
+
   </div>
 
   <?php include "footer.php" ?>
