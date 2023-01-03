@@ -24,5 +24,8 @@ Created minimal gatherer scripts to collect data into the database for:
 - vm
 - datastores
 
-Created single-page interface to display structure and host informations.
+# Main steps
+2023-01-01 Created single-page interface to display structure and host informations.<br>
+2023-01-04 Basic VM poweroff/poweron script integration
+
 
