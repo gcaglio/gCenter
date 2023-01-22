@@ -32,8 +32,8 @@ if (  isset($_GET["hostname"]) && isset($_GET["vmid"]) && "get_vm_info"==$_GET["
     </table>
 
     <span class="spn_50">
-      <h2>Vm info</h2>
       <table class="tbl_vm_info">
+       <tr><td class="tbl_info_header" colspan="2">VM info</td></tr>
        <tr><th>VMid</th><td><?php print $vmid ?></td></tr>
        <tr><th>ESXi host</th><td><?php print $host ?></td></tr>
        <tr><th>Datastore</th><td><?php print $datastore ?></td></tr>
@@ -44,8 +44,8 @@ if (  isset($_GET["hostname"]) && isset($_GET["vmid"]) && "get_vm_info"==$_GET["
     </span>
 
     <span class="spn_50">
-      <h2>HW summary</h2>
       <table class="tbl_vm_info">
+        <tr><td class="tbl_info_header" colspan="2">HW summary</td></tr>
         <tr><th>CPU</th><td><?php print $cfg_numCpu ?></td></tr>
         <tr><th>Memory (Mb)</th><td><?php print $cfg_memoryMb ?></td></tr>
       </table>

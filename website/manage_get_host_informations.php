@@ -28,7 +28,9 @@ if (  isset($_GET["hostname"]) && "get_host_info"==$_GET["action"]  ) {
     $product_version=$row["product_version"];
     $os_type=$row["os_type"];
 ?>
+    <span class="spn_50">
     <table class="tbl_host_info">
+      <tr><td class="tbl_info_header" colspan="2">Host informations</td></tr>
       <tr><th>Last seen timestamp</th><td><?php print $last_seen ?></td></tr>
       <tr><th>Hostname</th><td><?php print $host_name ?></td></tr>
       <tr><th>Boot time</th><td><?php print $boot_time?></td></tr>
@@ -37,14 +39,18 @@ if (  isset($_GET["hostname"]) && "get_host_info"==$_GET["action"]  ) {
       <tr><th>Product version</th><td><?php print $product_version ?></td></tr>
       <tr><th>OS type</th><td><?php print $os_type ?></td></tr>
     </table>
-
+    </span>
+  
+    <span class="spn_50">
     <table class="tbl_hw_info">
+     <tr><td class="tbl_info_header" colspan="2">Host hardware informations</td></tr>
      <tr><th>CPU model</th><td><?php print $cpu_model ?></td></tr>
      <tr><th>CPU cores</th><td><?php print $cpu_cores ?></td></tr>
      <tr><th>CPU mhz</th><td><?php print $cpu_mhz ?></td></tr>
      <tr><th>CPU threads</th><td><?php print $cpu_threads ?></td></tr>
      <tr><th>Memory</th><td><?php print $memory_size ?></td></tr>
     </table>
+    </span>
 
 <?php
   }

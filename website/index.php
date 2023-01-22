@@ -54,6 +54,7 @@ $con=getConnection($servername,$username,$password,$dbname);
   <?php include "header.php" ?>
 
 
+  <div class="inner_body">
   <div class="li_navigation">
   <b>Hosts</b>
 <?php
@@ -118,6 +119,9 @@ $con=getConnection($servername,$username,$password,$dbname);
 
   </div>
 
+  </div> <!-- inner_body -->
+<!--
   <?php include "footer.php" ?>
+-->
   </body>
 </html>

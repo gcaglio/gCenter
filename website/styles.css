@@ -1,6 +1,20 @@
 body{
- margin:0;
- font-family: "Trebuchet MS", Helvetica, sans-serif;
+  margin:0;
+  font-family: "Trebuchet MS", Helvetica, sans-serif;
+  font-size:12px;
+  background: rgb(0,36,5);
+  background: linear-gradient(90deg, rgba(0,36,5,1) 0%, rgba(9,121,37,1) 35%, rgba(0,255,51,0.4598433123249299) 100%);
+
+}
+
+.inner_body{
+  width : 98%;
+  margin-left:auto;
+  margin-right:auto;
+  background-color: #ffffff; 
+  height:90%;
+  border-radius: 10px;
+  padding-top:10px;
 }
 
 .li_navigation{
@@ -36,8 +50,7 @@ body{
 .header_content{
   background: rgb(0,36,5);
   background: linear-gradient(90deg, rgba(0,36,5,1) 0%, rgba(9,121,37,1) 35%, rgba(0,255,51,0.4598433123249299) 100%);
-  margin-bottom:30px;
-  padding-left: 10px;  
+  padding-left: 15px;  
   color:white;
   height:60px;
 
@@ -45,14 +58,46 @@ body{
   font-size: 25px;
   letter-spacing: 2px;
   word-spacing: 2px;
-  font-weight: normal;
-  text-decoration: none;
-  font-style: normal;
-  font-variant: normal;
-  text-transform: none;
 }
 
 .spn_50 {
   width:48%;
   display: inline-block;
+  vertical-align:top;
 }
+
+
+.tbl_info_header{
+  background: #e7e9ea;
+  font-weight:bold;
+}
+
+.tbl_vm_info{
+ font-size:12px;
+}
+
+.tbl_vm_info th{
+  background: #e4eff6;
+
+}
+
+.tbl_host_info{
+ font-size:12px;
+ margin-bottom:20px;
+}
+
+.tbl_host_info th{
+  background: #e4eff6;
+
+}
+
+.tbl_hw_info {
+ font-size:12px;
+}
+
+.tbl_hw_info th{
+  background: #e4eff6;
+
+}
+
+
