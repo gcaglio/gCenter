@@ -28,19 +28,26 @@ $con=getConnection($servername,$username,$password,$dbname);
       }	
 
       function poweronVm(host,vmid){
-	$.get( "manage_vm_status.php?hostname=" + host + "&vmid=" + vmid + "&action=power_on", function( data ) {
+	$.get( "manage_vm.php?hostname=" + host + "&vmid=" + vmid + "&action=power_on", function( data ) {
           $( "#main_content_pane_message" ).html( data );
         //alert( data );
        });
       }      
 
       function poweroffVm(host,vmid){
-        $.get( "manage_vm_status.php?hostname=" + host + "&vmid=" + vmid + "&action=power_off", function( data ) {
+        $.get( "manage_vm.php?hostname=" + host + "&vmid=" + vmid + "&action=power_off", function( data ) {
           $( "#main_content_pane_message" ).html( data );
         //alert( data );
        });
       }
-      
+
+      function snapVm(host,vmid){
+        $.get( "manage_vm.php?hostname=" + host + "&vmid=" + vmid + "&action=take_snap", function( data ) {
+          $( "#main_content_pane_message" ).html( data );
+        //alert( data );
+       });
+      }
+
     </script>
   </head>
   <body>

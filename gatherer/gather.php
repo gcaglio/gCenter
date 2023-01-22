@@ -3,6 +3,7 @@
 # and insert into db
 
 require_once "../common/db.php";
+require_once "../common/jsonify.php";
 require_once "../conf/db.php";
 
 
@@ -238,6 +239,61 @@ function getVm( $db_con, $date, $time, $host, $user, $passwd, $private_key){
 
 }
 
+
+
+
+function getVmSummary(  $db_con, $date, $time, $host, $user, $passwd, $private_key) {
+  $debug=true;
+
+  # get vms
+  $sql_vm="select vmid, name, timestamp from virtual_machines where hostname='$host' and timestamp= (select max(timestamp) from virtual_machines where hostname='$host'); ";
+
+  $result_vm=mysqli_query($db_con,$sql_vm);
+  while ($row = $result_vm->fetch_assoc()) {
+    $vm_id=$row["vmid"];
+    $name=$row["name"];
+    $db_ts=$row["timestamp"];
+
+    $output=null;
+    $retval=null;
+    $command="vim-cmd vmsvc/get.summary $vm_id | sed 's/= (.*)/:/g' ";
+    $ssh_options="-o StrictHostKeyChecking=no ";
+    exec("sshpass -p $passwd  ssh $ssh_options $user@$host $command", $output, $retval);
+    echo "INFO : retval $retval\n";
+    if ($debug){
+      echo "DEBUG : output:\n";
+      print_r($output);
+    }
+
+    $vmsummary_output=jsonify($output);
+    $vmsummary_json=json_decode($vmsummary_output);
+
+    // if parsing ok
+    if ( json_last_error()===JSON_ERROR_NONE ) {
+
+      $cfg_numcpu=$vmsummary_json->config->numCpu;
+      $cfg_memory_mb=$vmsummary_json->config->memorySizeMB;
+
+      if ($debug){
+        echo "DEBUG : found summary\n";
+        echo "        config.numCpu         =$cfg_numcpu\n";
+        echo "        config.memorySizeMB   =$cfg_memory_mb\n";
+
+      } //debug
+
+      $sql="update virtual_machines set config_numCpu=$cfg_numcpu, config_memorySizeMB=$cfg_memory_mb where timestamp='$db_ts' and hostname='$host' and vmid='$vm_id';";
+
+      if ($db_con->query($sql) === TRUE) {
+        echo "INFO : datastore  '$name' on '$host' inserted.\n";
+      } else {
+        echo "ERROR :  " . $sql . "\n" . $db_con->error."\n";
+      }
+      
+    } //json last error
+  } //while sql_vm
+
+} //getVmSummary function
+
 #date and time of this scan
 $date=date("Y-m-d");
 $time=date("H:i:s");
@@ -253,9 +309,10 @@ while ($row = $result->fetch_assoc()) {
   $passwd=$row["password"];
   $private_key=$row["private_key"];
 
-  echo "INFO : gathering info from '".$host."'\n";
-
+  echo "INFO : gathering VMs from '".$host."'\n";
   getVm( $con, $date, $time, $host, $user, $passwd, $private_key);
+  echo "INFO : get VMs summary from '".$host."'\n";
+  getVmSummary( $con, $date, $time, $host, $user, $passwd, $private_key);
 
   echo "INFO : gathering datastore from '".$host."'\n";
   getDatastores( $con, $date, $time, $host, $user, $passwd, $private_key);
