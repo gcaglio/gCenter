@@ -8,8 +8,22 @@ $con=getConnection($servername,$username,$password,$dbname);
 if (  isset($_GET["hostname"]) && isset($_GET["vmid"]) && "get_vm_info"==$_GET["action"]  ) {
   $host=$_GET["hostname"];
   $vmid=$_GET["vmid"];
+
+  $sql_vm="select * from virtual_machines where vmid='$vmid' and hostname='$host' order by timestamp DESC limit 1 ; ";
+
+  $result_vm=mysqli_query($con,$sql_vm);
+  while ($row = $result_vm->fetch_assoc()) {
+    $vm_id=$row["vmid"];
+    $name=$row["name"];
+    $last_seen_ts=$row["timestamp"];
+    $cfg_numCpu=$row["config_numCpu"];
+    $cfg_memoryMb=$row["config_memorySizeMB"];
+    $version=$row["version"];
+    $datastore=$row["datastore"];
+    $path=$row["path"];
+
 ?>
-    <table class="tbl_vm_commnad">
+    <table class="tbl_vm_command">
       <tr>
 	<td>Power: <span onclick="poweronVm('<?php print $host ?>','<?php print $vmid ?>')">PowerOn</span> &nbsp; <span onclick="poweroffVm('<?php print $host ?>','<?php print $vmid ?>')">PowerOff</span> </td>
 	<td>Snapshot: <span onclick="snapVm('<?php print $host ?>','<?php print $vmid ?>')">Take</span> 
@@ -21,17 +35,22 @@ if (  isset($_GET["hostname"]) && isset($_GET["vmid"]) && "get_vm_info"==$_GET["
       <h2>Vm info</h2>
       <table class="tbl_vm_info">
        <tr><th>VMid</th><td><?php print $vmid ?></td></tr>
-       <tr><th>Hostname</th><td><?php print $host ?></td></tr>
-      </table>
-    </span>
-    <span class="spn_50">
-      <h2>HW summary</h2>
-      <table class="tbl_vm_info">
-        <tr><th>VMid</th><td><?php print $vmid ?></td></tr>
-        <tr><th>Hostname</th><td><?php print $host ?></td></tr>
+       <tr><th>ESXi host</th><td><?php print $host ?></td></tr>
+       <tr><th>Datastore</th><td><?php print $datastore ?></td></tr>
+       <tr><th>Datastore path</th><td><?php print $path ?></td></tr>
+       <tr><th>VM HW version</th><td><?php print $version ?></td></tr>
+       <tr><th>Last seen</th><td><?php print $last_seen_ts ?></td></tr>
       </table>
     </span>
 
+    <span class="spn_50">
+      <h2>HW summary</h2>
+      <table class="tbl_vm_info">
+        <tr><th>CPU</th><td><?php print $cfg_numCpu ?></td></tr>
+        <tr><th>Memory (Mb)</th><td><?php print $cfg_memoryMb ?></td></tr>
+      </table>
+    </span>
+<!--
 <br/>
 
     <span class="spn_50">
@@ -41,7 +60,8 @@ if (  isset($_GET["hostname"]) && isset($_GET["vmid"]) && "get_vm_info"==$_GET["
         <tr><th>Hostname</th><td><?php print $host ?></td></tr>
       </table>
     </span>
-
+-->
 <?php
+  }
 }
 ?>

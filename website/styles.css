@@ -1,5 +1,6 @@
 body{
  margin:0;
+ font-family: "Trebuchet MS", Helvetica, sans-serif;
 }
 
 .li_navigation{
@@ -49,4 +50,9 @@ body{
   font-style: normal;
   font-variant: normal;
   text-transform: none;
+}
+
+.spn_50 {
+  width:48%;
+  display: inline-block;
 }

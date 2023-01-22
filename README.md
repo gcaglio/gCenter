@@ -22,10 +22,21 @@ e. insert into the db your hosts :
 Created minimal gatherer scripts to collect data into the database for:
 - esxi hosts informations
 - vm
+- vm config
 - datastores
 
+# Features implemented (what you can do)
+- list esxi information (software, hardware, etc)
+- list vm for each esxi host
+- poweron/poweroff vms
+- take vm snapshot (NEW!)
+- list datastore for each esxi host
+
 # Main steps
-2023-01-01 Created single-page interface to display structure and host informations.<br>
-2023-01-04 Basic VM poweroff/poweron script integration
+2023-01-01 Created gatherers and single-page interface to display structure and host informations.<br>
+2023-01-04 Feature : released VM poweroff/poweron <br>
+2023-01-22 Feature : released "Take snapshot" feature<br>
+
+
 
 
