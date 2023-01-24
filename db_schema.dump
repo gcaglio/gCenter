@@ -105,7 +105,36 @@ CREATE TABLE `virtual_machines` (
   `guest_os` varchar(30) NOT NULL DEFAULT '',
   `version` varchar(20) NOT NULL DEFAULT '',
   `config_numCpu` int(11) NOT NULL DEFAULT 0,
-  `config_memorySizeMB` int(11) NOT NULL DEFAULT 0
+  `config_memorySizeMB` int(11) NOT NULL DEFAULT 0,
+  `runtime_powerstate` varchar(32) NOT NULL DEFAULT '',
+  `runtime_lastboottime` varchar(32) NOT NULL DEFAULT '',
+  `guest_guestfullname` varchar(32) NOT NULL DEFAULT '',
+  `overall_status` varchar(32) NOT NULL DEFAULT ''
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `vm_quickstat`
+--
+
+DROP TABLE IF EXISTS `vm_quickstat`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `vm_quickstat` (
+  `timestamp` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `hostname` varchar(100) NOT NULL DEFAULT '',
+  `vmid` varchar(100) NOT NULL DEFAULT '',
+  `overallCpuUsage` int(11) NOT NULL DEFAULT 0,
+  `guestMemoryUsage` int(11) NOT NULL DEFAULT 0,
+  `hostMemoryUsage` int(11) NOT NULL DEFAULT 0,
+  `guestHeartbeatStatus` varchar(32) NOT NULL DEFAULT '',
+  `grantedMemory` int(11) NOT NULL DEFAULT 0,
+  `sharedMemory` int(11) NOT NULL DEFAULT 0,
+  `swappedMemory` int(11) NOT NULL DEFAULT 0,
+  `balloonedMemory` int(11) NOT NULL DEFAULT 0,
+  `consumedOverheadMemory` int(11) NOT NULL DEFAULT 0,
+  `compressedMemory` int(11) NOT NULL DEFAULT 0,
+  `uptimeSeconds` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -118,4 +147,4 @@ CREATE TABLE `virtual_machines` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-01-22 22:47:15
+-- Dump completed on 2023-01-24 23:45:39

@@ -20,7 +20,10 @@ if (  isset($_GET["hostname"]) && isset($_GET["vmid"]) && "get_vm_info"==$_GET["
     $cfg_memoryMb=$row["config_memorySizeMB"];
     $version=$row["version"];
     $datastore=$row["datastore"];
-    $path=$row["path"];
+    $overall_status=$row["overall_status"];
+    $guest_guestfullname=$row["guest_guestfullname"];
+    $runtime_lastboottime=$row["runtime_lastboottime"];
+    $runtime_powerstate=$row["runtime_powerstate"];
 
 ?>
     <table class="tbl_vm_command">
@@ -45,9 +48,17 @@ if (  isset($_GET["hostname"]) && isset($_GET["vmid"]) && "get_vm_info"==$_GET["
 
     <span class="spn_50">
       <table class="tbl_vm_info">
+        <tr><td class="tbl_info_header" colspan="2">State</td></tr>
+        <tr><th>Power state</th><td><?php print $runtime_powerstate ?></td></tr>
+        <tr><th>Overall status</th><td><?php print $overall_status ?></td></tr>
+      </table>
+      <br/>
+      <table class="tbl_vm_info">
         <tr><td class="tbl_info_header" colspan="2">HW summary</td></tr>
         <tr><th>CPU</th><td><?php print $cfg_numCpu ?></td></tr>
         <tr><th>Memory (Mb)</th><td><?php print $cfg_memoryMb ?></td></tr>
+        <tr><th>Guest OS full name</th><td><?php print $guest_guestfullname ?></td></tr>
+        <tr><th>Last boot time</th><td><?php print $runtime_lastboottime ?></td></tr>
       </table>
     </span>
 <!--

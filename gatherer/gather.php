@@ -44,11 +44,11 @@ function getDatastores(  $db_con, $date, $time, $host, $user, $passwd, $private_
   if ( count($datastore_json) >0 ) {
     foreach($datastore_json as $mydatastore)
     {
-      $datastore=$mydatastore->datastore;
-      $name=$mydatastore->name;
-      $url=$mydatastore->url;
-      $capacity=$mydatastore->capacity;
-      $freeSpace=$mydatastore->freeSpace;
+      $datastore=trim($mydatastore->datastore);
+      $name=trim($mydatastore->name);
+      $url=trim($mydatastore->url);
+      $capacity=trim($mydatastore->capacity);
+      $freeSpace=trim($mydatastore->freeSpace);
 
       if ($debug){
         echo "DEBUG : found datastore\n";
@@ -202,13 +202,13 @@ function getVm( $db_con, $date, $time, $host, $user, $passwd, $private_key){
     for ($i=0; $i<count($output); $i++){
       $line=$output[$i];
       if ( !( strpos($line,"Vmid")>=0 && strpos($line,"Annotation")>0 && strpos($line,"Name")>0)){
-            $vmid=substr($line,0,7);
-            $name=substr($line,7,15);
-            $file=substr($line,23,42);
-            $datastore=substr($file,1,strpos($file,"]")-1);
-            $path=substr($file,strpos($file,"] ")+2);
-            $guestos=substr($line,66,22);
-            $version=substr($line,88,10);
+            $vmid=trim(substr($line,0,7));
+            $name=trim(substr($line,7,15));
+            $file=trim(substr($line,23,42));
+            $datastore=trim(substr($file,1,strpos($file,"]")-1));
+            $path=trim(substr($file,strpos($file,"] ")+2));
+            $guestos=trim(substr($line,66,22));
+            $version=trim(substr($line,88,10));
 
             if ($debug){
               echo "DEBUG : found vm\n";
@@ -273,21 +273,54 @@ function getVmSummary(  $db_con, $date, $time, $host, $user, $passwd, $private_k
 
       $cfg_numcpu=$vmsummary_json->config->numCpu;
       $cfg_memory_mb=$vmsummary_json->config->memorySizeMB;
+      $cfg_guestfullname=$vmsummary_json->config->guestFullName;
+      $runtime_powerstate=$vmsummary_json->runtime->powerState;
+      $runtime_boottime=$vmsummary_json->runtime->bootTime;
+      $overall_status=$vmsummary_json->overallStatus;
 
       if ($debug){
         echo "DEBUG : found summary\n";
         echo "        config.numCpu         =$cfg_numcpu\n";
         echo "        config.memorySizeMB   =$cfg_memory_mb\n";
+        echo "        runtime.powerState    =$runtime_powerstate\n";
+        echo "        runtime.bootTime      =$runtime_boottime\n";
+        echo "        config.guestFullName  =$cfg_guestfullname\n";
+        echo "        overallStatus         =$overall_status\n";
 
       } //debug
 
-      $sql="update virtual_machines set config_numCpu=$cfg_numcpu, config_memorySizeMB=$cfg_memory_mb where timestamp='$db_ts' and hostname='$host' and vmid='$vm_id';";
+      $sql="update virtual_machines set config_numCpu=$cfg_numcpu, config_memorySizeMB=$cfg_memory_mb, runtime_powerstate='$runtime_powerstate', runtime_lastboottime='$runtime_boottime', guest_guestfullname='$cfg_guestfullname', overall_status='$overall_status'  where timestamp='$db_ts' and hostname='$host' and vmid='$vm_id';";
 
       if ($db_con->query($sql) === TRUE) {
-        echo "INFO : datastore  '$name' on '$host' inserted.\n";
+        echo "INFO : virtual_machines '$name' on '$host' record updated with config and runtime info.\n";
       } else {
-        echo "ERROR :  " . $sql . "\n" . $db_con->error."\n";
+        echo "ERROR update virtual_machines :  " . $sql . "\n" . $db_con->error."\n";
       }
+
+      if ($runtime_powerstate == "poweredOn" ){
+        // update statics
+        $overallCpuUsage=$vmsummary_json->quickStats->overallCpuUsage;
+        $guestMemoryUsage=$vmsummary_json->quickStats->guestMemoryUsage;
+        $hostMemoryUsage=$vmsummary_json->quickStats->hostMemoryUsage;
+        $guestHeartbeatStatus=$vmsummary_json->quickStats->guestHeartbeatStatus;
+        $grantedMemory=$vmsummary_json->quickStats->grantedMemory;
+        $sharedMemory=$vmsummary_json->quickStats->sharedMemory;
+        $swappedMemory=$vmsummary_json->quickStats->swappedMemory;
+        $balloonedMemory=$vmsummary_json->quickStats->balloonedMemory;
+        $consumedOverheadMemory=$vmsummary_json->quickStats->consumedOverheadMemory;
+        $compressedMemory=$vmsummary_json->quickStats->compressedMemory;
+        $uptimeSeconds=$vmsummary_json->quickStats->uptimeSeconds;
+
+        $sql_stat="insert into vm_quickstat (timestamp,hostname,vmid,overallCpuUsage,guestMemoryUsage,hostMemoryUsage,guestHeartbeatStatus,grantedMemory,sharedMemory,swappedMemory,balloonedMemory,consumedOverheadMemory,compressedMemory,uptimeSeconds) values ('$db_ts', '$host' ,'$vm_id', $overallCpuUsage, $guestMemoryUsage, $hostMemoryUsage, '$guestHeartbeatStatus', $grantedMemory, $sharedMemory, $swappedMemory, $balloonedMemory, $consumedOverheadMemory, $compressedMemory, $uptimeSeconds   ) ; ";
+        if ($db_con->query($sql_stat) === TRUE) {
+          echo "INFO : vm stats for  '$name' on '$host' inserted.\n";
+        } else {
+          echo "ERROR insert vm_quickstat :  " . $sql_stat . "\n" . $db_con->error."\n";
+        }
+      }else{
+        echo "INFO : vm '$vm_id' on host '$host' is '$runtime_powerstate', no stats will be collected\n";
+      }
+
       
     } //json last error
   } //while sql_vm
