@@ -23,6 +23,8 @@ Created minimal gatherer scripts to collect data into the database for:
 - esxi hosts informations
 - vm
 - vm config
+- vm runtime informations
+- vm resource usage statistics
 - datastores
 
 # Features implemented (what you can do)
@@ -36,6 +38,8 @@ Created minimal gatherer scripts to collect data into the database for:
 2023-01-01 Created gatherers and single-page interface to display structure and host informations.<br>
 2023-01-04 Feature : released VM poweroff/poweron <br>
 2023-01-22 Feature : released "Take snapshot" feature<br>
+2023-01-25 Feature : added vm runtime and configuration informations.<br>
+2023-01-25 Added vm statistics runtime collection<br>
 
 
 
