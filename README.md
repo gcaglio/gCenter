@@ -1,5 +1,5 @@
 # What is gCenter
-Simple interface to monitor and manage ESXi hosts. <br/>
+Free, open source, light interface to manage Vmware ESXi hosts and virtual machines.<br/>
 It will be a long road, getting from there to here...
 
 # Requirements
