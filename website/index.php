@@ -65,7 +65,7 @@ $con=getConnection($servername,$username,$password,$dbname);
 	  $host=$row["hostname"];
 ?>
   <div class="li_host">
-    <span onclick="updateContentPaneHostInfo('<?php print $host ?>')"><?php print $host; ?></span><br/>
+    <span class="sp_nav_host" onclick="updateContentPaneHostInfo('<?php print $host ?>')"><?php print $host; ?></span><br/>
     <b>Virtual machines</b>
 
 <?php
@@ -79,7 +79,7 @@ $con=getConnection($servername,$username,$password,$dbname);
 	  $vmid=trim($row["vmid"]);
 ?>
     <div class="li_vm">
-      <span onclick="updateContentPaneVmInfo('<?php print $host ?>','<?php print $vmid ?>')"><?php print $vm; ?></span><br/>
+      <span class="sp_nav_vm"  onclick="updateContentPaneVmInfo('<?php print $host ?>','<?php print $vmid ?>')"><?php print $vm; ?></span><br/>
     </div><!--vm-->
 <?php
   }
@@ -96,7 +96,7 @@ $con=getConnection($servername,$username,$password,$dbname);
           $free_space=$row["freespace"];
 ?>
     <div class="li_ds">
-      <?php print $name ?> [<?php print ceil((($total_capacity-$free_space)/$total_capacity)*100)."%"  ?>]
+      <span class="sp_nav_ds" ><?php print $name ?> [<?php print ceil((($total_capacity-$free_space)/$total_capacity)*100)."%"  ?>]</span><br/>
     </div><!--vm-->
 <?php
   }

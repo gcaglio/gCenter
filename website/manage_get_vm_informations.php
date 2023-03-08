@@ -24,16 +24,16 @@ if (  isset($_GET["hostname"]) && isset($_GET["vmid"]) && "get_vm_info"==$_GET["
     $guest_guestfullname=$row["guest_guestfullname"];
     $runtime_lastboottime=$row["runtime_lastboottime"];
     $runtime_powerstate=$row["runtime_powerstate"];
-
+    $timestamp=$row["timestamp"];
 ?>
+<!--
     <table class="tbl_vm_command">
       <tr>
-	<td>Power: <span onclick="poweronVm('<?php print $host ?>','<?php print $vmid ?>')">PowerOn</span> &nbsp; <span onclick="poweroffVm('<?php print $host ?>','<?php print $vmid ?>')">PowerOff</span> </td>
 	<td>Snapshot: <span onclick="snapVm('<?php print $host ?>','<?php print $vmid ?>')">Take</span> 
         </td>
       </tr>
     </table>
-
+-->
     <span class="spn_50">
       <table class="tbl_vm_info">
        <tr><td class="tbl_info_header" colspan="2">VM info</td></tr>
@@ -44,12 +44,23 @@ if (  isset($_GET["hostname"]) && isset($_GET["vmid"]) && "get_vm_info"==$_GET["
        <tr><th>VM HW version</th><td><?php print $version ?></td></tr>
        <tr><th>Last seen</th><td><?php print $last_seen_ts ?></td></tr>
       </table>
+      <br/>
     </span>
 
     <span class="spn_50">
       <table class="tbl_vm_info">
         <tr><td class="tbl_info_header" colspan="2">State</td></tr>
-        <tr><th>Power state</th><td><?php print $runtime_powerstate ?></td></tr>
+	<tr>
+          <th>Power state</th>
+	  <td><?php print $runtime_powerstate ?>
+
+	  <?php  if ( $runtime_powerstate == "poweredOff"  ){ ?>
+            <span class="btn_command" style="float:right" onclick="poweronVm('<?php print $host ?>','<?php print $vmid ?>')">[Power On]</span>
+          <?php }else{ ?>
+	    <span class="btn_command" style="float:right" onclick="poweroffVm('<?php print $host ?>','<?php print $vmid ?>')">[Power Off]</span> 
+          <?php  } ?>
+  	  </td>
+        </tr>
         <tr><th>Overall status</th><td><?php print $overall_status ?></td></tr>
       </table>
       <br/>
@@ -60,6 +71,39 @@ if (  isset($_GET["hostname"]) && isset($_GET["vmid"]) && "get_vm_info"==$_GET["
         <tr><th>Guest OS full name</th><td><?php print $guest_guestfullname ?></td></tr>
         <tr><th>Last boot time</th><td><?php print $runtime_lastboottime ?></td></tr>
       </table>
+    </span>
+
+
+    <br/>
+    <br/> 
+    <span class="spn_100">
+      <table width="100%" class="tbl_vm_snapshots">
+	<tr><td class="tbl_info_header" colspan="6">Snapshots <span class="btn_command" style="float:right" onclick="snapVm('<?php print $host ?>','<?php print $vmid ?>')">[ Take ]</span> </td></tr>
+        <tr><th>SnapshotID</th><th>Parent SnapshotID</th><th>Name</th><th>Description</th><th>Created On</th><th>Filesystem Quiesced</th></tr>
+<?php
+      $sql_snap="select * from vm_snapshots where timestamp='$timestamp' and vmid='$vmid' and hostname='$host' order by parent_snap, snapshot ; ";
+
+      $result_snap=mysqli_query($con,$sql_snap);
+      while ($row = $result_snap->fetch_assoc()) {
+        $name=$row["name"];
+        $description=$row["description"];
+        $create_time=$row["create_time"];
+        $quiesced=$row["quiesced"];
+        $snapshot=$row["snapshot"];
+        $parent=$row["parent_snap"];
+
+?>
+       <tr>
+         <td width="10px"><?php print $snapshot; ?></td>
+         <td><?php print $parent; ?></td>
+         <td width="80%"><?php print $name; ?></td>
+         <td width="80%"><?php print $description; ?></td>
+         <td width="80%"><?php print $create_time; ?></td>
+         <td width="10px"><?php print $quiesced; ?></td>
+       </tr>
+<?php } ?>
+      </table>
+
     </span>
 <!--
 <br/>

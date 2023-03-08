@@ -34,7 +34,7 @@ body{
 
 #main_container{
   float:right;
-  width:80%;
+  width:80%; 
 }
 
 #main_container table th {
@@ -43,7 +43,7 @@ body{
 }
 
 #main_container table {
-  width:80%;
+ /* width:80%; */
 }
 
 
@@ -66,6 +66,12 @@ body{
   vertical-align:top;
 }
 
+.spn_100 {
+  width:99%;
+  display: inline-block;
+  vertical-align:top;
+}
+
 
 .tbl_info_header{
   background: #e7e9ea;
@@ -74,11 +80,15 @@ body{
 
 .tbl_vm_info{
  font-size:12px;
+ width: 99%;
 }
 
 .tbl_vm_info th{
   background: #e4eff6;
 
+}
+.tbl_vm_snapshots{
+ font-size:12px;
 }
 
 .tbl_host_info{
@@ -100,4 +110,24 @@ body{
 
 }
 
+.sp_nav_host:hover{
+  cursor: pointer;
+}
 
+.sp_nav_vm:hover{
+  cursor:pointer;
+}
+
+.sp_nav_ds{
+ 
+}
+
+
+.btn_command{
+  font-weight:normal;
+}
+
+.btn_command:hover{
+  font-weight:bold;
+  cursor:pointer;
+}
