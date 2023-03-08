@@ -240,6 +240,76 @@ function getVm( $db_con, $date, $time, $host, $user, $passwd, $private_key){
 }
 
 
+function getVmSnapshots(  $db_con, $date, $time, $host, $user, $passwd, $private_key) {
+  $debug=true;
+
+  # get vms
+  $sql_vm="select vmid, name, timestamp from virtual_machines where hostname='$host' and timestamp= (select max(timestamp) from virtual_machines where hostname='$host'); ";
+
+  $result_vm=mysqli_query($db_con,$sql_vm);
+  while ($row = $result_vm->fetch_assoc()) {
+    $vm_id=$row["vmid"];
+    $name=$row["name"];
+    $db_ts=$row["timestamp"];
+
+    $output=null;
+    $retval=null;
+    $command="vim-cmd vmsvc/get.snapshotinfo $vm_id | sed 's/= (.*)/:/g' ";
+    $ssh_options="-o StrictHostKeyChecking=no ";
+    exec("sshpass -p $passwd  ssh $ssh_options $user@$host $command", $output, $retval);
+    echo "INFO : retval $retval\n";
+    if ($debug){
+      echo "DEBUG : output:\n";
+      print_r($output);
+    }
+
+    $vmsnap_output=jsonify($output);
+    $vmsnap_json=json_decode($vmsnap_output);
+
+    // if parsing ok
+    if ( json_last_error()===JSON_ERROR_NONE ) {
+
+      if (isset($vmsnap_json->rootSnapshotList)){
+        $root_snapshot_list=$vmsnap_json->rootSnapshotList;
+
+	// first item is not a snapshot datastructure
+	for ( $s=0; $s<count($root_snapshot_list); $s++){
+          $current_snap=$root_snapshot_list[$s];
+          drillDownSnapTree($db_con, $db_ts, $date, $time, $host, $vm_id, $current_snap,'');
+	}
+
+      }
+
+    }
+  }
+}
+
+function drillDownSnapTree( $db_con, $db_ts, $date, $time, $host, $vm_id, $current_snap, $parent_snap){
+
+
+  $name=$current_snap->name;
+  $description=$current_snap->description;
+  $snapshot=$current_snap->snapshot;
+  $create_time=$current_snap->createTime;
+  $quiesced=$current_snap->quiesced;
+
+  $sql_snap="insert into vm_snapshots (timestamp,date,time,hostname,vmid,name,snapshot,create_time, parent_snap, description, quiesced) values ('$db_ts', '$date','$time', '$host' ,'$vm_id', '$name','$snapshot','$create_time','$parent_snap' ,'$description' , $quiesced ) ; ";
+  if ($db_con->query($sql_snap) === TRUE) {
+    echo "INFO : vm snap '$snapshot' for '$vm_id' on '$host' inserted.\n";
+  } else {
+    echo "ERROR : insert vm snap :  " . $sql_snap . "\n" . $db_con->error."\n";
+  }
+
+  if ( isset($current_snap->childSnapshotList) && (!($current_snap->childSnapshotList == "<unset>"   ))    ){
+    $snap_list=$current_snap->childSnapshotList;
+
+    for ( $s=0; $s<count($snap_list); $s++){    
+      $loop_snap=$snap_list[$s];
+      drillDownSnapTree( $db_con, $db_ts, $date, $time, $host, $vm_id, $loop_snap, $snapshot);
+    }
+  }
+}
+
 
 
 function getVmSummary(  $db_con, $date, $time, $host, $user, $passwd, $private_key) {
@@ -352,6 +422,9 @@ while ($row = $result->fetch_assoc()) {
 
   echo "INFO : gathering host informations from '".$host."'\n";
   getHostInfo($con, $date, $time, $host, $user, $passwd, $private_key);
+  
+  echo "INFO : gathering VMs snapshot info from '".$host."'\n";
+  getVmSnapshots($con, $date, $time, $host, $user, $passwd, $private_key);
   echo "\n";
 }
 
