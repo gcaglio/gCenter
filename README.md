@@ -27,16 +27,19 @@ Created minimal gatherer scripts to collect data into the database for:
 - vm resource usage statistics
 - vm snapshots
 - datastores
+- datastore content
 
 # Features implemented (what you can do)
+- poweron/poweroff vms
+- take vm snapshot
 - list esxi information (software, hardware, etc)
 - list vm for each esxi host
-- poweron/poweroff vms
-- take vm snapshot (NEW!)
 - list datastore for each esxi host
 - list vm snapshots
+- list datastore content (filesystem tree)
 
 # Main steps
+2023-03-10 Feature : added get datastore content (file and directories) in the gatherer and implemented datastore info table in UI
 2023-03-09 Feature : added get vm snapshot in the gatherer and implemented snapshot table in UI.
 2023-01-01 Created gatherers and single-page interface to display structure and host informations.<br>
 2023-01-04 Feature : released VM poweroff/poweron <br>
