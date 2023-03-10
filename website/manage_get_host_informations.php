@@ -52,6 +52,37 @@ if (  isset($_GET["hostname"]) && "get_host_info"==$_GET["action"]  ) {
     </table>
     </span>
 
+    <br />
+
+<?php
+  $sql_ds="select * from datastores where hostname='$host' and timestamp=(select max(timestamp) from datastores where hostname='$host'); ";
+
+  $result_ds=mysqli_query($con,$sql_ds);
+  while ($row = $result_ds->fetch_assoc()) {
+    $datastore=$row["datastore"];
+    $name=$row["name"];
+    $last_seen_ts=$row["timestamp"];
+    $url=$row["url"];
+    $capacity=floor($row["capacity"]/1024/1024/1024);
+    $freespace=floor($row["freespace"]/1024/1024/1024);
+    $datastore=$row["datastore"];
+?>
+
+    <span class="spn_50">
+      <table class="tbl_ds_info">
+      <tr><td class="tbl_info_header" colspan="2">Datastore info : <?php print $name ?></td></tr>
+       <tr><th>Datastore</th><td><?php print $datastore ?></td></tr>
+       <tr><th>Datastore path</th><td><?php print $url ?></td></tr>
+       <tr><th>Capacity</th><td><?php print $capacity ?>Gb</td></tr>
+       <tr><th>Freespace</th><td><?php print $freespace ?>Gb / <?php print floor(($freespace/$capacity)*100) ?>%</td></tr>
+       <tr><th>Last seen</th><td><?php print $last_seen_ts ?></td></tr>
+      </table>
+    </span>
+    <br/>
+
+<?php } ?>
+
+
 <?php
   }
 }

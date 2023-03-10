@@ -27,6 +27,15 @@ $con=getConnection($servername,$username,$password,$dbname);
        });
       }	
 
+      function updateContentPaneDsInfo(host,vmid){
+        $("#main_content_pane_message").html("");
+        $.get( "manage_get_ds_informations.php?hostname=" + host + "&ds=" + vmid + "&action=get_ds_info", function( data ) {
+        $( "#main_content_pane" ).html( data );
+        //alert( data );
+       });
+      }
+
+
       function poweronVm(host,vmid){
 	$.get( "manage_vm.php?hostname=" + host + "&vmid=" + vmid + "&action=power_on", function( data ) {
           $( "#main_content_pane_message" ).html( data );
@@ -96,7 +105,7 @@ $con=getConnection($servername,$username,$password,$dbname);
           $free_space=$row["freespace"];
 ?>
     <div class="li_ds">
-      <span class="sp_nav_ds" ><?php print $name ?> [<?php print ceil((($total_capacity-$free_space)/$total_capacity)*100)."%"  ?>]</span><br/>
+      <span class="sp_nav_ds" onclick="updateContentPaneDsInfo('<?php print $host ?>','<?php print $name ?>')" ><?php print $name ?> [<?php print ceil((($total_capacity-$free_space)/$total_capacity)*100)."%"  ?>]</span><br/>
     </div><!--vm-->
 <?php
   }

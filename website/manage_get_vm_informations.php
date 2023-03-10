@@ -25,6 +25,7 @@ if (  isset($_GET["hostname"]) && isset($_GET["vmid"]) && "get_vm_info"==$_GET["
     $runtime_lastboottime=$row["runtime_lastboottime"];
     $runtime_powerstate=$row["runtime_powerstate"];
     $timestamp=$row["timestamp"];
+    $path=$row["path"];
 ?>
 <!--
     <table class="tbl_vm_command">
@@ -40,7 +41,7 @@ if (  isset($_GET["hostname"]) && isset($_GET["vmid"]) && "get_vm_info"==$_GET["
        <tr><th>VMid</th><td><?php print $vmid ?></td></tr>
        <tr><th>ESXi host</th><td><?php print $host ?></td></tr>
        <tr><th>Datastore</th><td><?php print $datastore ?></td></tr>
-       <tr><th>Datastore path</th><td><?php print $path ?></td></tr>
+       <tr><th>VMX path</th><td><?php print $path ?></td></tr>
        <tr><th>VM HW version</th><td><?php print $version ?></td></tr>
        <tr><th>Last seen</th><td><?php print $last_seen_ts ?></td></tr>
       </table>
