@@ -34,6 +34,7 @@ Created minimal gatherer scripts to collect data into the database for:
 - take vm snapshot
 - list esxi information (software, hardware, etc)
 - list vm for each esxi host
+- check vm cpu and memory statistics/graphs
 - list datastore for each esxi host
 - list vm snapshots
 - list datastore content (filesystem tree)

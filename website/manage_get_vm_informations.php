@@ -106,17 +106,134 @@ if (  isset($_GET["hostname"]) && isset($_GET["vmid"]) && "get_vm_info"==$_GET["
       </table>
 
     </span>
-<!--
-<br/>
 
-    <span class="spn_50">
-      <h2>Snapshots</h2>
-      <table class="tbl_vm_info">
-        <tr><th>VMid</th><td><?php print $vmid ?></td></tr>
-        <tr><th>Hostname</th><td><?php print $host ?></td></tr>
+
+    <br/>
+    <br/>
+    <span class="spn_100">
+      <table width="100%" class="tbl_vm_graphs">
+	<tr><td class="tbl_info_header" >Overall CPU Usage</td></tr>
+	<tr>
+	  <td align="center">
+            <canvas id="vm_cpu" style="max-width:90%;max-height:350px"></canvas>
+          </td>
+	</tr>
       </table>
     </span>
--->
+<?php
+      $sql_cpu="select timestamp,overallCpuUsage from vm_quickstat where hostname='$host' and vmid='$vmid' order by timestamp desc limit 180;";
+
+      $result_cpu=mysqli_query($con,$sql_cpu);
+      $a_js_xValues="";
+      $a_js_yValues="";
+      while ($row = $result_cpu->fetch_assoc()) {
+        $timestamp=$row["timestamp"];
+	$overallCpuUsage=$row["overallCpuUsage"];
+
+	$a_js_xValues="\"".$timestamp."\",".$a_js_xValues;
+	$a_js_yValues=$overallCpuUsage.",".$a_js_yValues;
+      }
+      
+?>
+	<script>
+          var xValues = [ <?php print substr($a_js_xValues,0,strlen($a_js_xValues)-1) ?> ];
+	  var yValues = [ <?php print substr($a_js_yValues,0,strlen($a_js_yValues)-1) ?> ];
+
+	  new Chart("vm_cpu", {
+	    type: "line",
+	    data: {
+	      labels: xValues,
+	      datasets: [{
+                label : "overallCpuUsage",
+	        backgroundColor: "rgba(0,0,0,1.0)",
+		borderColor: "rgb(75, 192, 192)",
+		fill:false,
+	        data: yValues
+	      }]
+	    },
+	    options:{}
+	  });
+        </script>
+
+
+    <br/>
+    <br/>
+    <br/>
+    <span class="spn_100">
+      <table width="100%" class="tbl_vm_graphs">
+        <tr><td class="tbl_info_header" >Memory Usage</td></tr>
+        <tr>
+          <td align="center">
+            <canvas id="vm_mem" style="max-width:90%;max-height:350px"></canvas>
+          </td>
+        </tr>
+      </table>
+    </span>
+<?php
+      $sql_cpu="select timestamp, guestMemoryUsage, hostMemoryUsage, balloonedMemory  from vm_quickstat where hostname='$host' and vmid='$vmid' order by timestamp desc limit 180;";
+
+      $result_cpu=mysqli_query($con,$sql_cpu);
+      $a_js_guest_yValues="";
+      $a_js_host_yValues="";
+      $a_js_baloon_yValues="";
+      $a_js_xValues="";
+      while ($row = $result_cpu->fetch_assoc()) {
+        $timestamp=$row["timestamp"];
+        $balloonedMemory=$row["balloonedMemory"];
+        $hostMemoryUsage=$row["hostMemoryUsage"];
+        $guestMemoryUsage=$row["guestMemoryUsage"];
+
+
+        $a_js_xValues="\"".$timestamp."\",".$a_js_xValues;
+        $a_js_guest_yValues=$guestMemoryUsage.",".$a_js_guest_yValues;
+        $a_js_host_yValues=$hostMemoryUsage.",".$a_js_host_yValues;
+        $a_js_baloon_yValues=$balloonedMemory.",".$a_js_baloon_yValues;
+      }
+
+?>
+        <script>
+          var xValues = [ <?php print substr($a_js_xValues,0,strlen($a_js_xValues)-1) ?> ];
+          var y_guest_Values = [ <?php print substr($a_js_guest_yValues,0,strlen($a_js_guest_yValues)-1) ?> ];
+          var y_host_Values = [ <?php print substr($a_js_host_yValues,0,strlen($a_js_host_yValues)-1) ?> ];
+          var y_baloon_Values = [ <?php print substr($a_js_baloon_yValues,0,strlen($a_js_baloon_yValues)-1) ?> ];
+
+          new Chart("vm_mem", {
+            type: "line",
+            data: {
+              labels: xValues,
+              datasets: [{
+                label : "guestMemoryUsage",
+                backgroundColor: "rgba(0,0,0,1.0)",
+                borderColor: "rgb(75, 192, 192)",
+                fill:false,
+                data: y_guest_Values
+	       },
+               {
+                label : "hostMemoryUsage",
+                backgroundColor: "rgba(0,0,0,1.0)",
+                borderColor: "rgb(70, 172, 172)",
+                fill:false,
+                data: y_host_Values
+               },
+               {
+                label : "balloonedMemory",
+                backgroundColor: "rgba(0,0,0,1.0)",
+                borderColor: "rgb(65, 122, 122)",
+                fill:false,
+                data: y_baloon_Values
+               }
+	       ]
+            },
+            options:{}
+          });
+        </script>
+
+
+
+
+
+
+
 <?php
   }
 }
