@@ -83,12 +83,42 @@ body{
  width: 99%;
 }
 
+.tbl_ds_info{
+  font-size:12px;
+  width: 99%;
+
+}
+
+
+.tbl_ds_content{
+  font-size:12px;
+  width: 99%;
+
+}
+
 .tbl_vm_info th{
   background: #e4eff6;
 
 }
+
+.tbl_ds_info th{
+  background: #e4eff6;
+
+}
+
+
+
 .tbl_vm_snapshots{
  font-size:12px;
+}
+
+.tbl_vm_snapshots th{
+ background: #e4eff6;
+ width:auto;
+}
+
+.tbl_vm_snapshots td{
+  white-space: nowrap;
 }
 
 .tbl_host_info{

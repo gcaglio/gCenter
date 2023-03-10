@@ -311,6 +311,43 @@ function drillDownSnapTree( $db_con, $db_ts, $date, $time, $host, $vm_id, $curre
 }
 
 
+function getDatastoreContent(  $db_con, $date, $time, $host, $user, $passwd, $private_key) {
+  $debug=true;
+
+  # get vms
+  $sql_ds="select timestamp, date, time, url, datastore, name from datastores where hostname='$host' and timestamp= (select max(timestamp) from datastores where hostname='$host'); ";
+
+  $result_ds=mysqli_query($db_con,$sql_ds);
+  while ($row = $result_ds->fetch_assoc()) {
+    $ds_name=$row["name"];
+    $ds_url=$row["url"];
+    $ds_datastore=$row["datastore"];
+    $ds_ts=$row["timestamp"];
+    $ds_date=$row["date"];
+    $ds_time=$row["time"];
+
+    $output=null;
+    $retval=null;
+    $command="find \"$ds_url\" -type f -exec \"ls -lh {} \\;\"  | awk '{ print $5 \";\" $6 \" \" $7 \";\" $8 \";\" substr($0,index($0,$9)) }'  ";
+    echo $command;
+    $ssh_options="-o StrictHostKeyChecking=no ";
+    exec("sshpass -p $passwd  ssh $ssh_options $user@$host $command", $output, $retval);
+    echo "INFO : retval $retval\n";
+    if ($debug){
+      echo "DEBUG : output:\n";
+      print_r($output);
+    }
+
+    $sql_ds_content="insert into ds_content (timestamp,date,time,hostname, datastore, content_ls) values ('$ds_ts', '$ds_date','$ds_time','$host','$ds_name', '".mysqli_real_escape_string($db_con, implode("\n",$output))."'  ) ; ";
+    if ($db_con->query($sql_ds_content) === TRUE) {
+      echo "INFO : datastore content for datastore '$name' on '$host' inserted.\n";
+    } else {
+      echo "ERROR : insert datastore :  " . $sql_ds_content . "\n" . $db_con->error."\n";
+    }
+
+  }
+}
+
 
 function getVmSummary(  $db_con, $date, $time, $host, $user, $passwd, $private_key) {
   $debug=true;
@@ -419,6 +456,9 @@ while ($row = $result->fetch_assoc()) {
 
   echo "INFO : gathering datastore from '".$host."'\n";
   getDatastores( $con, $date, $time, $host, $user, $passwd, $private_key);
+
+  echo "INFO : gathering datastore content from '$host'\n";
+  getDatastoreContent( $con, $date, $time, $host, $user, $passwd, $private_key);
 
   echo "INFO : gathering host informations from '".$host."'\n";
   getHostInfo($con, $date, $time, $host, $user, $passwd, $private_key);
