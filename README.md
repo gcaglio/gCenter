@@ -23,6 +23,13 @@ f. insert into the db your user, for example, to create the first admin user :
    ```
    insert into users values ('admin', md5('password'), 'ADMIN');
    ```
+g. schedule the gatherer to get information from your ESXi hosts. <br/>
+   Here the example of a crontab entry to query your ESXi hosts every 5 minutes, assuming that the gCenter was installed in folder ```/var/www/gCenter/``` <br>
+   ```
+   # m h  dom mon dow   command
+   */5 * * * * cd /var/www/gCenter/gatherer/; php /var/www/gCenter/gatherer/gather.php > /tmp/gatherer.log 2>&1
+   ```
+   
 
 # Status
 Created minimal gatherer scripts to collect data into the database for:
