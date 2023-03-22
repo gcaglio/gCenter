@@ -3,9 +3,13 @@ body{
   font-family: "Trebuchet MS", Helvetica, sans-serif;
   font-size:12px;
   background: rgb(0,36,5);
-  background: linear-gradient(90deg, rgba(0,36,5,1) 0%, rgba(9,121,37,1) 35%, rgba(0,255,51,0.4598433123249299) 100%);
+/*  background: linear-gradient(90deg, rgba(0,36,5,1) 0%, rgba(9,121,37,1) 35%, rgba(0,255,51,0.4598433123249299) 100%); */
+
+  background-image: url('./images/bg.png');
 
 }
+
+
 
 .inner_body{
   width : 98%;
@@ -15,6 +19,47 @@ body{
   height:150%;
   border-radius: 10px;
   padding-top:10px;
+}
+
+
+
+.login_outer_container {
+  display: table;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.login_middle_container {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.login_inner_container {
+/*  margin-left: auto;
+  margin-right: auto; */
+  width: 100%;
+  /* Whatever width you want */
+  vertical-align:middle;
+}
+
+.login_inner_container span{
+  display:inline-grid;
+}
+
+.login_product_info {
+  padding-left: 100px;
+  font-size: 6em;
+  color:#ffffff;
+  font-weight:bold;
+}
+
+
+.tbl_login{
+  width: 400px;
+  color:#ffffff;
 }
 
 .li_navigation{
@@ -48,17 +93,31 @@ body{
 
 
 .header_content{
-  background: rgb(0,36,5);
-  background: linear-gradient(90deg, rgba(0,36,5,1) 0%, rgba(9,121,37,1) 35%, rgba(0,255,51,0.4598433123249299) 100%);
+ /* background: rgb(0,36,5);
+  background: linear-gradient(90deg, rgba(0,36,5,1) 0%, rgba(9,121,37,1) 35%, rgba(0,255,51,0.4598433123249299) 100%); */
   padding-left: 15px;  
+  padding-right:15px;
   color:white;
   height:60px;
 
   font-family: "Trebuchet MS", Helvetica, sans-serif;
-  font-size: 25px;
+}
+
+.header_content table td  h2{
+  color: white;
+  font-size: 2.1em;
   letter-spacing: 2px;
   word-spacing: 2px;
+  
 }
+
+.header_content table td a{
+  color: white;
+  font-size: 12px;
+  
+}
+
+
 
 .spn_50 {
   width:48%;

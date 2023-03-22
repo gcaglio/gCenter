@@ -2,6 +2,16 @@
 require_once "../common/db.php";
 require_once "../conf/db.php";
 # manage vm status start/stop
+
+session_start();
+if ( ! (isset($_SESSION["_CURRENT_USER"]) ) ){
+  $_GET["message"]="Session not valid. Please login.";
+  header('Location: ./index.php');
+  exit;
+}
+
+
+
 $con=getConnection($servername,$username,$password,$dbname);
 
 
