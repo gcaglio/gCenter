@@ -17,6 +17,12 @@ e. insert into the db your hosts :
    ```
    insert into hosts (hostname,username,password) values ('myhostname','myusername','mypassword')   
    ```
+f. insert into the db your user, for example, to create the first admin user :
+   username : admin
+   password : password
+   ```
+   insert into users values ('admin', md5('password'), 'ADMIN');
+   ```
 
 # Status
 Created minimal gatherer scripts to collect data into the database for:
@@ -30,6 +36,7 @@ Created minimal gatherer scripts to collect data into the database for:
 - datastore content
 
 # Features implemented (what you can do)
+- login with username and password (note: actually ROLE is not yet implemented - everyone could operate on all resources)
 - poweron/poweroff vms
 - take vm snapshot
 - list esxi information (software, hardware, etc)
@@ -40,8 +47,9 @@ Created minimal gatherer scripts to collect data into the database for:
 - list datastore content (filesystem tree)
 
 # Main steps
-2023-03-10 Feature : added get datastore content (file and directories) in the gatherer and implemented datastore info table in UI
-2023-03-09 Feature : added get vm snapshot in the gatherer and implemented snapshot table in UI.
+2023-03-22 Feature : added login with username and password <br>
+2023-03-10 Feature : added get datastore content (file and directories) in the gatherer and implemented datastore info table in UI <br>
+2023-03-09 Feature : added get vm snapshot in the gatherer and implemented snapshot table in UI. <br>
 2023-01-01 Created gatherers and single-page interface to display structure and host informations.<br>
 2023-01-04 Feature : released VM poweroff/poweron <br>
 2023-01-22 Feature : released "Take snapshot" feature<br>
