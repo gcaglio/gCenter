@@ -69,6 +69,7 @@ if (  isset($_GET["hostname"]) && isset($_GET["vmid"]) && "get_vm_info"==$_GET["
 	  <?php  if ( $runtime_powerstate == "poweredOff"  ){ ?>
             <span class="btn_command" style="float:right" onclick="poweronVm('<?php print $host ?>','<?php print $vmid ?>')">[Power On]</span>
           <?php }else{ ?>
+	    <span class="btn_command" style="float:right" onclick="rebootVm('<?php print $host ?>','<?php print $vmid ?>')">[Reboot]</span> 
 	    <span class="btn_command" style="float:right" onclick="poweroffVm('<?php print $host ?>','<?php print $vmid ?>')">[Power Off]</span> 
           <?php  } ?>
   	  </td>

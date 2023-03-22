@@ -76,6 +76,28 @@ if (  isset($_GET["hostname"]) && isset($_GET["vmid"])  ) {
     </pre>
 
 <?php
+  }else if ( "reboot"==$_GET["action"] ){
+    $command="vim-cmd  vmsvc/power.off $vm_id; sleep 5; vim-cmd  vmsvc/power.on $vm_id";
+
+    exec("sshpass -p $passwd  ssh $ssh_options $user@$host \"$command\" 2>&1", $output, $retval);
+    echo "INFO : retval $retval\n";
+    if ($debug){
+      echo "DEBUG : output:\n";
+      print_r($output);
+    }
+
+?>
+    VM is transitioning (Rebooting)... please verify new status in a while. <br/><br/>
+    <b>Command : </b><pre><?php print $command ?></pre> <br/>
+    <pre>
+      <?php print_r($output) ?>
+    </pre>
+
+
+
+
+
+<?php
   }else if ( "take_snap"==$_GET["action"] ){
     $full_date=date("D M j G:i:s T Y");
     $desc_snap="gCenter snap taken on : $full_date";

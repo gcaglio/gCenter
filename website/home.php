@@ -44,6 +44,15 @@ $con=getConnection($servername,$username,$password,$dbname);
        });
       }      
 
+
+      function rebootVm(host,vmid){
+        $.get( "manage_vm.php?hostname=" + host + "&vmid=" + vmid + "&action=reboot", function( data ) {
+          $( "#main_content_pane_message" ).html( data );
+        //alert( data );
+       });
+      }
+
+
       function poweroffVm(host,vmid){
         $.get( "manage_vm.php?hostname=" + host + "&vmid=" + vmid + "&action=power_off", function( data ) {
           $( "#main_content_pane_message" ).html( data );
