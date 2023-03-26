@@ -17,7 +17,7 @@ $con=getConnection($servername,$username,$password,$dbname);
 
 
 if (  isset($_GET["hostname"]) && "get_host_info"==$_GET["action"]  ) {
-  $host=$_GET["hostname"];
+  $host=mysqli_real_escape_string($con,$_GET["hostname"]);
   $sql="select * from hosts_informations where timestamp=(select max(timestamp) from hosts_informations where hostname='$host') and hostname='$host';";
   $result=mysqli_query($con,$sql);
   while ($row = $result->fetch_assoc()) {
@@ -66,7 +66,8 @@ if (  isset($_GET["hostname"]) && "get_host_info"==$_GET["action"]  ) {
     <br />
 
 <?php
-  $sql_ds="select * from datastores where hostname='$host' and timestamp=(select max(timestamp) from datastores where hostname='$host'); ";
+  } // while
+  $sql_ds="select * from datastores where hostname='".mysqli_real_escape_string($con,$host)."' and timestamp=(select max(timestamp) from datastores where hostname='".mysqli_real_escape_string($con,$host)."'); ";
 
   $result_ds=mysqli_query($con,$sql_ds);
   while ($row = $result_ds->fetch_assoc()) {
@@ -91,10 +92,31 @@ if (  isset($_GET["hostname"]) && "get_host_info"==$_GET["action"]  ) {
     </span>
     <br/>
 
-<?php } ?>
+<?php } //while ?>
 
 
 <?php
-  }
+  
+}else if ( "get_all_hosts_info"==$_GET["action"]  ) {
+
+  $sql_hosts="select * from hosts; ";
+
+  $result_hosts=mysqli_query($con,$sql_hosts);
+?>
+    <span class="spn_100">
+      <table class="tbl_host_info">
+      <tr><td class="tbl_info_header">Hostname</td></tr>
+
+<?php
+  while ($row = $result_hosts->fetch_assoc()) {
+    $hostname=$row["hostname"];
+?>
+      <tr><td><?php print $hostname; ?></td></tr>
+<?php } //while ?>
+       </table>
+    </span>
+    <br/>
+
+<?php
 }
 ?>

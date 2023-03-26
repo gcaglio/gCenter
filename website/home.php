@@ -19,7 +19,28 @@ $con=getConnection($servername,$username,$password,$dbname);
         //alert( data );
        });
       }
-     
+
+      function updateContentPaneAllHosts(){
+        $("#main_content_pane_message").html("");
+        $.get( "manage_get_host_informations.php?action=get_all_hosts_info", function( data ) {
+		$( "#main_content_pane" ).html( data );
+	});
+      }
+
+      function updateContentPaneAllVirtualMachines(){
+        $("#main_content_pane_message").html("");
+        $.get( "manage_get_vm_informations.php?action=get_all_vms_info", function( data ) {
+          $( "#main_content_pane" ).html( data );
+        });
+      }
+
+      function updateContentPaneAllDatastores(){
+        $("#main_content_pane_message").html("");
+        $.get( "manage_get_ds_informations.php?action=get_all_ds_info", function( data ) {
+        $( "#main_content_pane" ).html( data );
+        });
+      }
+
       function updateContentPaneVmInfo(host,vmid){
         $("#main_content_pane_message").html("");
         $.get( "manage_get_vm_informations.php?hostname=" + host + "&vmid=" + vmid + "&action=get_vm_info", function( data ) {
@@ -74,7 +95,18 @@ $con=getConnection($servername,$username,$password,$dbname);
 
 
   <div class="inner_body">
+
+
   <div class="li_navigation">
+    <b>Summary</b>
+    <div class="li_summary">
+      <span class="sp_nav_summary" onclick="updateContentPaneAllHosts()">Hosts</span><br/>
+      <span class="sp_nav_summary" onclick="updateContentPaneAllVirtualMachines()">Virtual Machines</span><br/>
+    <!--  <span class="sp_nav_summary" onclick="updateContentPaneAllDatastores()">Datastores</span><br/> -->
+   </div>
+<!--  </div>
+
+  <div class="li_navigation"> -->
   <b>Hosts</b>
 <?php
   # recupero gli host 

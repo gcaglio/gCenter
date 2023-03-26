@@ -44,7 +44,7 @@ Created minimal gatherer scripts to collect data into the database for:
 
 # Features implemented (what you can do)
 - login with username and password (note: actually ROLE is not yet implemented - everyone could operate on all resources)
-- poweron/poweroff vms
+- poweron/poweroffi/reboot vms
 - take vm snapshot
 - list esxi information (software, hardware, etc)
 - list vm for each esxi host
@@ -54,6 +54,9 @@ Created minimal gatherer scripts to collect data into the database for:
 - list datastore content (filesystem tree)
 
 # Main steps
+2023-03-27 Feature : added summary view to see all hosts and all vms<br>
+2023-03-27 Modified styles and added version in login page<br>
+2023-03-22 Feature : added vm hard reboot<br>
 2023-03-22 Feature : added login with username and password <br>
 2023-03-10 Feature : added get datastore content (file and directories) in the gatherer and implemented datastore info table in UI <br>
 2023-03-09 Feature : added get vm snapshot in the gatherer and implemented snapshot table in UI. <br>

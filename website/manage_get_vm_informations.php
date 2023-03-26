@@ -17,8 +17,8 @@ $con=getConnection($servername,$username,$password,$dbname);
 
 
 if (  isset($_GET["hostname"]) && isset($_GET["vmid"]) && "get_vm_info"==$_GET["action"]  ) {
-  $host=$_GET["hostname"];
-  $vmid=$_GET["vmid"];
+  $host=mysqli_real_escape_string($con,$_GET["hostname"]);
+  $vmid=mysqli_real_escape_string($con,$_GET["vmid"]);
 
   $sql_vm="select * from virtual_machines where vmid='$vmid' and hostname='$host' order by timestamp DESC limit 1 ; ";
 
@@ -94,7 +94,7 @@ if (  isset($_GET["hostname"]) && isset($_GET["vmid"]) && "get_vm_info"==$_GET["
 	<tr><td class="tbl_info_header" colspan="6">Snapshots <span class="btn_command" style="float:right" onclick="snapVm('<?php print $host ?>','<?php print $vmid ?>')">[ Take ]</span> </td></tr>
         <tr><th>SnapshotID</th><th>Parent SnapshotID</th><th>Name</th><th>Description</th><th>Created On</th><th>Filesystem Quiesced</th></tr>
 <?php
-      $sql_snap="select * from vm_snapshots where timestamp='$timestamp' and vmid='$vmid' and hostname='$host' order by parent_snap, snapshot ; ";
+      $sql_snap="select * from vm_snapshots where timestamp='".mysqli_real_escape_string($con,$timestamp)."' and vmid='".mysqli_real_escape_string($con,$vmid)."' and hostname='".mysqli_real_escape_string($con,$host)."' order by parent_snap, snapshot ; ";
 
       $result_snap=mysqli_query($con,$sql_snap);
       while ($row = $result_snap->fetch_assoc()) {
@@ -133,7 +133,7 @@ if (  isset($_GET["hostname"]) && isset($_GET["vmid"]) && "get_vm_info"==$_GET["
       </table>
     </span>
 <?php
-      $sql_cpu="select timestamp,overallCpuUsage from vm_quickstat where hostname='$host' and vmid='$vmid' order by timestamp desc limit 180;";
+      $sql_cpu="select timestamp,overallCpuUsage from vm_quickstat where hostname='".mysqli_real_escape_string($con,$host)."' and vmid='".mysqli_real_escape_string($con,$vmid)."' order by timestamp desc limit 180;";
 
       $result_cpu=mysqli_query($con,$sql_cpu);
       $a_js_xValues="";
@@ -182,7 +182,7 @@ if (  isset($_GET["hostname"]) && isset($_GET["vmid"]) && "get_vm_info"==$_GET["
       </table>
     </span>
 <?php
-      $sql_cpu="select timestamp, guestMemoryUsage, hostMemoryUsage, balloonedMemory  from vm_quickstat where hostname='$host' and vmid='$vmid' order by timestamp desc limit 180;";
+      $sql_cpu="select timestamp, guestMemoryUsage, hostMemoryUsage, balloonedMemory  from vm_quickstat where hostname='".mysqli_real_escape_string($con,$host)."' and vmid='".mysqli_real_escape_string($con,$vmid)."' order by timestamp desc limit 180;";
 
       $result_cpu=mysqli_query($con,$sql_cpu);
       $a_js_guest_yValues="";
@@ -248,5 +248,65 @@ if (  isset($_GET["hostname"]) && isset($_GET["vmid"]) && "get_vm_info"==$_GET["
 
 <?php
   }
+}else if ( "get_all_vms_info"==$_GET["action"]  ) {
+
+  $sql_vms="select * from virtual_machines where timestamp=(select max(timestamp) from virtual_machines) order by hostname, vmid; ";
+
+  $result_vms=mysqli_query($con,$sql_vms);
+?>
+    <span class="spn_100">
+      <table class="tbl_vms_info">
+       <tr>
+          <th class="tbl_info_header">VMid</th>
+          <th class="tbl_info_header">Name</th>
+          <th class="tbl_info_header">ESXi host</th>
+          <th class="tbl_info_header">Datastore</th>
+          <th class="tbl_info_header">VMX path</th>
+          <th class="tbl_info_header">VM HW version</th>
+          <th class="tbl_info_header">Power state</th>
+          <th class="tbl_info_header">Status</th>
+          <th class="tbl_info_header">num.Cpu</th>
+          <th class="tbl_info_header">RAM (Mb)</th>
+          <th class="tbl_info_header">Guest fullname</th>
+          <th class="tbl_info_header">Last boot time</th>
+       </tr>
+
+<?php
+  while ($row = $result_vms->fetch_assoc()) {
+    $vm_id=$row["vmid"];
+    $host=$row["hostname"];
+    $name=$row["name"];
+    $last_seen_ts=$row["timestamp"];
+    $cfg_numCpu=$row["config_numCpu"];
+    $cfg_memoryMb=$row["config_memorySizeMB"];
+    $version=$row["version"];
+    $datastore=$row["datastore"];
+    $overall_status=$row["overall_status"];
+    $guest_guestfullname=$row["guest_guestfullname"];
+    $runtime_lastboottime=$row["runtime_lastboottime"];
+    $runtime_powerstate=$row["runtime_powerstate"];
+    $timestamp=$row["timestamp"];
+    $path=$row["path"];
+?>
+       <tr>
+	 <td><?php print $vm_id; ?></td>
+	 <td><?php print $name; ?></td>
+	 <td><?php print $host; ?></td>
+	 <td><?php print $datastore; ?></td>
+	 <td><?php print $path; ?></td>
+	 <td><?php print $version; ?></td>
+	 <td><?php print $runtime_powerstate; ?></td>
+	 <td><?php print $overall_status; ?></td>
+	 <td><?php print $cfg_numCpu; ?></td>
+	 <td><?php print $cfg_memoryMb; ?></td>
+	 <td><?php print $guest_guestfullname; ?></td>
+	 <td><?php print $runtime_lastboottime; ?></td>
+       </tr>
+<?php
+  }
+?>
+    </table>
+  </span>
+<?php
 }
 ?>

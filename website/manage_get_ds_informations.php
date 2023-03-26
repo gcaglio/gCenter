@@ -16,8 +16,8 @@ $con=getConnection($servername,$username,$password,$dbname);
 
 
 if (  isset($_GET["hostname"]) && isset($_GET["ds"]) && "get_ds_info"==$_GET["action"]  ) {
-  $host=$_GET["hostname"];
-  $ds_name=$_GET["ds"];
+  $host=mysqli_real_escape_string($con,$_GET["hostname"]);
+  $ds_name=mysqli_real_escape_string($con,$_GET["ds"]);
 
   $sql_ds="select *  from datastores where name='$ds_name' and  hostname='$host' and timestamp=(select max(timestamp) from datastores where hostname='$host'); ";
 
@@ -58,7 +58,7 @@ if (  isset($_GET["hostname"]) && isset($_GET["ds"]) && "get_ds_info"==$_GET["ac
       <table width="100%" class="tbl_ds_content">
         <tr><th style="width:10%">Size</th><th style="width:10%">Last mod.time</th><th style="width:80%">Filename</th></tr>
 <?php
-      $sql_content="select * from ds_content where timestamp='$last_seen_ts' and datastore='$name' and hostname='$host'; ";
+      $sql_content="select * from ds_content where timestamp='".mysqli_real_escape_string($con,$last_seen_ts)."' and datastore='".mysqli_real_escape_string($con,$name)."' and hostname='".mysqli_real_escape_string($con,$host)."'; ";
 
       $result_content=mysqli_query($con,$sql_content);
       while ($row = $result_content->fetch_assoc()) {
