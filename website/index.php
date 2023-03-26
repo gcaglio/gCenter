@@ -26,6 +26,9 @@ session_start();
   </span>
   <span class="login_product_info">
    gCenter
+    <span class="login_version">
+     <?php include "version.txt"; ?>
+    </span>
   </span>
 
 

@@ -36,12 +36,20 @@ body{
   display: table-cell;
   vertical-align: middle;
 }
+
 .login_form{
   border-right: 2px ridge lightgray;
   padding-right:50px;
   height:200px;
   align-content:center ;
 }
+
+.login_version{
+  font-size:0.2em;
+  padding-top: 20px;
+}
+
+
 .login_inner_container {
 /*  margin-left: auto;
   margin-right: auto; */
