@@ -122,7 +122,25 @@ if (  isset($_GET["hostname"]) && isset($_GET["vmid"]) && "get_vm_info"==$_GET["
 
     <br/>
     <br/>
-    <span class="spn_100">
+    <span class="spn_100" style="padding-top:20px;padding-bottom:10px;">
+      <script>
+        function showGraphCpuUsage(){
+	 $( "#graph_cpu_usage" ).show(); 
+	 $( "#graph_memory_usage" ).hide(); 
+	}
+
+        function showGraphMemoryUsage(){
+         $( "#graph_cpu_usage" ).hide();
+         $( "#graph_memory_usage" ).show();
+        }
+
+      </script>
+      Graph : 
+      <span class="btn_command" onclick="showGraphCpuUsage()">[CPU Usage]</span>
+      <span class="btn_command" onclick="showGraphMemoryUsage()">[Memory Usage]</span>
+    </span>
+
+    <span class="spn_100" id="graph_cpu_usage">
       <table width="100%" class="tbl_vm_graphs">
 	<tr><td class="tbl_info_header" >Overall CPU Usage</td></tr>
 	<tr>
@@ -168,10 +186,7 @@ if (  isset($_GET["hostname"]) && isset($_GET["vmid"]) && "get_vm_info"==$_GET["
         </script>
 
 
-    <br/>
-    <br/>
-    <br/>
-    <span class="spn_100">
+    <span class="spn_100" id="graph_memory_usage" style="display:none">
       <table width="100%" class="tbl_vm_graphs">
         <tr><td class="tbl_info_header" >Memory Usage</td></tr>
         <tr>
@@ -223,14 +238,14 @@ if (  isset($_GET["hostname"]) && isset($_GET["vmid"]) && "get_vm_info"==$_GET["
                {
                 label : "hostMemoryUsage",
                 backgroundColor: "rgba(0,0,0,1.0)",
-                borderColor: "rgb(70, 172, 172)",
+                borderColor: "rgb(20, 90, 172)",
                 fill:false,
                 data: y_host_Values
                },
                {
                 label : "balloonedMemory",
                 backgroundColor: "rgba(0,0,0,1.0)",
-                borderColor: "rgb(65, 122, 122)",
+                borderColor: "rgb(192, 70, 70)",
                 fill:false,
                 data: y_baloon_Values
                }
