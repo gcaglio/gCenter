@@ -22,6 +22,12 @@ body{
 }
 
 
+.message{
+  text-align:center;
+  color:#FF9100;
+  font-weight:bold;
+  font-size:1.2em;
+}
 
 .login_outer_container {
   display: table;

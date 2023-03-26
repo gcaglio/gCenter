@@ -21,7 +21,7 @@ if (  isset($_POST["uname"]) && isset($_POST["passwd"]) && "login"==$_POST["acti
     header('Location: ./home.php');
     exit;
   } else {
-    $_SESSION["message"]="Error during login. Please check username and password.";
+    $_SESSION["message"]="Cannot complete login due to an incorrect user name or password.";
   }
   header('Location: ./index.php');
   exit;

@@ -17,7 +17,6 @@ session_start();
   <span class="login_form">
    <form method="POST" action="./manage_login.php">
      <table class="tbl_login" align="center">
-     <tr><td colspan="2"><?php print $_SESSION["message"] ?></td></tr>
        <tr><th>Username</th><td><input type="text" name="uname" size="20" /></td></tr>
        <tr><th>Password</th><td><input type="password" name="passwd" size="20" /></td></tr>
        <tr><td colspan="2" align="right"><button type="submit" name="action" value="login">Log In</button></td></tr>
@@ -31,6 +30,7 @@ session_start();
     </span>
   </span>
 
+  <div class="message"><?php print $_SESSION["message"] ?></div>
 
   </div><!-- inner -->
 
