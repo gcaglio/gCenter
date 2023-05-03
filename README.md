@@ -1,29 +1,55 @@
 # What is gCenter
-Free, open source, light interface to manage Vmware ESXi hosts and virtual machines.<br/>
+Free, open source, light interface to manage Vmware ESXi hosts and Hyper-V.<br/>
+gCenter is a bundle of 
+- SSH information gatherer for Esxi
+- Windows Services (for Hyper-V, to allow WMI query execution)
+- web interface to let you view, list and manage virtual machines and hosts
+<br/>
+This project aims to be a light version of vCenter and System Center, with a unified and simplified interface.<br />
+<br />
 It will be a long road, getting from there to here...
+
+
+
+# Use Case
+Small to Medium installation of Vmware ESXi hosts (for example an internal "Lab" that does not require DRS or similar advanced feature).<br/>
+Mixed installation of ESXi and Hyper-V environment.<br />
+Enabling basic support team (ServiceDesk or L1) to operate a virtual enviroment without SystemCenter or vCenter complex interface.<br/>
+<br/>
+Or for any installation that does not want to pay licenses for management software:
+- ESXi is free
+- Hyper-V core is free
+and with gCenter you can list and manage vms on different host, completely free.
+
+
 
 # Requirements
 - apache
 - php
 - mariadb
-- sshpass  (actually the only method to connect to host is with sshpass, future improvement soon)
+- sshpass  (actually the only method to connect to ESXi host is with sshpass, future improvement soon)
+- hyperv-wmi-http-adapter-service (windows service to enable gCenter to connect to Hyper-V hosts)
+
 
 # How to install
 a. download project from repo <br/>
 b. import ```db_schema.dump``` in your mariadb database <br/>
 c. create virtualhost that point to the ```./website``` subfolder <br/>
 d. configure ```conf/db.php``` to point to your mariadb instance with the gcenter scheme imported on point "b" <br/>
-e. insert into the db your hosts : 
-   ```
-   insert into hosts (hostname,username,password) values ('myhostname','myusername','mypassword')   
-   ```
-f. insert into the db your user, for example, to create the first admin user :
+e. insert into the db your user, for example, to create the first admin user :
    username : admin
    password : password
    ```
    insert into users values ('admin', md5('password'), 'ADMIN');
    ```
-g. schedule the gatherer to get information from your ESXi hosts. <br/>
+
+
+ESXi
+i. insert into the db your hosts : 
+   ```
+   insert into hosts (hostname,username,password) values ('myhostname','myusername','mypassword')   
+   ```
+ii. schedule the gatherer to get information from your ESXi hosts. <br/>
    Here the example of a crontab entry to query your ESXi hosts every 5 minutes, assuming that the gCenter was installed in folder ```/var/www/gCenter/``` <br>
    ```
    # m h  dom mon dow   command
@@ -31,29 +57,60 @@ g. schedule the gatherer to get information from your ESXi hosts. <br/>
    ```
    
 
+Hyper-V
+i. insert into the db your hosts :
+   ```
+   insert into hyperv_hosts values ('myhostname','ip-wmi-http-adapter-service-binding','port-wmi-http-adapter-service-binding', '');
+   ```
+ii. schedule the gatherer to get information from your Hyper-V hosts. <br/>
+   Here the example of a crontab entry to query your Hyper-V hosts every 5 minutes, assuming that the gCenter was installed in folder ```/var/www/gCenter/``` <br>
+   ```
+   # m h  dom mon dow   command
+   */5 * * * * cd /var/www/gCenter/gatherer/; php /var/www/gCenter/gatherer/hyperv-gatherer.php > /tmp/hyperv-gatherer.log 2>&1
+   ```
+iii. install on the Hyper-V host(s) the hyperv-wmi-http-adapter-services. Please read installation instructions in the adapter folder.
+
+
 # Status
-Created minimal gatherer scripts to collect data into the database for:
-- esxi hosts informations
-- vm
-- vm config
-- vm runtime informations
-- vm resource usage statistics
-- vm snapshots
-- datastores
-- datastore content
+
+Vmware ESXI
+  Created gatherer scripts to collect data into the database for:
+  - esxi hosts informations
+  - vm
+  - vm config
+  - vm runtime informations
+  - vm resource usage statistics
+  - vm snapshots
+  - datastores
+  - datastore content
+
+Microsoft Hyper-V
+  Created gatherer scripts to collect data into the database for:
+  - Hyper-V hosts informations
+  - vm
+
 
 # Features implemented (what you can do)
-- login with username and password (note: actually ROLE is not yet implemented - everyone could operate on all resources)
-- poweron/poweroffi/reboot vms
-- take vm snapshot
-- list esxi information (software, hardware, etc)
-- list vm for each esxi host
-- check vm cpu and memory statistics/graphs
-- list datastore for each esxi host
-- list vm snapshots
-- list datastore content (filesystem tree)
+Vmware ESXI
+  - login with username and password (note: actually ROLE is not yet implemented - everyone could operate on all resources)
+  - poweron/poweroffi/reboot vms
+  - take vm snapshot
+  - list esxi information (software, hardware, etc)
+  - list vm for each esxi host
+  - check vm cpu and memory statistics/graphs
+  - list datastore for each esxi host
+  - list vm snapshots
+  - list datastore content (filesystem tree)
+
+Micrososft Hyper-V 
+  - hyperv-wmi-http-adapter-service windows service
+  - collect hosts informations
+  - collect vms informations
 
 # Main steps
+2023-05-04 Feature : added hyperv-wmi-http-adapter-service, that need to be installed on Hyper-V hosts<br>
+2023-05-04 Feature : added hyper-v gatherer for virtual machines informations<br>
+2023-05-04 Feature : added hyper-v gatherer for hosts informations<br>
 2023-03-27 Feature : added summary view to see all hosts and all vms<br>
 2023-03-27 Modified styles and added version in login page<br>
 2023-03-22 Feature : added vm hard reboot<br>

@@ -103,6 +103,63 @@ CREATE TABLE `hosts_informations` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `hyperv_hosts`
+--
+
+DROP TABLE IF EXISTS `hyperv_hosts`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `hyperv_hosts` (
+  `hostname` varchar(100) NOT NULL DEFAULT '',
+  `ip` varchar(100) NOT NULL DEFAULT '15',
+  `port` varchar(5) NOT NULL DEFAULT '',
+  `api_key` varchar(100) NOT NULL DEFAULT ''
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `hyperv_hosts_informations`
+--
+
+DROP TABLE IF EXISTS `hyperv_hosts_informations`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `hyperv_hosts_informations` (
+  `timestamp` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `date` date NOT NULL DEFAULT '0000-00-00',
+  `time` time NOT NULL DEFAULT '00:00:00',
+  `hostname` varchar(100) NOT NULL DEFAULT '',
+  `name` varchar(255) NOT NULL DEFAULT '',
+  `health_state` varchar(3) NOT NULL DEFAULT '',
+  `status` varchar(3) NOT NULL DEFAULT '',
+  `status_descriptions` varchar(255) NOT NULL DEFAULT '',
+  `enabled_state` varchar(3) NOT NULL DEFAULT ''
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `hyperv_vm_informations`
+--
+
+DROP TABLE IF EXISTS `hyperv_vm_informations`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `hyperv_vm_informations` (
+  `timestamp` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `date` date NOT NULL DEFAULT '0000-00-00',
+  `time` time NOT NULL DEFAULT '00:00:00',
+  `hostname` varchar(100) NOT NULL DEFAULT '',
+  `vm_name` varchar(255) NOT NULL DEFAULT '',
+  `vm_id` varchar(100) NOT NULL DEFAULT '',
+  `health_state` varchar(3) NOT NULL DEFAULT '',
+  `status` varchar(3) NOT NULL DEFAULT '',
+  `status_descriptions` varchar(255) NOT NULL DEFAULT '',
+  `enabled_state` varchar(3) NOT NULL DEFAULT '',
+  `uptime_millisec` bigint(20) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `users`
 --
 
@@ -201,4 +258,4 @@ CREATE TABLE `vm_snapshots` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-03-22 15:03:16
+-- Dump completed on 2023-05-03 22:25:58
