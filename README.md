@@ -44,7 +44,7 @@ e. insert into the db your user, for example, to create the first admin user :
    ```
 
 
-ESXi
+ESXi<br>
 i. insert into the db your hosts : 
    ```
    insert into hosts (hostname,username,password) values ('myhostname','myusername','mypassword')   
@@ -57,7 +57,7 @@ ii. schedule the gatherer to get information from your ESXi hosts. <br/>
    ```
    
 
-Hyper-V
+Hyper-V<br>
 i. insert into the db your hosts :
    ```
    insert into hyperv_hosts values ('myhostname','ip-wmi-http-adapter-service-binding','port-wmi-http-adapter-service-binding', '');
