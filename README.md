@@ -128,4 +128,11 @@ Micrososft Hyper-V
 # Screenshots
 ![Alt text](/docs/images/gCenter_login.png "Login")
 
+![Alt text](/docs/images/gCenter_show_esxi_host.png "ESXi host details")
+
+![Alt text](/docs/images/gCenter_show_esxi_vm.png "ESXi virtual machine details")
+
+![Alt text](/docs/images/gCenter_show_hyperv_vm.png "Hyper-V host details")
+
+
 
