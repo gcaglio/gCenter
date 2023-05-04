@@ -13,8 +13,8 @@ $con=getConnection($servername,$username,$password,$dbname);
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
     <script>
-      function updateContentPaneHostInfo(hostname){
-        $.get( "manage_get_host_informations.php?hostname=" + hostname + "&action=get_host_info", function( data ) {
+      function updateContentPaneHostInfo(hostname, host_type){
+        $.get( "manage_get_"+host_type+"_host_informations.php?hostname=" + hostname + "&action=get_host_info", function( data ) {
         $( "#main_content_pane" ).html( data );
         //alert( data );
        });
@@ -41,17 +41,17 @@ $con=getConnection($servername,$username,$password,$dbname);
         });
       }
 
-      function updateContentPaneVmInfo(host,vmid){
+      function updateContentPaneVmInfo(host,type,vmid){
         $("#main_content_pane_message").html("");
-        $.get( "manage_get_vm_informations.php?hostname=" + host + "&vmid=" + vmid + "&action=get_vm_info", function( data ) {
+        $.get( "manage_get_"+type+"_vm_informations.php?hostname=" + host + "&vmid=" + vmid + "&action=get_vm_info", function( data ) {
         $( "#main_content_pane" ).html( data );
         //alert( data );
        });
       }	
 
-      function updateContentPaneDsInfo(host,vmid){
+      function updateContentPaneDsInfo(host,type,vmid){
         $("#main_content_pane_message").html("");
-        $.get( "manage_get_ds_informations.php?hostname=" + host + "&ds=" + vmid + "&action=get_ds_info", function( data ) {
+        $.get( "manage_get_"+type+"_ds_informations.php?hostname=" + host +  "&ds=" + vmid + "&action=get_ds_info", function( data ) {
         $( "#main_content_pane" ).html( data );
         //alert( data );
        });
@@ -107,7 +107,7 @@ $con=getConnection($servername,$username,$password,$dbname);
 <!--  </div>
 
   <div class="li_navigation"> -->
-  <b>Hosts</b>
+  <b>ESXi hosts</b>
 <?php
   # recupero gli host 
   $hosts_sql="select hostname from hosts;";
@@ -116,7 +116,7 @@ $con=getConnection($servername,$username,$password,$dbname);
 	  $host=$row["hostname"];
 ?>
   <div class="li_host">
-    <span class="sp_nav_host" onclick="updateContentPaneHostInfo('<?php print $host ?>')"><?php print $host; ?></span><br/>
+    <span class="sp_nav_host" onclick="updateContentPaneHostInfo('<?php print $host ?>','esxi')"><?php print $host; ?></span><br/>
     <b>Virtual machines</b>
 
 <?php
@@ -130,7 +130,7 @@ $con=getConnection($servername,$username,$password,$dbname);
 	  $vmid=trim($row["vmid"]);
 ?>
     <div class="li_vm">
-      <span class="sp_nav_vm"  onclick="updateContentPaneVmInfo('<?php print $host ?>','<?php print $vmid ?>')"><?php print $vm; ?></span><br/>
+      <span class="sp_nav_vm"  onclick="updateContentPaneVmInfo('<?php print $host ?>','esxi','<?php print $vmid ?>')"><?php print $vm; ?></span><br/>
     </div><!--vm-->
 <?php
   }
@@ -147,18 +147,56 @@ $con=getConnection($servername,$username,$password,$dbname);
           $free_space=$row["freespace"];
 ?>
     <div class="li_ds">
-      <span class="sp_nav_ds" onclick="updateContentPaneDsInfo('<?php print $host ?>','<?php print $name ?>')" ><?php print $name ?> [<?php print ceil((($total_capacity-$free_space)/$total_capacity)*100)."%"  ?>]</span><br/>
+      <span class="sp_nav_ds" onclick="updateContentPaneDsInfo('<?php print $host ?>','esxi','<?php print $name ?>')" ><?php print $name ?> [<?php print ceil((($total_capacity-$free_space)/$total_capacity)*100)."%"  ?>]</span><br/>
     </div><!--vm-->
 <?php
   }
 ?>
 
-
-
-  </div> <!-- host -->
+  </div> <!-- li host -->
 <?php
   }
 ?>
+
+<br/>
+<br/>
+
+  <b>Hyper-V hosts</b>
+<?php
+  # recupero gli host
+  $hosts_sql="select hostname from hyperv_hosts;";
+  $hosts_result=mysqli_query($con,$hosts_sql);
+  while ($row = $hosts_result->fetch_assoc()) {
+          $host=$row["hostname"];
+?>
+  <div class="li_host">
+    <span class="sp_nav_host" onclick="updateContentPaneHostInfo('<?php print $host ?>','hyperv')"><?php print $host; ?></span><br/>
+    <b>Virtual machines</b>
+
+<?php
+  # recupero le vm
+  $vm_sql="select vm_name, vm_id, hostname from hyperv_virtual_machines where timestamp=(select max(timestamp) from hyperv_virtual_machines where hostname='$host') and hostname='$host';";
+  $vm_result=mysqli_query($con,$vm_sql);
+  while ($row = $vm_result->fetch_assoc()) {
+          $vm=$row["vm_name"];
+          $host=$row["hostname"];
+          $vmid=trim($row["vm_id"]);
+?>
+    <div class="li_vm">
+      <span class="sp_nav_vm"  onclick="updateContentPaneVmInfo('<?php print $host ?>','hyperv','<?php print $vmid ?>')"><?php print $vm; ?></span><br/>
+    </div><!--vm-->
+<?php
+  }
+?>
+  </div> <!-- li host -->
+<?php
+  }
+?>
+
+
+
+
+
 
   </div><!--navigation-->
 
