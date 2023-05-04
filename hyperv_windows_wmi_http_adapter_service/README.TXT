@@ -5,7 +5,7 @@ This allow remote applications to get informations available only through WMI pr
 
 
   USE CASE
- ==========
+==========
 This is useful in case we need to implement remote automation or gatherer services that need to
 perform WMI queries (or read/list WMI-queryable objects) without Kerberos or WinRM authentication.
 This could be useful if you've some Hyper-V core servers (standalone installation) and you need to collect
@@ -56,3 +56,23 @@ f. start the service, at next boot it will be started automatically since we use
        INDICAZIONE_ATTESA     : 0x7d0
        PID                    : 22192
        FLAG                   :
+
+
+ TROUBLESHOOTING
+=================
+i. Hyper-V core could not have .net Framework 4.8 installed.
+   I suggest to download the Offline package from : https://support.microsoft.com/en-us/topic/microsoft-net-framework-4-8-offline-installer-for-windows-9d23f658-3b97-68ab-d013-aa3c3e7495e0
+
+   Since Windows Core does not have full GUI, the executable file should be launched with /q (quiet) flag from elevated command line
+
+   eg: ndp48-x86-x64-allos-enu.exe /q
+
+
+ii. The service will log a startup event with some diagnostic informations like the INI file path, listening ip and port.
+
+     HyperV-wmi-http-adapter-service is starting.
+     Ini file:c:\HyperV-wmi-http-adapter-service\HyperV-wmi-http-adapter-service.ini
+     Listening on IP 192.168.123.130 and PORT 5000.
+     HttpListener prefix : http://192.168.123.130:5000/
+
+
