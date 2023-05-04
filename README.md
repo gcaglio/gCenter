@@ -108,6 +108,7 @@ Micrososft Hyper-V
   - collect vms informations
 
 # Main steps
+2023-05-05 Feature : added listing Hyper-V vms and hosts
 2023-05-04 Feature : added hyperv-wmi-http-adapter-service, that need to be installed on Hyper-V hosts<br>
 2023-05-04 Feature : added hyper-v gatherer for virtual machines informations<br>
 2023-05-04 Feature : added hyper-v gatherer for hosts informations<br>
