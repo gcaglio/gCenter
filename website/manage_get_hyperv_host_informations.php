@@ -30,7 +30,7 @@ if (  isset($_GET["hostname"]) && "get_host_info"==$_GET["action"]  ) {
     <table class="tbl_host_info">
       <tr><td class="tbl_info_header" colspan="2">Host informations</td></tr>
       <tr><th>Last seen timestamp</th><td><?php print $last_seen ?></td></tr>
-      <tr><th>Hostname</th><td><?php print $host_name ?></td></tr>
+      <tr><th>Hostname</th><td><?php print $hostname ?></td></tr>
       <tr><th>Health state</th><td><?php print $health_state?></td></tr>
       <tr><th>Status</th><td><?php print $status ?></td></tr>
       <tr><th>Status descriptions</th><td><?php print $status_descriptions ?></td></tr>

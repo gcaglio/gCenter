@@ -46,6 +46,7 @@ if (  isset($_GET["hostname"]) && isset($_GET["vmid"]) && "get_vm_info"==$_GET["
       </tr>
     </table>
 -->
+    <h2><?php print $host ?> / <?php print $name ?> </h2>
     <span class="spn_50">
       <table class="tbl_vm_info">
        <tr><td class="tbl_info_header" colspan="2">VM info</td></tr>

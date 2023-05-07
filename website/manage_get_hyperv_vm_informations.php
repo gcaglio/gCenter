@@ -36,33 +36,45 @@ if (  isset($_GET["hostname"]) && isset($_GET["vmid"]) && "get_vm_info"==$_GET["
     $enabled_state=$row["enabled_state"];
 
 
+    $_wmi_enabled_state_poweroff = 3 ;
+    $_wmi_enabled_state_poweron = 2 ;
+
 ?>
+    <h2><?php print $host ?> / <?php print $vm_name ?> </h2>
     <span class="spn_50">
       <table class="tbl_vm_info">
        <tr><td class="tbl_info_header" colspan="2">VM info</td></tr>
        <tr><th>VM name</th><td><?php print $vm_name ?></td></tr>
        <tr><th>VMid</th><td><?php print $vm_id ?></td></tr>
        <tr><th>Hyper-V host</th><td><?php print $host ?></td></tr>
-       <tr><th>State</th><td>
-          <?php 
-            if ($enabled_state == 3){
-	      print "3 = Powered off";
-            }else if ($enabled_state ==2) {
-              print "2 = Powered on";
-	    }else{
-	      print $enabled_state;
-	    } 
-
-          ?>
-          </td></tr>
        <tr><th>Health state</th><td><?php print $health_state ?></td></tr>
-       <tr><th>Status</th><td><?php print $status ?></td></tr>
-       <tr><th>Status descriptions</th><td><?php print $status_descriptions ?></td></tr>
        <tr><th>Last seen</th><td><?php print $last_seen_ts ?></td></tr>
       </table>
       <br/>
     </span>
 
+    <span class="spn_50">
+      <table class="tbl_vm_info">
+        <tr><td class="tbl_info_header" colspan="2">State</td></tr>
+        <tr>
+          <th>Power state</th>
+          <td><?php print $enabled_state ?>
+
+          <?php  if ( $enabled_state == $_wmi_enabled_state_poweroff  ){ ?>
+            <span class="btn_command" style="float:right" onclick="poweronHypervVm('<?php print $host ?>','<?php print $vm_name ?>')">[Power On]</span>
+          <?php }else{ ?>
+<!--            <span class="btn_command" style="float:right" onclick="rebootHypervVm('<?php print $host ?>','<?php print $vm_name ?>')">[Reboot]</span>
+            <span class="btn_command" style="float:right" onclick="resetHypervVm('<?php print $host ?>','<?php print $vm_name ?>')">[Reset]</span> -->
+            <span class="btn_command" style="float:right" onclick="poweroffHypervVm('<?php print $host ?>','<?php print $vm_name ?>')">[Power Off]</span>
+          <?php  } ?>
+          </td>
+	</tr>
+        <tr><th>Status</th><td><?php print $status ?></td></tr>
+        <tr><th>Status descriptions</th><td><?php print $status_descriptions ?></td></tr>
+
+      </table>
+      <br/>
+    </span>
 
 <?php
   }

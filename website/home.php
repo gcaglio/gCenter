@@ -88,6 +88,42 @@ $con=getConnection($servername,$username,$password,$dbname);
        });
       }
 
+
+
+      function poweronHypervVm(host,vmid){
+        $.get( "manage_hyperv_vm.php?hostname=" + host + "&vmid=" + vmid + "&action=power_on", function( data ) {
+          $( "#main_content_pane_message" ).html( data );
+        //alert( data );
+       });
+      }
+
+
+      function rebootHypervVm(host,vmid){
+        $.get( "manage_hyperv_vm.php?hostname=" + host + "&vmid=" + vmid + "&action=reboot", function( data ) {
+          $( "#main_content_pane_message" ).html( data );
+        //alert( data );
+       });
+      }
+
+      function resetHypervVm(host,vmid){
+        $.get( "manage_hyperv_vm.php?hostname=" + host + "&vmid=" + vmid + "&action=reset", function( data ) {
+          $( "#main_content_pane_message" ).html( data );
+        //alert( data );
+       });
+      }
+
+      function poweroffHypervVm(host,vmid){
+        $.get( "manage_hyperv_vm.php?hostname=" + host + "&vmid=" + vmid + "&action=power_off", function( data ) {
+          $( "#main_content_pane_message" ).html( data );
+        //alert( data );
+       });
+      }
+
+
+
+
+
+
     </script>
   </head>
   <body>
