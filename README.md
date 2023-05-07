@@ -87,13 +87,14 @@ Vmware ESXI
 Microsoft Hyper-V
   Created gatherer scripts to collect data into the database for:
   - Hyper-V hosts informations
-  - vm
+  - vm basic information and power state
+  
 
 
 # Features implemented (what you can do)
 Vmware ESXI
   - login with username and password (note: actually ROLE is not yet implemented - everyone could operate on all resources)
-  - poweron/poweroffi/reboot vms
+  - poweron/poweroff/reboot vms
   - take vm snapshot
   - list esxi information (software, hardware, etc)
   - list vm for each esxi host
@@ -103,11 +104,13 @@ Vmware ESXI
   - list datastore content (filesystem tree)
 
 Micrososft Hyper-V 
-  - hyperv-wmi-http-adapter-service windows service
+  - hyperv-wmi-http-adapter-service windows service to interface WMI
   - collect hosts informations
   - collect vms informations
+  - poweron/poweroff vms
 
 # Main steps
+2023-05-07 Feature : added Hyper-V virtual machine power management
 2023-05-05 Feature : added listing Hyper-V vms and hosts
 2023-05-04 Feature : added hyperv-wmi-http-adapter-service, that need to be installed on Hyper-V hosts<br>
 2023-05-04 Feature : added hyper-v gatherer for virtual machines informations<br>
