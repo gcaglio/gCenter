@@ -155,7 +155,10 @@ CREATE TABLE `hyperv_virtual_machines` (
   `status` varchar(3) NOT NULL DEFAULT '',
   `status_descriptions` varchar(255) NOT NULL DEFAULT '',
   `enabled_state` varchar(3) NOT NULL DEFAULT '',
-  `uptime_millisec` bigint(20) NOT NULL DEFAULT 0
+  `uptime_millisec` bigint(20) NOT NULL DEFAULT 0,
+  `memory_limit` int(11) NOT NULL DEFAULT 0,
+  `memory_reservation` int(11) NOT NULL DEFAULT 0,
+  `memory_virtualquantity` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -258,4 +261,4 @@ CREATE TABLE `vm_snapshots` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-05-04 22:54:01
+-- Dump completed on 2023-05-11 21:39:06

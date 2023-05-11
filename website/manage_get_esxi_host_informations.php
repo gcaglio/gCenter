@@ -39,6 +39,7 @@ if (  isset($_GET["hostname"]) && "get_host_info"==$_GET["action"]  ) {
     $product_version=$row["product_version"];
     $os_type=$row["os_type"];
 ?>
+    <h2><?php print $host_name ?>  </h2>
     <span class="spn_50">
     <table class="tbl_host_info">
       <tr><td class="tbl_info_header" colspan="2">Host informations</td></tr>

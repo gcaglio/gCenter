@@ -75,8 +75,11 @@ function getVirtualMachines( $db_con, $date, $time, $hostname, $ip, $port, $apik
     $status_descriptions=implode(",", $element->status_description);
     $enabled_state=$element->enabled_state;
     $status=$element->status;
+    $memory_limit=$element->memory_limit;
+    $memory_reservation=$element->memory_reservation;
+    $memory_virtualquantity=$element->memory_virtualquantity;
 
-    $sql="insert into hyperv_virtual_machines (timestamp,date,time, hostname, vm_name, vm_id, health_state, status, status_descriptions, enabled_state, uptime_millisec) values ('$date $time', '$date','$time','$hostname','$vm_name', '$vm_id', '$health_state','$status','$status_descriptions','$enabled_state', '$uptime_millisec');";
+    $sql="insert into hyperv_virtual_machines (timestamp,date,time, hostname, vm_name, vm_id, health_state, status, status_descriptions, enabled_state, uptime_millisec, memory_limit, memory_reservation, memory_virtualquantity) values ('$date $time', '$date','$time','$hostname','$vm_name', '$vm_id', '$health_state','$status','$status_descriptions','$enabled_state', '$uptime_millisec', $memory_limit, $memory_reservation, $memory_virtualquantity);";
 
     if ($db_con->query($sql) === TRUE) {
       echo "INFO : vm '$vm_name' on host '$hostname' informations inserted.\n";

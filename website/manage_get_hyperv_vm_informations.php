@@ -34,6 +34,9 @@ if (  isset($_GET["hostname"]) && isset($_GET["vmid"]) && "get_vm_info"==$_GET["
     $status_descriptions=$row["status_descriptions"];
     $status=$row["status"];
     $enabled_state=$row["enabled_state"];
+    $memory_virtualquantity=$row["memory_virtualquantity"];
+    $memory_limit=$row["memory_limit"];
+    $memory_reservation=$row["memory_reservation"];
 
 
     $_wmi_enabled_state_poweroff = 3 ;
@@ -44,8 +47,8 @@ if (  isset($_GET["hostname"]) && isset($_GET["vmid"]) && "get_vm_info"==$_GET["
     <span class="spn_50">
       <table class="tbl_vm_info">
        <tr><td class="tbl_info_header" colspan="2">VM info</td></tr>
-       <tr><th>VM name</th><td><?php print $vm_name ?></td></tr>
        <tr><th>VMid</th><td><?php print $vm_id ?></td></tr>
+       <tr><th>VM name</th><td><?php print $vm_name ?></td></tr>
        <tr><th>Hyper-V host</th><td><?php print $host ?></td></tr>
        <tr><th>Health state</th><td><?php print $health_state ?></td></tr>
        <tr><th>Last seen</th><td><?php print $last_seen_ts ?></td></tr>
@@ -74,6 +77,14 @@ if (  isset($_GET["hostname"]) && isset($_GET["vmid"]) && "get_vm_info"==$_GET["
 
       </table>
       <br/>
+      <table class="tbl_vm_info">
+        <tr><td class="tbl_info_header" colspan="2">HW summary</td></tr>
+        <!--<tr><th>CPU</th><td><?php print $cfg_numCpu ?></td></tr> -->
+        <tr><th>Memory configured (Mb)</th><td><?php print $memory_virtualquantity ?></td></tr>
+        <tr><th>Memory limit (Mb)</th><td><?php print $memory_limit ?></td></tr>
+        <tr><th>Memory reservation (Mb)</th><td><?php print $memory_reservation ?></td></tr>
+      </table>
+
     </span>
 
 <?php
