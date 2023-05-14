@@ -25,6 +25,7 @@ if (  isset($_GET["hostname"]) && "get_host_info"==$_GET["action"]  ) {
     $health_state=$row["health_state"];
     $status=$row["status"];
     $status_descriptions=$row["status_descriptions"];
+    $hostname=$row["hostname"];
 ?>
 
     <h2><?php print $host ?></h2>

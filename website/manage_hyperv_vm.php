@@ -144,18 +144,34 @@ if (  isset($_GET["hostname"]) && isset($_GET["vmid"])  ) {
     }
 
 
-//  }else if ( "take_snap"==$_GET["action"] ){
-//    $full_date=date("D M j G:i:s T Y");
-//    $desc_snap="gCenter snap taken on : $full_date";
+  }else if ( "take_snap"==$_GET["action"] ){
+    $full_date=date("D M j G:i:s T Y");
+    $desc_snap="gCenter snap taken on : $full_date";
 
-//    $command="vim-cmd /vmsvc/snapshot.create $vm_id \\\"$desc_snap\\\" 1 1";
+    $command="/hyperv/api_v1/takesnapshot/$vm_id";
 
-//    exec("sshpass -p $passwd  ssh $ssh_options $user@$host $command 2>&1", $output, $retval);
-//    echo "INFO : retval $retval\n";
-//    if ($debug){
-//      echo "DEBUG : output:\n";
-//      print_r($output);
-//    }
+
+    $json = file_get_contents($protocol.'://'.$ip.":".$port.$command);
+    $obj = json_decode($json);
+    $status = $obj->status;
+
+
+    echo "INFO : Take snapshot $vm_id retval $status<br>";
+    if ($debug){
+      echo "DEBUG : output: $json<br>";
+    }
+
+    if ( $status == "OK" ){
+?>
+      Snaphost taken succesfully
+<?php
+    }else{
+      $exception=$obj->exception;
+?>
+      Error during creating snapshot : <?php print $status ?><br/>
+      <?php print $exception ?>
+<?php
+    }
 
 	
   }

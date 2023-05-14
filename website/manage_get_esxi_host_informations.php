@@ -29,7 +29,7 @@ if (  isset($_GET["hostname"]) && "get_host_info"==$_GET["action"]  ) {
     $cpu_mhz=$row["cpu_mhz"];
     $cpu_cores=$row["cpu_cores"];
     $cpu_threads=$row["cpu_threads"];
-    $nic=$row["nic"];
+    $nic=$row["nics"];
     $hbas=$row["hbas"];
     $is_in_maintenance=$row["is_in_maintenance"];
     $boot_time=$row["boot_time"];

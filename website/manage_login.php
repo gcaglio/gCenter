@@ -5,7 +5,6 @@ session_start();
 # check login and authenticate
 $con=getConnection($servername,$username,$password,$dbname);
 
-
 if (  isset($_POST["uname"]) && isset($_POST["passwd"]) && "login"==$_POST["action"]  ) {
   $uname=mysqli_real_escape_string($con,$_POST["uname"]);
   $passwd=mysqli_real_escape_string($con,$_POST["passwd"]);
