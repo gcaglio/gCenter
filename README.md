@@ -100,7 +100,7 @@ Vmware ESXI
   - list vm for each esxi host
   - check vm cpu and memory statistics/graphs
   - list datastore for each esxi host
-  - list vm snapshots
+  - list and take vms snapshots
   - list datastore content (filesystem tree)
 
 Micrososft Hyper-V 
@@ -108,8 +108,11 @@ Micrososft Hyper-V
   - collect hosts informations
   - collect vms informations
   - poweron/poweroff vms
+  - taking vms snapshots
 
 # Main steps
+2023-05-14 Feature : added Hyper-V 'take vm snapshot' feature<br>
+2023-05-14 Feature : minor bugfixes<br>
 2023-05-11 Feature : added Hyper-V virtual machine memory details<br>
 2023-05-07 Feature : added Hyper-V virtual machine power management<br>
 2023-05-05 Feature : added listing Hyper-V vms and hosts<br>
