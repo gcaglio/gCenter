@@ -1,4 +1,5 @@
 <?php
+include "check_session.php";
 require_once "../common/db.php";
 require_once "../conf/db.php";
 # gather info from esxi hosts
@@ -88,8 +89,7 @@ $con=getConnection($servername,$username,$password,$dbname);
        });
       }
 
-
-
+      //Hyper-V
       function poweronHypervVm(host,vmid){
         $.get( "manage_hyperv_vm.php?hostname=" + host + "&vmid=" + vmid + "&action=power_on", function( data ) {
           $( "#main_content_pane_message" ).html( data );
@@ -120,15 +120,20 @@ $con=getConnection($servername,$username,$password,$dbname);
       }
 
 
+      function snapHypervVm(host,vmid){
+        $.get( "manage_hyperv_vm.php?hostname=" + host + "&vmid=" + vmid + "&action=take_snap", function( data ) {
+          $( "#main_content_pane_message" ).html( data );
+        //alert( data );
+       });
+      }
 
-
+     
 
 
     </script>
   </head>
   <body>
   <?php include "header.php" ?>
-
 
   <div class="inner_body">
 
