@@ -87,6 +87,14 @@ if (  isset($_GET["hostname"]) && isset($_GET["vmid"]) && "get_vm_info"==$_GET["
 
     </span>
 
+    <br/>
+    <br/>
+    <span class="spn_100">
+      <table width="100%" class="tbl_vm_snapshots">
+	<tr><td class="tbl_info_header" colspan="6">Snapshots <span class="btn_command" style="float:right" onclick="snapHypervVm('<?php print $host ?>','<?php print $vm_name ?>')">[ Take ]</span> </td></tr>
+	<tr><td><i>You could take snap! Listing is work in progress.</i></td></tr>
+      </table>
+    </span>
 <?php
   }
 }
