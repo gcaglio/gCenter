@@ -30,7 +30,17 @@ session_start();
     </span>
   </span>
 
-  <div class="message"><?php print $_SESSION["message"] ?></div>
+  <?php   if ( isset($_SESSION["message"]) ){ ?>
+    <div class="message">
+    <?php print $_SESSION["message"]; ?>
+    </div> 
+  <?php }  ?>
+
+  <?php   if ( isset($_GET["message"]) ){ ?>
+    <div class="message">
+    <?php print $_GET["message"]; ?>
+    </div>
+  <?php }  ?>
 
   </div><!-- inner -->
 
