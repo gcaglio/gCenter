@@ -87,6 +87,48 @@ function getVirtualMachines( $db_con, $date, $time, $hostname, $ip, $port, $apik
       echo "ERROR :  " . $sql . "\n" . $db_con->error."\n";
     }
 
+    getVmSnapshots( $db_con, $date, $time, $hostname, $ip, $port, $apikey, $vm_name );
+  }
+
+}
+
+
+function getVmSnapshots( $db_con, $date, $time, $hostname, $ip, $port, $apikey, $vm_name ){
+
+  $debug=true;
+  $output=null;
+  $retval=null;
+  $protocol="http";
+
+  $json = file_get_contents($protocol.'://'.$ip.":".$port."/hyperv/api_v1/getsnapshots/".$vm_name);
+  $obj = json_decode($json);
+
+  echo "INFO : getting snapshots of '$vm_name' from host '$hostname'. ";
+
+  if ($debug){
+    echo "DEBUG : output:\n";
+    print_r($json."\n");
+
+  }
+
+  // replace a lot of string to have a valid json
+  for ($i=0;$i<count($obj);$i++){
+    $element=$obj[$i];
+
+    $id=$element->id;
+    $name=$element->name;
+    $parent=$element->parent;
+    $creation_date=$element->creation_date;
+    $creation_time=$element->creation_time;
+
+    $sql="insert into hyperv_vm_snapshots (timestamp,date,time, hostname, name, vmid, creation_date, creation_time, snap_id, parent_snap) values ('$date $time', '$date','$time','$hostname','$name', '$vm_name', '$creation_date','$creation_time','$id','$parent');";
+
+    if ($db_con->query($sql) === TRUE) {
+      echo "INFO : snap '$name' of vm '$vm_name' on host '$hostname' informations inserted.\n";
+    } else {
+      echo "ERROR :  " . $sql . "\n" . $db_con->error."\n";
+    }
+
   }
 
 }

@@ -30,6 +30,7 @@ if (  isset($_GET["hostname"]) && isset($_GET["vmid"]) && "get_vm_info"==$_GET["
     $health_state=$row["health_state"];
     $name=$row["vm_name"];
     $last_seen_ts=$row["timestamp"];
+    $timestamp=$row["timestamp"];
     $uptime_millisec=$row["uptime_millisec"];
     $status_descriptions=$row["status_descriptions"];
     $status=$row["status"];
@@ -92,7 +93,31 @@ if (  isset($_GET["hostname"]) && isset($_GET["vmid"]) && "get_vm_info"==$_GET["
     <span class="spn_100">
       <table width="100%" class="tbl_vm_snapshots">
 	<tr><td class="tbl_info_header" colspan="6">Snapshots <span class="btn_command" style="float:right" onclick="snapHypervVm('<?php print $host ?>','<?php print $vm_name ?>')">[ Take ]</span> </td></tr>
-	<tr><td><i>You could take snap! Listing is work in progress.</i></td></tr>
+
+        <tr><th>Name</th><th>Created On</th><th>SnapshotID</th><th>Parent SnapshotID</th></tr>
+<?php
+      $sql_snap="select * from hyperv_vm_snapshots where timestamp='".mysqli_real_escape_string($con,$timestamp)."' and vmid='".mysqli_real_escape_string($con,$vm_name)."' and hostname='".mysqli_real_escape_string($con,$host)."' order by creation_date, creation_time, parent_snap; ";
+
+      $result_snap=mysqli_query($con,$sql_snap);
+      while ($row = $result_snap->fetch_assoc()) {
+        $name=$row["name"];
+        $snap_id=$row["snap_id"];
+        $create_time=$row["creation_time"];
+        $create_date=$row["creation_date"];
+        $parent=$row["parent_snap"];
+
+?>
+       <tr>
+	 <td width="80%"><?php print $name; ?></td>
+         <td width="80%"><?php print $create_date." ".$create_time; ?></td>
+
+         <td width="10px"><?php print $snap_id; ?></td>
+         <td><?php print $parent; ?></td>
+       </tr>
+<?php } ?>
+
+
+
       </table>
     </span>
 <?php

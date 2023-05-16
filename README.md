@@ -87,7 +87,8 @@ Vmware ESXI
 Microsoft Hyper-V
   Created gatherer scripts to collect data into the database for:
   - Hyper-V hosts informations
-  - vm basic information and power state
+  - vm health status informations and power state
+  - vm snapshots
   
 
 
@@ -109,8 +110,10 @@ Micrososft Hyper-V
   - collect vms informations
   - poweron/poweroff vms
   - taking vms snapshots
+  - listing vms snapshots
 
 # Main steps
+2023-05-17 Feature : added Hyper-V 'list vm snapshots' feature<br>
 2023-05-14 Feature : added Hyper-V 'take vm snapshot' feature<br>
 2023-05-14 Feature : minor bugfixes<br>
 2023-05-11 Feature : added Hyper-V virtual machine memory details<br>
