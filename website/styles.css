@@ -266,3 +266,8 @@ body{
   font-weight:bold;
   cursor:pointer;
 }
+
+#main_content_pane{
+  height:100%;
+  overflow-y:scroll;
+}

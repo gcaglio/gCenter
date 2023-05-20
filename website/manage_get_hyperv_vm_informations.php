@@ -122,6 +122,78 @@ if (  isset($_GET["hostname"]) && isset($_GET["vmid"]) && "get_vm_info"==$_GET["
 
       </table>
     </span>
+
+
+
+    <br/>
+    <br/>
+    <span class="spn_100" style="padding-top:20px;padding-bottom:10px;">
+      <script>
+        function showGraphCpuUsage(){
+         $( "#graph_cpu_usage" ).show();
+         //$( "#graph_memory_usage" ).hide();
+        }
+
+        function showGraphMemoryUsage(){
+         $( "#graph_cpu_usage" ).hide();
+         // $( "#graph_memory_usage" ).show();
+        }
+
+      </script>
+      Graph :
+      <span class="btn_command" onclick="showGraphCpuUsage()">[CPU Usage]</span>
+      <!-- <span class="btn_command" onclick="showGraphMemoryUsage()">[Memory Usage]</span> -->
+    </span>
+
+    <span class="spn_100" id="graph_cpu_usage">
+      <table width="100%" class="tbl_vm_graphs">
+        <tr><td class="tbl_info_header" >Overall CPU Usage</td></tr>
+        <tr>
+          <td align="center">
+            <canvas id="vm_cpu" style="max-width:90%;max-height:350px"></canvas>
+          </td>
+        </tr>
+      </table>
+    </span>
+
+
+<?php
+      $sql_cpu="select timestamp, cpu_load from hyperv_vm_stat where hostname='".mysqli_real_escape_string($con,$host)."' and vmid='".mysqli_real_escape_string($con,$vm_id)."' order by timestamp desc limit 180;";
+
+      $result_cpu=mysqli_query($con,$sql_cpu);
+      $a_js_xValues="";
+      $a_js_yValues="";
+      while ($row = $result_cpu->fetch_assoc()) {
+        $timestamp=$row["timestamp"];
+        $cpu_load=$row["cpu_load"];
+
+        $a_js_xValues="\"".$timestamp."\",".$a_js_xValues;
+        $a_js_yValues=$cpu_load.",".$a_js_yValues;
+      }
+
+?>
+        <script>
+          var xValues = [ <?php print substr($a_js_xValues,0,strlen($a_js_xValues)-1) ?> ];
+          var yValues = [ <?php print substr($a_js_yValues,0,strlen($a_js_yValues)-1) ?> ];
+
+          new Chart("vm_cpu", {
+            type: "line",
+            data: {
+              labels: xValues,
+              datasets: [{
+                label : "cpu load",
+                backgroundColor: "rgba(0,0,0,1.0)",
+                borderColor: "rgb(75, 192, 192)",
+                fill:false,
+                data: yValues
+              }]
+            },
+            options:{}
+          });
+        </script>
+
+
+
 <?php
   }
 }
