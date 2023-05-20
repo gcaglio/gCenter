@@ -111,8 +111,10 @@ Micrososft Hyper-V
   - poweron/poweroff vms
   - taking vms snapshots
   - listing vms snapshots
+  - check vm cpu statistics
 
 # Main steps
+2023-05-20 Feature : added Hyper-V vm cpu load feature <br>
 2023-05-17 Feature : added Hyper-V 'list vm snapshots' feature<br>
 2023-05-14 Feature : added Hyper-V 'take vm snapshot' feature<br>
 2023-05-14 Feature : minor bugfixes<br>

@@ -158,7 +158,8 @@ CREATE TABLE `hyperv_virtual_machines` (
   `uptime_millisec` bigint(20) NOT NULL DEFAULT 0,
   `memory_limit` int(11) NOT NULL DEFAULT 0,
   `memory_reservation` int(11) NOT NULL DEFAULT 0,
-  `memory_virtualquantity` int(11) NOT NULL DEFAULT 0
+  `memory_virtualquantity` int(11) NOT NULL DEFAULT 0,
+  `num_cpu` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -180,6 +181,21 @@ CREATE TABLE `hyperv_vm_snapshots` (
   `creation_time` time NOT NULL DEFAULT '00:00:00',
   `parent_snap` varchar(100) NOT NULL DEFAULT '',
   `snap_id` varchar(100) NOT NULL DEFAULT ''
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `hyperv_vm_stat`
+--
+
+DROP TABLE IF EXISTS `hyperv_vm_stat`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `hyperv_vm_stat` (
+  `timestamp` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `hostname` varchar(100) NOT NULL DEFAULT '',
+  `vmid` varchar(100) NOT NULL DEFAULT '',
+  `cpu_load` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -282,4 +298,4 @@ CREATE TABLE `vm_snapshots` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-05-16 22:38:11
+-- Dump completed on 2023-05-20 22:52:03

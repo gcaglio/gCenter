@@ -29,6 +29,7 @@ if (  isset($_GET["hostname"]) && isset($_GET["vmid"]) && "get_vm_info"==$_GET["
     $host=$row["hostname"];
     $health_state=$row["health_state"];
     $name=$row["vm_name"];
+    $num_cpu=$row["num_cpu"];
     $last_seen_ts=$row["timestamp"];
     $timestamp=$row["timestamp"];
     $uptime_millisec=$row["uptime_millisec"];
@@ -84,6 +85,7 @@ if (  isset($_GET["hostname"]) && isset($_GET["vmid"]) && "get_vm_info"==$_GET["
         <tr><th>Memory configured (Mb)</th><td><?php print $memory_virtualquantity ?></td></tr>
         <tr><th>Memory limit (Mb)</th><td><?php print $memory_limit ?></td></tr>
         <tr><th>Memory reservation (Mb)</th><td><?php print $memory_reservation ?></td></tr>
+        <tr><th>Number CPU</th><td><?php print $num_cpu ?></td></tr>
       </table>
 
     </span>

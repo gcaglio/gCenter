@@ -33,6 +33,7 @@ function getHostInfo( $db_con, $date, $time, $hostname, $ip, $port, $apikey ){
     $status_descriptions=implode(",", $element->status_description);
     $enabled_state=$element->enabled_state;
 
+
     $sql="insert into hyperv_hosts_informations (timestamp,date,time, hostname, name, health_state, status, status_descriptions, enabled_state) values ('$date $time', '$date','$time','$hostname','$name','$health_state','$status','$status_descriptions','$enabled_state');";
 
     if ($db_con->query($sql) === TRUE) {
@@ -79,13 +80,32 @@ function getVirtualMachines( $db_con, $date, $time, $hostname, $ip, $port, $apik
     $memory_reservation=$element->memory_reservation;
     $memory_virtualquantity=$element->memory_virtualquantity;
 
-    $sql="insert into hyperv_virtual_machines (timestamp,date,time, hostname, vm_name, vm_id, health_state, status, status_descriptions, enabled_state, uptime_millisec, memory_limit, memory_reservation, memory_virtualquantity) values ('$date $time', '$date','$time','$hostname','$vm_name', '$vm_id', '$health_state','$status','$status_descriptions','$enabled_state', '$uptime_millisec', $memory_limit, $memory_reservation, $memory_virtualquantity);";
+    $summary=$element->vm_summary;
+
+    $num_cpu=$summary->number_cpu;
+    $cpu_load=$summary->processor_load;
+    if (strlen($cpu_load)==0)
+    {
+      $cpu_load=0;
+    }
+
+    $sql="insert into hyperv_virtual_machines (timestamp,date,time, hostname, vm_name, vm_id, health_state, status, status_descriptions, enabled_state, uptime_millisec, memory_limit, memory_reservation, memory_virtualquantity, num_cpu) values ('$date $time', '$date','$time','$hostname','$vm_name', '$vm_id', '$health_state','$status','$status_descriptions','$enabled_state', '$uptime_millisec', $memory_limit, $memory_reservation, $memory_virtualquantity, $num_cpu);";
 
     if ($db_con->query($sql) === TRUE) {
       echo "INFO : vm '$vm_name' on host '$hostname' informations inserted.\n";
     } else {
       echo "ERROR :  " . $sql . "\n" . $db_con->error."\n";
     }
+
+
+    $sql_stat="insert into hyperv_vm_stat (timestamp,hostname,vmid,cpu_load) values ('$date $time','$hostname','$vm_id', $cpu_load ); ";
+    echo $sql_stat;
+    if ($db_con->query($sql_stat) === TRUE) {
+      echo "INFO : vm stat '$vm_name' on host '$hostname' informations inserted.\n";
+    } else {
+      echo "ERROR :  " . $sql_stat . "\n" . $db_con->error."\n";
+    }
+
 
     getVmSnapshots( $db_con, $date, $time, $hostname, $ip, $port, $apikey, $vm_name );
   }
