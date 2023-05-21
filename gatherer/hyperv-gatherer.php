@@ -84,10 +84,27 @@ function getVirtualMachines( $db_con, $date, $time, $hostname, $ip, $port, $apik
 
     $num_cpu=$summary->number_cpu;
     $cpu_load=$summary->processor_load;
+    $heartbeat=$summary->heartbeat;
+    $memory_usage=$summary->memory_usage;
+    $memory_available=$summary->memory_available;
+    $available_memory_buffer=$summary->available_memory_buffer;
+
+
     if (strlen($cpu_load)==0)
     {
       $cpu_load=0;
     }
+
+    if (strlen($heartbeat)==0)
+    {
+      $heartbeat=0;
+    }    
+
+    if (strlen($memory_usage)==0)
+    {
+      $memory_usage=0;
+    }
+
 
     $sql="insert into hyperv_virtual_machines (timestamp,date,time, hostname, vm_name, vm_id, health_state, status, status_descriptions, enabled_state, uptime_millisec, memory_limit, memory_reservation, memory_virtualquantity, num_cpu) values ('$date $time', '$date','$time','$hostname','$vm_name', '$vm_id', '$health_state','$status','$status_descriptions','$enabled_state', '$uptime_millisec', $memory_limit, $memory_reservation, $memory_virtualquantity, $num_cpu);";
 
@@ -98,7 +115,7 @@ function getVirtualMachines( $db_con, $date, $time, $hostname, $ip, $port, $apik
     }
 
 
-    $sql_stat="insert into hyperv_vm_stat (timestamp,hostname,vmid,cpu_load) values ('$date $time','$hostname','$vm_id', $cpu_load ); ";
+    $sql_stat="insert into hyperv_vm_stat (timestamp,hostname,vmid,cpu_load,memory_usage,memory_available,available_memory_buffer,heartbeat,memory_limit,memory_reservation,memory_virtualquantity) values ('$date $time','$hostname','$vm_id', $cpu_load,$memory_usage,$memory_available,$available_memory_buffer,$heartbeat,$memory_limit,$memory_reservation,$memory_virtualquantity ); ";
     echo $sql_stat;
     if ($db_con->query($sql_stat) === TRUE) {
       echo "INFO : vm stat '$vm_name' on host '$hostname' informations inserted.\n";

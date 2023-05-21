@@ -131,18 +131,18 @@ if (  isset($_GET["hostname"]) && isset($_GET["vmid"]) && "get_vm_info"==$_GET["
       <script>
         function showGraphCpuUsage(){
          $( "#graph_cpu_usage" ).show();
-         //$( "#graph_memory_usage" ).hide();
+         $( "#graph_memory_usage" ).hide();
         }
 
         function showGraphMemoryUsage(){
          $( "#graph_cpu_usage" ).hide();
-         // $( "#graph_memory_usage" ).show();
+         $( "#graph_memory_usage" ).show();
         }
 
       </script>
       Graph :
       <span class="btn_command" onclick="showGraphCpuUsage()">[CPU Usage]</span>
-      <!-- <span class="btn_command" onclick="showGraphMemoryUsage()">[Memory Usage]</span> -->
+      <span class="btn_command" onclick="showGraphMemoryUsage()">[Memory Usage]</span>
     </span>
 
     <span class="spn_100" id="graph_cpu_usage">
@@ -191,6 +191,110 @@ if (  isset($_GET["hostname"]) && isset($_GET["vmid"]) && "get_vm_info"==$_GET["
             options:{}
           });
         </script>
+
+    <span class="spn_100" id="graph_memory_usage" style="display:none">
+      <table width="100%" class="tbl_vm_graphs">
+        <tr><td class="tbl_info_header" >Memory Usage</td></tr>
+        <tr>
+          <td align="center">
+            <canvas id="vm_mem" style="max-width:90%;max-height:350px"></canvas>
+          </td>
+        </tr>
+      </table>
+    </span>
+<?php
+      $sql_mem="select timestamp, memory_usage, available_memory_buffer, memory_available, memory_virtualquantity,memory_limit,memory_reservation   from hyperv_vm_stat where hostname='".mysqli_real_escape_string($con,$host)."' and vmid='".mysqli_real_escape_string($con,$vm_id)."' order by timestamp desc limit 180;";
+
+      $result_cpu=mysqli_query($con,$sql_mem);
+      $a_js_memoryavailable_yValues="";
+      $a_js_memoryusage_yValues="";
+      $a_js_availablememorybuffer_yValues="";
+      $a_js_memoryvirtualquantity_yValues="";
+      $a_js_memorylimit_yValues="";
+      $a_js_memoryreservation_yValues="";
+      $a_js_xValues="";
+      while ($row = $result_cpu->fetch_assoc()) {
+        $memory_available=$row["memory_available"];
+        $available_memory_buffer=$row["available_memory_buffer"];
+        $memory_usage=$row["memory_usage"];
+        $memory_virtualquantity=$row["memory_virtualquantity"];
+        $memory_limit=$row["memory_limit"];
+        $memory_reservation=$row["memory_reservation"];
+
+        $a_js_xValues="\"".$timestamp."\",".$a_js_xValues;
+
+        $a_js_memoryavailable_yValues=$memory_available.",".$a_js_memoryavailable_yValues;
+        $a_js_memoryusage_yValues=$memory_usage.",".$a_js_memoryusage_yValues;
+        $a_js_availablememorybuffer_yValues=$available_memory_buffer.",".$a_js_availablememorybuffer_yValues;
+        $a_js_memoryvirtualquantity_yValues=$memory_virtualquantity.",".$a_js_memoryvirtualquantity_yValues;
+        $a_js_memorylimit_yValues=$memory_limit.",".$a_js_memorylimit_yValues;
+        $a_js_memoryreservation_yValues=$memory_reservation.",".$a_js_memoryreservation_yValues;
+
+      }
+
+?>
+        <script>
+          var xValues = [ <?php print substr($a_js_xValues,0,strlen($a_js_xValues)-1) ?> ];
+          var y_memoryavailable_Values = [ <?php print substr($a_js_memoryavailable_yValues,0,strlen($a_js_memoryavailable_yValues)-1) ?> ];
+          var y_memoryusage_Values = [ <?php print substr($a_js_memoryusage_yValues,0,strlen($a_js_memoryusage_yValues)-1) ?> ];
+          var y_availablememorybuffer_Values = [ <?php print substr($a_js_availablememorybuffer_yValues,0,strlen($a_js_availablememorybuffer_yValues)-1) ?> ];
+          var y_memoryvirtualquantity_Values = [ <?php print substr($a_js_memoryvirtualquantity_yValues,0,strlen($a_js_memoryvirtualquantity_yValues)-1) ?> ];
+          var y_memorylimit_Values = [ <?php print substr($a_js_memorylimit_yValues,0,strlen($a_js_memorylimit_yValues)-1) ?> ];
+          var y_memoryreservation_Values = [ <?php print substr($a_js_memoryreservation_yValues,0,strlen($a_js_memoryreservation_yValues)-1) ?> ];
+
+          new Chart("vm_mem", {
+            type: "line",
+            data: {
+              labels: xValues,
+              datasets: [ /* {
+                label : "available memory",
+                backgroundColor: "rgba(0,0,0,1.0)",
+                borderColor: "rgb(75, 192, 192)",
+                fill:false,
+                data: y_memoryavailable_Values 
+	  }, */
+               {
+                label : "memory usage",
+                backgroundColor: "rgba(0,0,0,1.0)",
+                borderColor: "rgb(20, 90, 172)",
+                fill:false,
+                data: y_memoryusage_Values 
+               },
+/*               {
+                label : "avail memory buffer",
+                backgroundColor: "rgba(0,0,0,1.0)",
+                borderColor: "rgb(192, 70, 70)",
+                fill:false,
+                data: y_availablememorybuffer_Values 
+	  },*/
+               {
+                label : "RAM",
+                backgroundColor: "rgba(0,0,0,1.0)",
+                borderColor: "rgb(150, 60, 60)",
+                fill:false,
+                data: y_memoryvirtualquantity_Values 
+               },
+               {
+                label : "max dynamic memory",
+                backgroundColor: "rgba(0,0,0,1.0)",
+                borderColor: "rgb(122, 20, 50)",
+                fill:false,
+                data: y_memorylimit_Values
+	  }, 
+               {
+                label : "min dynamic memory",
+                backgroundColor: "rgba(0,0,0,1.0)",
+                borderColor: "rgb(80, 80, 30)",
+                fill:false,
+                data: y_memoryreservation_Values
+               }
+               ]
+            },
+            options:{}
+          });
+        </script>
+
+
 
 
 
