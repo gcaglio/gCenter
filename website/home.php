@@ -59,6 +59,16 @@ $con=getConnection($servername,$username,$password,$dbname);
       }
 
 
+      function updateContentPaneVswitchInfo(host,type,vmid){
+        $("#main_content_pane_message").html("");
+        $.get( "manage_get_"+type+"_vswitch_informations.php?hostname=" + host +  "&vswitch=" + vmid + "&action=get_vswitch_info", function( data ) {
+        $( "#main_content_pane" ).html( data );
+        //alert( data );
+       });
+      }
+      
+
+
       function poweronVm(host,vmid){
 	$.get( "manage_vm.php?hostname=" + host + "&vmid=" + vmid + "&action=power_on", function( data ) {
           $( "#main_content_pane_message" ).html( data );
@@ -189,10 +199,31 @@ $con=getConnection($servername,$username,$password,$dbname);
 ?>
     <div class="li_ds">
       <span class="sp_nav_ds" onclick="updateContentPaneDsInfo('<?php print $host ?>','esxi','<?php print $name ?>')" ><?php print $name ?> [<?php print ceil((($total_capacity-$free_space)/$total_capacity)*100)."%"  ?>]</span><br/>
-    </div><!--vm-->
+    </div><!--ds-->
 <?php
   }
 ?>
+
+
+    <b>Network</b>
+
+<?php
+  # recupero i vswitch
+  $vs_sql="select vswitch_name from vswitch_informations where timestamp=(select max(timestamp) from vswitch_informations where hostname='$host') and hostname='$host' group by vswitch_name;";
+  $vs_result=mysqli_query($con,$vs_sql);
+  while ($row = $vs_result->fetch_assoc()) {
+          $name=$row["vswitch_name"];
+?>
+    <div class="li_vswitch">
+      <span class="sp_nav_vswitch" onclick="updateContentPaneVswitchInfo('<?php print $host ?>','esxi','<?php print $name ?>')" ><?php print $name ?></span><br/>
+    </div><!--vs-->
+<?php
+  }
+?>
+
+
+
+
 
   </div> <!-- li host -->
 <?php

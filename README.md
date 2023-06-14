@@ -103,7 +103,7 @@ Vmware ESXI
   - list datastore for each esxi host
   - list and take vms snapshots
   - list datastore content (filesystem tree)
-  - gather vswitch/portgroup informations
+  - list vswitch/portgroup informations
 
 Micrososft Hyper-V 
   - hyperv-wmi-http-adapter-service windows service to interface WMI

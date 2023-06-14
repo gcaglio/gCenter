@@ -21,6 +21,9 @@ if (  isset($_GET["hostname"]) && isset($_GET["ds"]) && "get_ds_info"==$_GET["ac
 
   $sql_ds="select *  from datastores where name='$ds_name' and  hostname='$host' and timestamp=(select max(timestamp) from datastores where hostname='$host'); ";
 
+?>
+  <h2><?php print $host ?> / <?php print $ds_name ?></h2>
+<?php
 
   $result_ds=mysqli_query($con,$sql_ds);
   while ($row = $result_ds->fetch_assoc()) {
@@ -33,7 +36,7 @@ if (  isset($_GET["hostname"]) && isset($_GET["ds"]) && "get_ds_info"==$_GET["ac
     $datastore=$row["datastore"];
 ?>
 
-    <span class="spn_50">
+    <span class="spn_100">
       <table class="tbl_ds_info">
        <tr><td class="tbl_info_header" colspan="2">Datastore info</td></tr>
        <tr><th>Name</th><td><?php print $name ?></td></tr>
@@ -56,7 +59,7 @@ if (  isset($_GET["hostname"]) && isset($_GET["ds"]) && "get_ds_info"==$_GET["ac
     </span>
     <span class="spn_100" style="overflow: auto;height:60%">
       <table width="100%" class="tbl_ds_content">
-        <tr><th style="width:10%">Size</th><th style="width:10%">Last mod.time</th><th style="width:80%">Filename</th></tr>
+        <tr><th class="sticky_th" style="width:10%">Size</th><th class="sticky_th" style="width:10%">Last mod.time</th><th class="sticky_th" style="width:80%">Filename</th></tr>
 <?php
       $sql_content="select * from ds_content where timestamp='".mysqli_real_escape_string($con,$last_seen_ts)."' and datastore='".mysqli_real_escape_string($con,$name)."' and hostname='".mysqli_real_escape_string($con,$host)."'; ";
 
