@@ -295,6 +295,25 @@ CREATE TABLE `vm_snapshots` (
   `parent_snap` varchar(100) NOT NULL DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `vswitch_informations`
+--
+
+DROP TABLE IF EXISTS `vswitch_informations`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `vswitch_informations` (
+  `timestamp` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `date` date NOT NULL DEFAULT '0000-00-00',
+  `time` time NOT NULL DEFAULT '00:00:00',
+  `hostname` varchar(100) NOT NULL DEFAULT '',
+  `vswitch_name` varchar(100) NOT NULL DEFAULT '',
+  `portgroup_name` varchar(100) NOT NULL DEFAULT '',
+  `active_clients` int(11) NOT NULL DEFAULT 0,
+  `vlan_id` int(11) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -305,4 +324,4 @@ CREATE TABLE `vm_snapshots` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-05-21 23:50:53
+-- Dump completed on 2023-06-14 23:48:22

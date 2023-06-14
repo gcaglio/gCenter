@@ -103,6 +103,7 @@ Vmware ESXI
   - list datastore for each esxi host
   - list and take vms snapshots
   - list datastore content (filesystem tree)
+  - gather vswitch/portgroup informations
 
 Micrososft Hyper-V 
   - hyperv-wmi-http-adapter-service windows service to interface WMI
@@ -114,6 +115,7 @@ Micrososft Hyper-V
   - check vm cpu and memory statistics/graphs
 
 # Main steps
+2023-06-14 Feature : added vswitch and portgroup gatherer feature <br>
 2023-05-21 Feature : added Hyper-V vm ram/memory usage feature/graph <br>
 2023-05-20 Feature : added Hyper-V vm cpu load feature/graph <br>
 2023-05-17 Feature : added Hyper-V 'list vm snapshots' feature<br>

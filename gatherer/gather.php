@@ -239,6 +239,60 @@ function getVm( $db_con, $date, $time, $host, $user, $passwd, $private_key){
 
 }
 
+function getNetwork( $db_con, $date, $time, $host, $user, $passwd, $private_key){
+  $debug=true;
+  $output=null;
+  $retval=null;
+  $command="esxcli --formatter=csv network vswitch standard portgroup list";
+  $ssh_options="-o StrictHostKeyChecking=no";
+  exec("sshpass -p $passwd  ssh $ssh_options $user@$host $command", $output, $retval);
+  echo "INFO : retval $retval\n";
+  if ($debug){
+    echo "DEBUG : output:\n";
+    print_r($output);
+  }
+
+  // for every line extract values
+  // ActiveClients,Name,VLANID,VirtualSwitch,
+  // 1,Management Network,0,vSwitch0,
+  // 3,VM Network,0,vSwitch0,
+
+
+  if ( count($output) >1 ) {
+
+    for ($i=1; $i<count($output); $i++){
+      $line=$output[$i];
+      $params=explode(",",$line);
+      
+      $active_client=$params[0];
+      $portgroup_name=$params[1];
+      $vswitch_name=$params[3];
+      $vlan_id=$params[2];
+
+
+      if ($debug){
+        echo "DEBUG : found entry \n";
+        echo "        vswitch       = $vswitch_name\n";
+        echo "        portgroup     = $portgroup_name\n";
+        echo "        vlan          = $vlan_id\n";
+        echo "        active client = $active_client\n";
+      }
+
+      $sql="insert into vswitch_informations (timestamp,date, time, hostname, vswitch_name, portgroup_name, active_clients, vlan_id ) values ('$date $time', '$date','$time', '$host', '$vswitch_name', '$portgroup_name','$active_client','$vlan_id'); ";
+
+       if ($db_con->query($sql) === TRUE) {
+         echo "INFO : vswitch/portgroup '$vswitch_name'/'$porgroup_name' on '$host' inserted.\n";
+       } else {
+         echo "ERROR :  " . $sql . "\n" . $db_con->error."\n";
+       }
+
+    }
+
+  }
+}
+
+
+
 
 function getVmSnapshots(  $db_con, $date, $time, $host, $user, $passwd, $private_key) {
   $debug=true;
@@ -465,6 +519,11 @@ while ($row = $result->fetch_assoc()) {
   
   echo "INFO : gathering VMs snapshot info from '".$host."'\n";
   getVmSnapshots($con, $date, $time, $host, $user, $passwd, $private_key);
+
+  echo "INFO : gathering network vSwitch configurations from '".$host."'\n";
+  getNetwork( $con, $date, $time, $host, $user, $passwd, $private_key);
+
+
   echo "\n";
 }
 
