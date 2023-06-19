@@ -71,6 +71,22 @@ ii. schedule the gatherer to get information from your Hyper-V hosts. <br/>
 iii. install on the Hyper-V host(s) the hyperv-wmi-http-adapter-services. Please read installation instructions in the adapter folder.
 
 
+
+Housekeeping and data retention<br>
+An housekeeping procedure is provided.<br>
+i. configure data retention for "registry" data (like host, datastore, vm informations) and performance data (eg: cpu and memory usage) simply by editing the file
+   ```
+   conf/db.php
+   ```
+ii. schedule the housekeeping scripts in crontab once a day, at your preferred timing.<br/>
+   Here the example of a crontab entry to run everyday at 2:01 AM<br>
+   ```
+   # m h  dom mon dow   command
+   1 2 * * * cd /var/www/gCenter/gatherer/; php /var/www/gCenter/gatherer/housekeeping.php > /tmp/housekeeping.log 2>&1
+   ```
+
+
+
 # Status
 
 Vmware ESXI
@@ -116,6 +132,7 @@ Micrososft Hyper-V
   - check vm cpu and memory statistics/graphs
 
 # Main steps
+2023-06-20 Feature : added housekeeping script in gatherer/housekeeping.php to keep tables size under control<br>
 2023-06-20 Feature : added VM network interfaces and portgroup details<br>
 2023-06-14 Feature : added vswitch and portgroup gatherer feature <br>
 2023-05-21 Feature : added Hyper-V vm ram/memory usage feature/graph <br>
