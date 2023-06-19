@@ -87,6 +87,30 @@ if (  isset($_GET["hostname"]) && isset($_GET["vmid"]) && "get_vm_info"==$_GET["
       </table>
     </span>
 
+    <span class="spn_50">
+      <table class="tbl_vm_info">
+       <tr><td class="tbl_info_header" colspan="2">Network interfaces</td></tr>
+       <tr><th>macAddress</th><th>Portgroup</th></tr>
+<?php
+      $sql_net_devices="select * from vm_network_devices where timestamp='".mysqli_real_escape_string($con,$timestamp)."' and vmid='".mysqli_real_escape_string($con,$vmid)."' and hostname='".mysqli_real_escape_string($con,$host)."' order by backing_portgroup; ";
+
+      $result_net=mysqli_query($con,$sql_net_devices);
+      while ($row = $result_net->fetch_assoc()) {
+        $macaddress=$row["macaddress"];
+        $backing_portgroup=$row["backing_portgroup"];
+
+?>
+       <tr>
+         <td><?php print $macaddress; ?></td>
+         <td><?php print $backing_portgroup; ?></td>
+       </tr>
+<?php } ?>
+
+      </table>
+      <br/>
+    </span>
+
+
 
     <br/>
     <br/> 

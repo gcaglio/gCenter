@@ -228,7 +228,7 @@ function getVm( $db_con, $date, $time, $host, $user, $passwd, $private_key){
             } else {
               echo "ERROR :  " . $sql . "\n" . $db_con->error."\n";
             }
-
+	    getVmDevices( $db_con, $date, $time, $host, $user, $passwd, $private_key, $vmid);
       }
 
     }
@@ -403,6 +403,55 @@ function getDatastoreContent(  $db_con, $date, $time, $host, $user, $passwd, $pr
 }
 
 
+
+
+function getVmDevices(  $db_con, $date, $time, $host, $user, $passwd, $private_key, $vm_id) {
+  $debug=true;
+
+  $output=null;
+  $retval=null;
+  $command="vim-cmd vmsvc/device.getdevices $vm_id | sed 's/= (.*)/:/g' ";
+  $ssh_options="-o StrictHostKeyChecking=no ";
+  exec("sshpass -p $passwd  ssh $ssh_options $user@$host $command", $output, $retval);
+  echo "INFO : retval $retval\n";
+  if ($debug){
+    echo "DEBUG : output:\n";
+    print_r($output);
+  }
+
+  $vmconfig_output=jsonify($output);
+  $vmconfig_json=json_decode($vmconfig_output);
+
+  // if parsing ok
+  if ( json_last_error()===JSON_ERROR_NONE ) {
+
+      if ($debug){
+        echo "DEBUG : found config\n";
+        echo "  ".$vmconfig_output."\n";
+      }
+
+      foreach($vmconfig_json->device as $device) {
+        echo "INFO : device ".$device->deviceInfo->label."\n";
+	// is network interface
+	if (isset($device->macAddress)){
+	  $backing_portgroup=$device->backing->deviceName;
+          $mac_address=$device->macAddress;
+	  echo "INFO : device type = network interface '".$mac_address."' connected to '".$backing_portgroup."' \n";
+
+          $sql_vm_net="insert into vm_network_devices (timestamp,date,time,hostname,vmid,netdevice_id ,macaddress , backing_portgroup) values ('$date $time','$date','$time', '$host' ,'$vm_id', '','$mac_address','$backing_portgroup'   ) ; ";
+          if ($db_con->query($sql_vm_net) === TRUE) {
+            echo "INFO : vm net device for vm  '$vm_id' on '$host' inserted.\n";
+          } else {
+            echo "ERROR insert vm_network_devices :  " . $sql_vm_net . "\n" . $db_con->error."\n";
+          }
+	  
+	}	
+
+      }
+      
+  }
+}
+
 function getVmSummary(  $db_con, $date, $time, $host, $user, $passwd, $private_key) {
   $debug=true;
 
@@ -482,6 +531,7 @@ function getVmSummary(  $db_con, $date, $time, $host, $user, $passwd, $private_k
         echo "INFO : vm '$vm_id' on host '$host' is '$runtime_powerstate', no stats will be collected\n";
       }
 
+
       
     } //json last error
   } //while sql_vm
@@ -502,6 +552,7 @@ while ($row = $result->fetch_assoc()) {
   $user=$row["username"];
   $passwd=$row["password"];
   $private_key=$row["private_key"];
+
 
   echo "INFO : gathering VMs from '".$host."'\n";
   getVm( $con, $date, $time, $host, $user, $passwd, $private_key);

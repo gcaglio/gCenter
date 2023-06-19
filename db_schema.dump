@@ -250,6 +250,25 @@ CREATE TABLE `virtual_machines` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `vm_network_devices`
+--
+
+DROP TABLE IF EXISTS `vm_network_devices`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `vm_network_devices` (
+  `timestamp` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `date` date NOT NULL DEFAULT '0000-00-00',
+  `time` time NOT NULL DEFAULT '00:00:00',
+  `hostname` varchar(100) NOT NULL DEFAULT '',
+  `vmid` varchar(100) NOT NULL DEFAULT '',
+  `netdevice_id` varchar(10) NOT NULL DEFAULT '',
+  `macaddress` varchar(32) NOT NULL DEFAULT '',
+  `backing_portgroup` varchar(100) NOT NULL DEFAULT ''
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `vm_quickstat`
 --
 
@@ -324,4 +343,4 @@ CREATE TABLE `vswitch_informations` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-06-14 23:48:22
+-- Dump completed on 2023-06-19 23:08:40

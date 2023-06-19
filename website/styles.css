@@ -6,7 +6,7 @@ body{
 /*  background: linear-gradient(90deg, rgba(0,36,5,1) 0%, rgba(9,121,37,1) 35%, rgba(0,255,51,0.4598433123249299) 100%); */
 
   background-image: url('./images/bg.png') ;
-  background-size: auto 100%;
+  background-size: auto auto;
 
 }
 
