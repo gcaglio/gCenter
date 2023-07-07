@@ -571,11 +571,11 @@ while ($row = $result->fetch_assoc()) {
   echo "INFO : gathering VMs snapshot info from '".$host."'\n";
   getVmSnapshots($con, $date, $time, $host, $user, $passwd, $private_key);
 
-  echo "INFO : gathering network vSwitch configurations from '".$host."'\n";
-  getNetwork( $con, $date, $time, $host, $user, $passwd, $private_key);
-
-
   echo "\n";
 }
 
+echo "INFO : gathering network vSwitch configurations from '".$host."'\n";
+getNetwork( $con, $date, $time, $host, $user, $passwd, $private_key);
+
+echo "END\n"
 ?>

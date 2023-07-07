@@ -53,6 +53,77 @@ if (  isset($_GET["hostname"]) && isset($_GET["vswitch"]) && "get_vswitch_info"=
       <br/>
     </span>
 
+    <span class="spn_100">
+      <table class="tbl_vswitch_visual" cellspacing="0" cellpadding="0">
+       <tr>
+         <td class="tbl_vswitch_visual_filler">&nbsp;</td>
+         <td class="tbl_vswitch_visual_icon_filler">&nbsp;</td>
+       </tr>
+
+<?php
+
+  $sql_switch_portgroup="select portgroup_name, vlan_id from vswitch_informations where timestamp = (select max(timestamp) from vswitch_informations  ) and vswitch_name = '".$vs_name."' and  hostname='".$host."'  ;" ;
+  $result_vs_pg=mysqli_query($con,$sql_switch_portgroup);
+  while ($row = $result_vs_pg->fetch_assoc()) {
+    $portgroup=$row["portgroup_name"];
+    $vlan_id=$row["vlan_id"];
+
+?>
+       <tr>
+	 <td class="tbl_vswitch_visual_portgroup">
+           <b>Portgroup:</b><br><?php print $portgroup ?><br><br>
+           <b>Vlan Id:</b><?php  print $vlan_id ?></td>
+
+<?php
+         $sql_switch_pg_vm="select vswitch_name, portgroup_name, vlan_id, virtual_machines.vmid, name from vswitch_informations join vm_network_devices on vswitch_informations.timestamp = (select max(vswitch_informations.timestamp) from vswitch_informations  ) and vswitch_informations.hostname='".$host."' and vswitch_informations.vswitch_name = '".$vs_name."' and vm_network_devices.backing_portgroup='".$portgroup."' and vswitch_informations.timestamp=vm_network_devices.timestamp and vswitch_informations.hostname = vm_network_devices.hostname and vswitch_informations.portgroup_name=vm_network_devices.backing_portgroup join virtual_machines on virtual_machines.timestamp= vswitch_informations.timestamp and vswitch_informations.hostname = virtual_machines.hostname and vm_network_devices.vmid = virtual_machines.vmid;";
+
+         $result_vs_pg_vm=mysqli_query($con,$sql_switch_pg_vm);
+   
+	 // if there are VMs use connected style
+	 $num_vm = mysqli_num_rows($result_vs_pg_vm);
+	 if ($num_vm > 0){
+?>
+           <td class="tbl_vswitch_visual_icon_connected">&nbsp;</td>
+           <td class="tbl_vswitch_visual_vm"><b>Virtual machines:</b><br>
+
+<?php	 }else{  ?>
+           <td class="tbl_vswitch_visual_icon">&nbsp;</td>
+           <td >
+<?php
+	 }
+
+
+         while ($row = $result_vs_pg_vm->fetch_assoc()) {
+           $portgroup=$row["portgroup_name"];
+	   $vlan_id=$row["vlan_id"];
+	   $vm_name=$row["name"];
+	   $vmid=$row["vmid"];
+?>
+	   &nbsp;&nbsp;Id: <?php print $vmid ?>
+           &nbsp;&nbsp;Name: 
+           <span onclick="updateContentPaneVmInfo('<?php print $host ?>','esxi','<?php print $vmid?>')" class="tbl_vswitch_visual_vm_link"><?php print  $vm_name ?></span><br/> 
+<?php
+         }
+?>
+
+	 </td>
+       </tr>
+       <tr>
+	 <td class="tbl_vswitch_visual_filler">&nbsp;</td>
+         <td class="tbl_vswitch_visual_icon_filler">&nbsp;</td>
+       </tr>
+<?php
+
+  }
+  
+?>
+       <tr>
+         <td class="tbl_vswitch_visual_filler">&nbsp;</td>
+         <td class="tbl_vswitch_visual_icon_filler">&nbsp;</td>
+       </tr>
+
+      </table>
+   </span>
 
 <?php
 }

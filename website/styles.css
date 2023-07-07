@@ -212,6 +212,75 @@ body{
 
 }
 
+.tbl_vswitch_visual_portgroup {
+  width: 100px;
+  height: 100px;
+  background: #e4eff6;
+  font-size:0.8em;
+  border-bottom: 1pt solid #539ac6;
+  border-top: 1pt solid #539ac6;
+  padding-left:10px;
+  padding-right:10px;
+}
+
+.tbl_vswitch_visual_vm{
+  width: 250px;
+  height: 100px;
+  padding-left:10px;
+  padding-right:10px;
+  vertical-align:top;
+  font-size:0.8em;
+  border-bottom: 1pt solid #539ac6;
+  border-top: 1pt solid #539ac6;
+  font-weight:normal;
+
+}
+
+.tbl_vswitch_visual_vm_link:hover{
+  cursor: pointer;
+  font-weight:bold;
+}
+
+.tbl_vswitch_visual_filler{
+  width: 200px;
+  height: 20px;
+  background: #e4eff6;
+}
+
+
+.tbl_vswitch_visual_icon{
+  width: 70px;
+  height: 100px;
+  background: #e4eff6;
+  background-size: 50px 50px;
+  background-image: url(./images/ethernet_off.png);
+  background-repeat:no-repeat;
+  background-position:left center;
+
+  border-bottom: 1pt solid #539ac6;
+  border-top: 1pt solid #539ac6;
+}
+
+.tbl_vswitch_visual_icon_connected{
+  width: 70px;
+  height: 100px;
+  background: #e4eff6;
+  background-size: 50px 50px;
+  background-image: url(./images/ethernet_on.png);
+  background-repeat:no-repeat;
+  background-position:left center;
+
+  border-bottom: 1pt solid #539ac6;
+  border-top: 1pt solid #539ac6;
+}
+
+
+.tbl_vswitch_visual_icon_filler{
+  width: 70px;
+  height: 20px;
+  background: #e4eff6;
+
+}
 
 
 .tbl_vm_info th{
