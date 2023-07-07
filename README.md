@@ -160,13 +160,16 @@ Micrososft Hyper-V
 
 
 # Screenshots
-![Alt text](/docs/images/gCenter_login.png "Login")
+![gCenter Login](/docs/images/gCenter_login.png "Login")
 
-![Alt text](/docs/images/gCenter_show_esxi_host.png "ESXi host details")
+![ESXi host details](/docs/images/gCenter_show_esxi_host.png "ESXi host details")
 
-![Alt text](/docs/images/gCenter_show_esxi_vm.png "ESXi virtual machine details")
+![ESXi virtual switch](/docs/images/gCenter_show_esxi_vswitch.png "ESXi virtual switch")
 
-![Alt text](/docs/images/gCenter_show_hyperv_vm.png "Hyper-V host details")
+![ESXi virtual machine details](/docs/images/gCenter_show_esxi_vm.png "ESXi virtual machine details")
+
+![HyperV virtual machine details](/docs/images/gCenter_show_hyperv_vm.png "Hyper-V virtual machine details")
+
 
 
 
