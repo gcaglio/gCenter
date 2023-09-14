@@ -19,8 +19,8 @@ $db_con=getConnection($servername,$username,$password,$dbname);
 echo "INFO : deleting registry information in tables.\n";
 foreach ( $anag_tables as $anag_table ){
   echo "INFO : deleting registry informations older than $reg_retention_timestamp in table $anag_table\n"; 
-  $sql="delete from $anag_table where timestamp<$reg_retention_timestamp";
-
+  $sql="delete from $anag_table where timestamp<'$reg_retention_timestamp' ";
+#  echo $sql;
   if ($db_con->query($sql) === TRUE) {
     echo "INFO : retention applied succesfully\n";
   } else {
@@ -34,7 +34,7 @@ foreach ( $anag_tables as $anag_table ){
 echo "INFO : deleting performance information in tables.\n";
 foreach ( $perf_tables as $perf_table ){
   echo "INFO : deleting registry informations older than $perf_retention_timestamp in table $perf_table\n";
-  $sql="delete from $perf_table where timestamp<$perf_retention_timestamp";
+  $sql="delete from $perf_table where timestamp<'$perf_retention_timestamp'";
 
   if ($db_con->query($sql) === TRUE) {
     echo "INFO : retention applied succesfully\n";
