@@ -132,6 +132,8 @@ Micrososft Hyper-V
   - check vm cpu and memory statistics/graphs
 
 # Main steps
+2023-09-14 Feature : added "open console" on ESXi virtual machines
+2023-09-14 Bugfix : fixed housekeeping script to apply data retention
 2023-06-20 Feature : added housekeeping script in gatherer/housekeeping.php to keep tables size under control<br>
 2023-06-20 Feature : added VM network interfaces and portgroup details<br>
 2023-06-14 Feature : added vswitch and portgroup gatherer feature <br>

@@ -56,6 +56,7 @@ if (  isset($_GET["hostname"]) && isset($_GET["vmid"]) && "get_vm_info"==$_GET["
        <tr><th>VMX path</th><td><?php print $path ?></td></tr>
        <tr><th>VM HW version</th><td><?php print $version ?></td></tr>
        <tr><th>Last seen</th><td><?php print $last_seen_ts ?></td></tr>
+       <tr><th>Open console</th><td><a href="https://<?php print $host ?>/ui/#/console/<?php print $vmid ?>">open console on <?php print $host ?></a></td></tr>
       </table>
       <br/>
     </span>
