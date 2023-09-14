@@ -68,6 +68,10 @@ if (  isset($_GET["hostname"]) && isset($_GET["ds"]) && "get_ds_info"==$_GET["ac
 	$content=$row["content_ls"];
         $a_content=explode("\n",$content);
 	for ($i=0; $i<count($a_content); $i++){
+	  if ( strlen($a_content[$i]) == 0 )
+	  {
+	    continue;
+	  }
           $size=explode(";",$a_content[$i])[0];
           $last_mod_time=explode(";",$a_content[$i])[1];
           $last_mod_time2=explode(";",$a_content[$i])[2];
