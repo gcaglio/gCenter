@@ -108,8 +108,8 @@ Microsoft Hyper-V
   - vm snapshots
   
 Defining roles<br>
-  You can define user and resource-based privileges. <br>
-  please read ROLES.md file<br>
+&nbsp;You can define user and resource-based privileges. <br>
+&nbsp;Please read ROLES.md file<br>
 
 
 # Features implemented (what you can do)
