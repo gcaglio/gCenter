@@ -40,7 +40,8 @@ e. insert into the db your user, for example, to create the first admin user :
    username : admin
    password : password
    ```
-   insert into users values ('admin', md5('password'), 'ADMIN');
+   insert into users values ('admin', md5('password') );
+   insert into roles values ('admin', 'ADMIN', '*' );
    ```
 
 
