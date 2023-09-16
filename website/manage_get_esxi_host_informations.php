@@ -50,7 +50,7 @@ if (  isset($_GET["hostname"]) && "get_host_info"==$_GET["action"]  ) {
       <tr><th>Product fullname</th><td><?php print $product_fullname ?></td></tr>
       <tr><th>Product version</th><td><?php print $product_version ?></td></tr>
       <tr><th>OS type</th><td><?php print $os_type ?></td></tr>
-      <tr><th>Open ESXi web UI</th><td><a href="https://<?php print $host_name ?>/ui/#/host">open ESXi web UI</a></td></tr>
+      <tr><th>Open ESXi web UI</th><td><a href="https://<?php print $host_name ?>/ui/#/host" target="_blank">open ESXi web UI</a></td></tr>
     </table>
     </span>
   

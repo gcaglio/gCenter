@@ -1,7 +1,9 @@
 <?php
 require_once "../common/db.php";
 require_once "../conf/db.php";
+require_once( "../common/check_roles.php");
 # return vm informations
+
 
 session_start();
 if ( ! (isset($_SESSION["_CURRENT_USER"]) ) ){
@@ -56,7 +58,7 @@ if (  isset($_GET["hostname"]) && isset($_GET["vmid"]) && "get_vm_info"==$_GET["
        <tr><th>VMX path</th><td><?php print $path ?></td></tr>
        <tr><th>VM HW version</th><td><?php print $version ?></td></tr>
        <tr><th>Last seen</th><td><?php print $last_seen_ts ?></td></tr>
-       <tr><th>Open console</th><td><a href="https://<?php print $host ?>/ui/#/console/<?php print $vmid ?>">open console on <?php print $host ?></a></td></tr>
+       <tr><th>Open console</th><td><a href="https://<?php print $host ?>/ui/#/console/<?php print $vmid ?>" target="_blank">open console on <?php print $host ?></a></td></tr>
       </table>
       <br/>
     </span>
@@ -68,12 +70,18 @@ if (  isset($_GET["hostname"]) && isset($_GET["vmid"]) && "get_vm_info"==$_GET["
           <th>Power state</th>
 	  <td><?php print $runtime_powerstate ?>
 
+
+<?php  if ( canManagePower($con,$host,$name) ){ ?>
+
 	  <?php  if ( $runtime_powerstate == "poweredOff"  ){ ?>
             <span class="btn_command" style="float:right" onclick="poweronVm('<?php print $host ?>','<?php print $vmid ?>')">[Power On]</span>
           <?php }else{ ?>
 	    <span class="btn_command" style="float:right" onclick="rebootVm('<?php print $host ?>','<?php print $vmid ?>')">[Reboot]</span> 
 	    <span class="btn_command" style="float:right" onclick="poweroffVm('<?php print $host ?>','<?php print $vmid ?>')">[Power Off]</span> 
-          <?php  } ?>
+	  <?php  } ?>
+
+<?php } ?>
+
   	  </td>
         </tr>
         <tr><th>Overall status</th><td><?php print $overall_status ?></td></tr>

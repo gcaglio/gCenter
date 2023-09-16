@@ -107,6 +107,9 @@ Microsoft Hyper-V
   - vm health status informations and power state
   - vm snapshots
   
+Defining roles
+  you can define user and resource-based privileges. 
+  please read ROLES.md file
 
 
 # Features implemented (what you can do)
