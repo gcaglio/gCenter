@@ -4,8 +4,9 @@ VIEWER          can only view data (by default any configured user is VIEWER)
 POWER_MGMT      like VIEWER but can also poweron and poweroff
 
 # How to assign role to a user
-In this version you have to assign roles directly on the database. <br/>
-Roles could be assigned on specific vm, hosts or with wildcards.<br/>
+In this version you have to assign ADMIN role to the first admin user you create. <br/>
+Roles can be deleted and added from the web UI by users with ADMIN role.<br />
+Roles can be added on HOST or on single VM. The web UI will help identifying all the discovered/configured objects.<br/>
 
 # Viewer role
 By default, creating a user will assign "VIEWER" role by default.<br/>

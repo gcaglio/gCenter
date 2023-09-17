@@ -12,6 +12,7 @@ $con=getConnection($servername,$username,$password,$dbname);
     <title>gCenter</title>
     <link rel="stylesheet" href="styles.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
     <script>
       function updateContentPaneHostInfo(hostname, host_type){
@@ -138,11 +139,68 @@ $con=getConnection($servername,$username,$password,$dbname);
       }
 
      
+      function showProfilePopup(){
+        $.get( "manage_profile.php?action=get", function( data ) {
+          $( "#manage_user_profile" ).html( data );
+        //alert( data );
+	});
+	$( "#manage_user_profile" ).dialog();
+      }
+
+
+      function updateContentPaneRoles(){
+         $.get( "manage_roles.php?action=get_roles", function( data ) {
+          $( "#main_content_pane_message" ).html( data );
+        //alert( data );
+       });
+ 
+      }
+
+      function updateContentPaneMessage(){
+         $.get( "show_message.php", function( data ) {
+          $( "#main_content_pane_message" ).html( data );
+        //alert( data );
+       });
+
+      }
+      
+
+      function deleteRole(hash){
+         $.get( "manage_roles.php?action=delete_role&hash=" + hash, function( data ) {
+          $( "#main_content_pane_message" ).html( data );
+        //alert( data );
+       });
+
+      }
+
+      function loadInitialContent (){
+        var action = findGetParameter("action");
+        if ( "show_message" == action ){
+		updateContentPaneMessage();
+	}else if ("show_manage_roles" == action){
+		updateContentPaneRoles();
+        }
+      }
+
+      function findGetParameter(parameterName) {
+        var result = null,
+        tmp = [];
+        location.search
+        .substr(1)
+        .split("&")
+        .forEach(function (item) {
+          tmp = item.split("=");
+          if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]);
+        });
+        return result;
+      }
 
 
     </script>
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
   </head>
-  <body>
+  <body onload="loadInitialContent()">
   <?php include "header.php" ?>
 
   <div class="inner_body">
@@ -267,8 +325,13 @@ $con=getConnection($servername,$username,$password,$dbname);
 
 
 
-
-
+  <!-- settings -->
+  <br/>
+  <br/>
+  <b>Settings</b>
+  <div class="li_settings" id="div_settings">
+    <span class="sp_nav_set_roles" onclick="updateContentPaneRoles()">Roles</a>
+  </div>
 
   </div><!--navigation-->
 
@@ -281,6 +344,8 @@ $con=getConnection($servername,$username,$password,$dbname);
   </div>
 
   </div> <!-- inner_body -->
+
+  <div id="manage_user_profile" title="Manage user profile">
 <!--
   <?php include "footer.php" ?>
 -->

@@ -40,7 +40,7 @@ e. insert into the db your user, for example, to create the first admin user :
    username : admin
    password : password
    ```
-   insert into users values ('admin', md5('password') );
+   insert into users values ('admin', md5('password'), 'email.address@domain.com' );
    insert into roles values ('admin', 'ADMIN', '*' );
    ```
 
@@ -136,6 +136,7 @@ Micrososft Hyper-V
   - check vm cpu and memory statistics/graphs
 
 # Main steps
+2023-09-17 Feature : added support for ROLES (see ROLES.md file for more details)
 2023-09-14 Feature : added "open console" on ESXi virtual machines and "open ESXi host web UI" on ESXi host
 2023-09-14 Bugfix : fixed housekeeping script to apply data retention
 2023-06-20 Feature : added housekeeping script in gatherer/housekeeping.php to keep tables size under control<br>

@@ -17,4 +17,24 @@ function canManagePower($con, $host,$vm){
     return false;
   }
 }
+
+# true if is admin
+function isAdmin($con){
+  if ( ! (isset($_SESSION["_CURRENT_USER"]) ) ){
+    return false;
+  }
+
+  $current_user=$_SESSION["_CURRENT_USER"];
+  
+  $sql_get_roles="select *  from roles where username = '".mysqli_real_escape_string($con,$current_user)."' and role='ADMIN' and object='*'; ";
+  #echo $sql_get_roles;
+  $result_roles=mysqli_query($con,$sql_get_roles);
+  $rowcount=mysqli_num_rows($result_roles);
+  if ($rowcount>0){
+    return true;
+  }else{
+    return false;
+  }
+}
+
 ?>

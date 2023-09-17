@@ -30,6 +30,27 @@ body{
   font-size:1.2em;
 }
 
+.error_message{
+  text-align:center;
+  color:#db1d04;
+  font-weight:bold;
+  font-size:1.2em;
+}
+
+.success_message{
+  text-align:center;
+  font-weight:bold;
+  font-size:1.2em;
+  color:#3a8a01;
+}
+
+.info_message{
+  text-align:center;
+  font-weight:bold;
+  font-size:1.2em;
+}
+
+
 .login_outer_container {
   display: table;
   position: absolute;
@@ -107,6 +128,15 @@ body{
 }
 .li_vswitch{
   margin-left:10px;
+}
+
+.li_settings{
+  margin-left:20px;
+  margin-bottom:15px;
+}
+
+.sp_nav_set_roles:hover{
+  cursor: pointer;
 }
 
 
@@ -328,6 +358,23 @@ body{
   background: #e4eff6;
   width:30%;
 }
+
+.tbl_role_info th {
+  background: #e4eff6;
+}
+
+.tbl_role_info{
+  font-size:12px;
+  width: 99%;
+}
+
+.tbl_role_info img {
+  height:16px;
+  float:right;
+  margin-right:5px;
+}
+
+
 
 .sp_nav_summary:hover{
   cursor: pointer;
