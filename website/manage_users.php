@@ -138,7 +138,7 @@ if ( isAdmin($con) && "get_users"==$_GET["action"]  ) {
 
 
 
-}else if ( isAdmin($con) && isset($_POST["username"]) && isset($_GET["action"]) && "insert_user" == $_GET["action"]  && isset($_POST["password"]) && isset($_POST["email"]) && strlen($_POST["username"])>0 && strlen($_POST["email"])>0  && strlen($_POST["password"])>0  ) {
+}else if ( isAdmin($con) && isset($_POST["username"]) && isset($_POST["action"]) && "insert_user" == $_POST["action"]  && isset($_POST["password"]) && isset($_POST["email"]) && strlen($_POST["username"])>0 && strlen($_POST["email"])>0  && strlen($_POST["password"])>0  ) {
   # insert new user
   $username=mysqli_real_escape_string($con,$_POST["username"]);
   $email=mysqli_real_escape_string($con,$_POST["email"]);

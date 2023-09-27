@@ -14,6 +14,10 @@ ERROR		  critical error<br/>
 LOGIN_OK          successfull login<br/>
 LOGIN_ERR         error during login<br/>
 LOGOUT            user logout<br/>
+ADD_HOST_OK	  host added successfully<br/>
+DEL_HOST_OK	  host deleted successfully<br/>
+ADD_HOST_ERR	  error adding host<br/>
+DEL_HOST_ERR	  error deleting host<br/>
 
 
 # Resource ID subcategory

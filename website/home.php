@@ -195,6 +195,24 @@ $con=getConnection($servername,$username,$password,$dbname);
       /* end manage users */
 
 
+      /* Manage Esxi */
+      function updateContentPaneEsxi(){
+         $.get( "manage_hosts_esxi.php?action=get_hosts_esxi", function( data ) {
+          $( "#main_content_pane" ).html( data );
+        //alert( data );
+       });
+
+      }
+
+      function deleteHostEsxi(hash){
+         $.get( "manage_hosts_esxi.php?action=delete_host_esxi&hash=" + hash, function( data ) {
+          $( "#main_content_pane" ).html( data );
+        //alert( data );
+       });
+
+      }
+      /* end manage users */
+
 
       function loadInitialContent (){
         var action = findGetParameter("action");
@@ -203,7 +221,10 @@ $con=getConnection($servername,$username,$password,$dbname);
 	}else if ("show_manage_roles" == action){
 		updateContentPaneRoles();
         }else if ("show_manage_users" == action){
-                updateContentPaneUsers();
+		updateContentPaneUsers();
+        }else if ("show_manage_hosts_esxi" == action){
+                updateContentPaneEsxi();
+		
         }
       }
 
@@ -358,6 +379,7 @@ $con=getConnection($servername,$username,$password,$dbname);
     <span class="sp_nav_set_roles" onclick="updateContentPaneRoles()">Roles</a></span>
 
     <span class="sp_nav_set_users" onclick="updateContentPaneUsers()">Users</a></span>
+    <span class="sp_nav_set_hosts_esxi" onclick="updateContentPaneEsxi()">ESXi hosts</a></span>
   </div>
 
   </div><!--navigation-->

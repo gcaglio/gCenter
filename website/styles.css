@@ -144,6 +144,10 @@ body{
 .sp_nav_set_users:hover{
   cursor: pointer;
 }
+.sp_nav_set_hosts_esxi:hover{
+  cursor: pointer;
+}
+
 
 .tbl_user_info th {
   background: #e4eff6;
@@ -155,6 +159,22 @@ body{
 }
 
 .tbl_user_info img {
+  height:16px;
+  float:right;
+  margin-right:5px;
+}
+
+
+.tbl_hosts_info th {
+  background: #e4eff6;
+}
+
+.tbl_hosts_info{
+  font-size:12px;
+  width: 99%;
+}
+
+.tbl_hosts_info img {
   height:16px;
   float:right;
   margin-right:5px;
