@@ -136,9 +136,11 @@ Micrososft Hyper-V
   - check vm cpu and memory statistics/graphs
 
 # Main steps
+2023-09-27 Feature : event logging
+2023-09-27 Feature : added support for SNAP_MGMT roles (plus some bugfix about roles)
 2023-09-17 Feature : added support for ROLES (see ROLES.md file for more details)
 2023-09-14 Feature : added "open console" on ESXi virtual machines and "open ESXi host web UI" on ESXi host
-2023-09-14 Bugfix : fixed housekeeping script to apply data retention
+2023-09-14 Bugfix  : fixed housekeeping script to apply data retention
 2023-06-20 Feature : added housekeeping script in gatherer/housekeeping.php to keep tables size under control<br>
 2023-06-20 Feature : added VM network interfaces and portgroup details<br>
 2023-06-14 Feature : added vswitch and portgroup gatherer feature <br>
@@ -154,20 +156,22 @@ Micrososft Hyper-V
 2023-05-04 Feature : added hyper-v gatherer for virtual machines informations<br>
 2023-05-04 Feature : added hyper-v gatherer for hosts informations<br>
 2023-03-27 Feature : added summary view to see all hosts and all vms<br>
-2023-03-27 Modified styles and added version in login page<br>
+2023-03-27 Bugfix  : Modified styles and added version in login page<br>
 2023-03-22 Feature : added vm hard reboot<br>
 2023-03-22 Feature : added login with username and password <br>
 2023-03-10 Feature : added get datastore content (file and directories) in the gatherer and implemented datastore info table in UI <br>
 2023-03-09 Feature : added get vm snapshot in the gatherer and implemented snapshot table in UI. <br>
-2023-01-01 Created gatherers and single-page interface to display structure and host informations.<br>
+2023-01-01 Feature : Created gatherers and single-page interface to display structure and host informations.<br>
 2023-01-04 Feature : released VM poweroff/poweron <br>
 2023-01-22 Feature : released "Take snapshot" feature<br>
 2023-01-25 Feature : added vm runtime and configuration informations.<br>
-2023-01-25 Added vm statistics runtime collection<br>
+2023-01-25 Feature : added vm statistics runtime collection<br>
 
 
 # Screenshots
 ![gCenter Login](/docs/images/gCenter_login.png "Login")
+
+![gCenter Roles Management](/docs/images/gCenter_roles.png "Roles management")
 
 ![ESXi host details](/docs/images/gCenter_show_esxi_host.png "ESXi host details")
 

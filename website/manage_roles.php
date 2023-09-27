@@ -4,7 +4,8 @@ require_once "../conf/db.php";
 require_once( "../common/check_roles.php");
 # return roles informations
 
-session_start();
+if(!isset($_SESSION)) session_start();
+
 if ( ! (isset($_SESSION["_CURRENT_USER"]) ) ){
   $_GET["message"]="Session not valid. Please login.";
   header('Location: ./index.php');

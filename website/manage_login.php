@@ -1,6 +1,8 @@
 <?php
 require_once "../common/db.php";
+require_once "../common/eventlog.php";
 require_once "../conf/db.php";
+require_once "../conf/eventlog.php";
 session_start();
 # check login and authenticate
 $con=getConnection($servername,$username,$password,$dbname);
@@ -15,19 +17,20 @@ if (  isset($_POST["uname"]) && isset($_POST["passwd"]) && "login"==$_POST["acti
   if ( mysqli_num_rows($result_login)>0 ){	  
     $row = $result_login->fetch_assoc();
     $_SESSION["_CURRENT_USER"]=$row["username"];
-    $_SESSION["_CURRENT_ROLE"]=$row["role"];
     $_SESSION["message"]="Welcome ".$row["username"]." .";
+    logEventLoginSuccessful($con,'','');
     header('Location: ./home.php');
     exit;
   } else {
     $_SESSION["message"]="Cannot complete login due to an incorrect user name or password.";
+    logEventLoginError($con,'',''); 
   }
   header('Location: ./index.php');
   exit;
 }else if ("logout"==$_GET["action"]){
   unset($_SESSION["_CURRENT_USER"]);
-  unset($_SESSION["_CURRENT_ROLE"]);
   $_SESSION["message"]="User successfully logged out.";
+  logEventLogout($con,'','');
   header('Location: ./index.php');
   exit;
 }else{

@@ -1,9 +1,13 @@
 <?php
 require_once "../common/db.php";
+require_once "../common/eventlog.php";
 require_once "../conf/db.php";
+require_once "../conf/eventlog.php";
+require_once( "../common/check_roles.php");
 # return vm informations
 
-session_start();
+if(!isset($_SESSION)) session_start();
+
 if ( ! (isset($_SESSION["_CURRENT_USER"]) ) ){
   $_GET["message"]="Session not valid. Please login.";
   header('Location: ./index.php');
@@ -19,6 +23,10 @@ $con=getConnection($servername,$username,$password,$dbname);
 if (  isset($_GET["hostname"]) && isset($_GET["vmid"]) && "get_vm_info"==$_GET["action"]  ) {
   $host=mysqli_real_escape_string($con,$_GET["hostname"]);
   $vmid=mysqli_real_escape_string($con,$_GET["vmid"]);
+  $current_user=$_SESSION["_CURRENT_USER"];
+
+  logEventInfo($con,"/$host/vm/$vmid","display vm details");
+
 
   $sql_vm="select * from hyperv_virtual_machines where vm_id='$vmid' and hostname='$host' order by timestamp DESC limit 1 ; ";
 
@@ -65,13 +73,15 @@ if (  isset($_GET["hostname"]) && isset($_GET["vmid"]) && "get_vm_info"==$_GET["
           <th>Power state</th>
           <td><?php print $enabled_state ?>
 
+<?php  if ( canManagePower($con,$host,$name) ){ ?>
           <?php  if ( $enabled_state == $_wmi_enabled_state_poweroff  ){ ?>
             <span class="btn_command" style="float:right" onclick="poweronHypervVm('<?php print $host ?>','<?php print $vm_name ?>')">[Power On]</span>
           <?php }else{ ?>
 <!--            <span class="btn_command" style="float:right" onclick="rebootHypervVm('<?php print $host ?>','<?php print $vm_name ?>')">[Reboot]</span>
             <span class="btn_command" style="float:right" onclick="resetHypervVm('<?php print $host ?>','<?php print $vm_name ?>')">[Reset]</span> -->
             <span class="btn_command" style="float:right" onclick="poweroffHypervVm('<?php print $host ?>','<?php print $vm_name ?>')">[Power Off]</span>
-          <?php  } ?>
+	  <?php  } ?>
+<?php  } ?>
           </td>
 	</tr>
         <tr><th>Status</th><td><?php print $status ?></td></tr>
@@ -94,8 +104,14 @@ if (  isset($_GET["hostname"]) && isset($_GET["vmid"]) && "get_vm_info"==$_GET["
     <br/>
     <span class="spn_100">
       <table width="100%" class="tbl_vm_snapshots">
-	<tr><td class="tbl_info_header" colspan="6">Snapshots <span class="btn_command" style="float:right" onclick="snapHypervVm('<?php print $host ?>','<?php print $vm_name ?>')">[ Take ]</span> </td></tr>
+	<tr>
+          <td class="tbl_info_header" colspan="6">Snapshots 
 
+<?php if ( canManageSnap($con,$host,$name) ) { ?>
+        <span class="btn_command" style="float:right" onclick="snapHypervVm('<?php print $host ?>','<?php print $vm_name ?>')">[ Take ]</span>
+<?php } ?>
+          </td>
+        </tr>
         <tr><th>Name</th><th>Created On</th><th>SnapshotID</th><th>Parent SnapshotID</th></tr>
 <?php
       $sql_snap="select * from hyperv_vm_snapshots where timestamp='".mysqli_real_escape_string($con,$timestamp)."' and vmid='".mysqli_real_escape_string($con,$vm_name)."' and hostname='".mysqli_real_escape_string($con,$host)."' order by creation_date, creation_time, parent_snap; ";

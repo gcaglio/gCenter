@@ -1,9 +1,11 @@
 <?php
 require_once "../common/db.php";
+require_once "../common/eventlog.php";
 require_once "../conf/db.php";
+require_once "../conf/eventlog.php";
 # return host informations
 
-session_start();
+if(!isset($_SESSION)) session_start();
 if ( ! (isset($_SESSION["_CURRENT_USER"]) ) ){
   $_GET["message"]="Session not valid. Please login.";
   header('Location: ./index.php');
@@ -18,6 +20,11 @@ $con=getConnection($servername,$username,$password,$dbname);
 
 if (  isset($_GET["hostname"]) && "get_host_info"==$_GET["action"]  ) {
   $host=mysqli_real_escape_string($con,$_GET["hostname"]);
+  $current_user=$_SESSION["_CURRENT_USER"];
+
+  logEventInfo($con,"/$host","display esxi host details");
+
+
   $sql="select * from hosts_informations where timestamp=(select max(timestamp) from hosts_informations where hostname='$host') and hostname='$host';";
   $result=mysqli_query($con,$sql);
   while ($row = $result->fetch_assoc()) {

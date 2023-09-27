@@ -2,6 +2,7 @@
 ADMIN           can do everything
 VIEWER          can only view data (by default any configured user is VIEWER)
 POWER_MGMT      like VIEWER but can also poweron and poweroff
+SNAP_MGMT       like VIEWER but can also take snapshots
 
 # How to assign role to a user
 In this version you have to assign ADMIN role to the first admin user you create. <br/>

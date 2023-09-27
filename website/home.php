@@ -147,15 +147,6 @@ $con=getConnection($servername,$username,$password,$dbname);
 	$( "#manage_user_profile" ).dialog();
       }
 
-
-      function updateContentPaneRoles(){
-         $.get( "manage_roles.php?action=get_roles", function( data ) {
-          $( "#main_content_pane_message" ).html( data );
-        //alert( data );
-       });
- 
-      }
-
       function updateContentPaneMessage(){
          $.get( "show_message.php", function( data ) {
           $( "#main_content_pane_message" ).html( data );
@@ -163,15 +154,26 @@ $con=getConnection($servername,$username,$password,$dbname);
        });
 
       }
+
       
+/* Manage Roles */
+      function updateContentPaneRoles(){
+         $.get( "manage_roles.php?action=get_roles", function( data ) {
+          $( "#main_content_pane" ).html( data );
+        //alert( data );
+       });
+ 
+      }
 
       function deleteRole(hash){
          $.get( "manage_roles.php?action=delete_role&hash=" + hash, function( data ) {
-          $( "#main_content_pane_message" ).html( data );
+          $( "#main_content_pane" ).html( data );
         //alert( data );
        });
 
       }
+      /* end manage roles */
+
 
       function loadInitialContent (){
         var action = findGetParameter("action");

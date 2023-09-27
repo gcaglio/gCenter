@@ -1,11 +1,13 @@
 <?php
 require_once "../common/db.php";
+require_once "../common/eventlog.php";
 require_once "../conf/db.php";
+require_once "../conf/eventlog.php";
 require_once( "../common/check_roles.php");
 # return vm informations
 
+if(!isset($_SESSION)) session_start();
 
-session_start();
 if ( ! (isset($_SESSION["_CURRENT_USER"]) ) ){
   $_GET["message"]="Session not valid. Please login.";
   header('Location: ./index.php');
@@ -21,6 +23,10 @@ $con=getConnection($servername,$username,$password,$dbname);
 if (  isset($_GET["hostname"]) && isset($_GET["vmid"]) && "get_vm_info"==$_GET["action"]  ) {
   $host=mysqli_real_escape_string($con,$_GET["hostname"]);
   $vmid=mysqli_real_escape_string($con,$_GET["vmid"]);
+  $current_user=$_SESSION["_CURRENT_USER"];
+
+  logEventInfo($con,"/$host/vm/$vmid","display vm details");
+
 
   $sql_vm="select * from virtual_machines where vmid='$vmid' and hostname='$host' order by timestamp DESC limit 1 ; ";
 
@@ -125,7 +131,18 @@ if (  isset($_GET["hostname"]) && isset($_GET["vmid"]) && "get_vm_info"==$_GET["
     <br/> 
     <span class="spn_100">
       <table width="100%" class="tbl_vm_snapshots">
-	<tr><td class="tbl_info_header" colspan="6">Snapshots <span class="btn_command" style="float:right" onclick="snapVm('<?php print $host ?>','<?php print $vmid ?>')">[ Take ]</span> </td></tr>
+	<tr>
+          <td class="tbl_info_header" colspan="6">Snapshots 
+
+<?php if ( canManageSnap($con,$host,$name) ) { ?>
+  <span class="btn_command" style="float:right" onclick="snapVm('<?php print $host ?>','<?php print $vmid ?>')">[ Take ]</span> 
+<?php } ?>
+
+
+          </td>
+        </tr>
+
+
         <tr><th>SnapshotID</th><th>Parent SnapshotID</th><th>Name</th><th>Description</th><th>Created On</th><th>Filesystem Quiesced</th></tr>
 <?php
       $sql_snap="select * from vm_snapshots where timestamp='".mysqli_real_escape_string($con,$timestamp)."' and vmid='".mysqli_real_escape_string($con,$vmid)."' and hostname='".mysqli_real_escape_string($con,$host)."' order by parent_snap, snapshot ; ";

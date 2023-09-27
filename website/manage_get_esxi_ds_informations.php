@@ -1,9 +1,11 @@
 <?php
 require_once "../common/db.php";
+require_once "../common/eventlog.php";
 require_once "../conf/db.php";
+require_once "../conf/eventlog.php";
 # return vm informations
 
-session_start();
+if(!isset($_SESSION)) session_start();
 if ( ! (isset($_SESSION["_CURRENT_USER"]) ) ){
   $_GET["message"]="Session not valid. Please login.";
   header('Location: ./index.php');
@@ -18,6 +20,10 @@ $con=getConnection($servername,$username,$password,$dbname);
 if (  isset($_GET["hostname"]) && isset($_GET["ds"]) && "get_ds_info"==$_GET["action"]  ) {
   $host=mysqli_real_escape_string($con,$_GET["hostname"]);
   $ds_name=mysqli_real_escape_string($con,$_GET["ds"]);
+  $current_user=$_SESSION["_CURRENT_USER"];
+
+  logEventInfo($con,"/$host/datastore/$ds_name","display esxi datastore details");
+
 
   $sql_ds="select *  from datastores where name='$ds_name' and  hostname='$host' and timestamp=(select max(timestamp) from datastores where hostname='$host'); ";
 
