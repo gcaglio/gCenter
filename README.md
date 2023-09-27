@@ -36,26 +36,24 @@ a. download project from repo <br/>
 b. import ```db_schema.dump``` in your mariadb database <br/>
 c. create virtualhost that point to the ```./website``` subfolder <br/>
 d. configure ```conf/db.php``` to point to your mariadb instance with the gcenter scheme imported on point "b" <br/>
-e. insert into the db your user, for example, to create the first admin user :
+e. insert FIRST login user into the db, for example, to start using the gCenter you can create the first admin user :
    username : admin
    password : password
    ```
    insert into users values ('admin', md5('password'), 'email.address@domain.com' );
    insert into roles values ('admin', 'ADMIN', '*' );
    ```
-
+f. other users could be added/deleted using the Setting->Users feature
+g. by default newly created users are VIEWER, you can define specific roles for specific resource and user with the Settings->Roles feature in the web interface.
 
 ESXi<br>
-i. insert into the db your hosts : 
-   ```
-   insert into hosts (hostname,username,password) values ('myhostname','myusername','mypassword')   
-   ```
-ii. schedule the gatherer to get information from your ESXi hosts. <br/>
+i. schedule the gatherer to get information from your ESXi hosts. <br/>
    Here the example of a crontab entry to query your ESXi hosts every 5 minutes, assuming that the gCenter was installed in folder ```/var/www/gCenter/``` <br>
    ```
    # m h  dom mon dow   command
    */5 * * * * cd /var/www/gCenter/gatherer/; php /var/www/gCenter/gatherer/gather.php > /tmp/gatherer.log 2>&1
-   ```
+
+ii. you can insert ESXi hosts using the Settings->ESXi hosts feature in the web interface
    
 
 Hyper-V<br>
@@ -136,6 +134,7 @@ Micrososft Hyper-V
   - check vm cpu and memory statistics/graphs
 
 # Main steps
+2023-09-27 Feature : added esxi hosts creation/deletion<br/>
 2023-09-27 Feature : added user creation/deletion<br/>
 2023-09-27 Feature : event logging<br/>
 2023-09-27 Feature : added support for SNAP_MGMT roles (plus some bugfix about roles)<br/>
@@ -174,6 +173,8 @@ Micrososft Hyper-V
 
 ![gCenter Roles Management](/docs/images/gCenter_roles.png "Roles management")
 
+![gCenter Users Management](/docs/images/gCenter_users.png "Users management")
+
 ![ESXi host details](/docs/images/gCenter_show_esxi_host.png "ESXi host details")
 
 ![ESXi virtual switch](/docs/images/gCenter_show_esxi_vswitch.png "ESXi virtual switch")
@@ -181,6 +182,9 @@ Micrososft Hyper-V
 ![ESXi virtual machine details](/docs/images/gCenter_show_esxi_vm.png "ESXi virtual machine details")
 
 ![HyperV virtual machine details](/docs/images/gCenter_show_hyperv_vm.png "Hyper-V virtual machine details")
+
+![Add ESXi hosts](/docs/images/gCenter_add_esxi_hosts.png "Add ESXi hosts")
+
 
 
 
