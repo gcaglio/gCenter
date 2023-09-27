@@ -135,9 +135,31 @@ body{
   margin-bottom:15px;
 }
 
+.li_settings span{
+  display:block;
+}
 .sp_nav_set_roles:hover{
   cursor: pointer;
 }
+.sp_nav_set_users:hover{
+  cursor: pointer;
+}
+
+.tbl_user_info th {
+  background: #e4eff6;
+}
+
+.tbl_user_info{
+  font-size:12px;
+  width: 99%;
+}
+
+.tbl_user_info img {
+  height:16px;
+  float:right;
+  margin-right:5px;
+}
+
 
 
 #main_container{

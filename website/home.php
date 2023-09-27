@@ -156,7 +156,7 @@ $con=getConnection($servername,$username,$password,$dbname);
       }
 
       
-/* Manage Roles */
+      /* Manage Roles */
       function updateContentPaneRoles(){
          $.get( "manage_roles.php?action=get_roles", function( data ) {
           $( "#main_content_pane" ).html( data );
@@ -175,12 +175,35 @@ $con=getConnection($servername,$username,$password,$dbname);
       /* end manage roles */
 
 
+
+      /* Manage Users */
+      function updateContentPaneUsers(){
+         $.get( "manage_users.php?action=get_users", function( data ) {
+          $( "#main_content_pane" ).html( data );
+        //alert( data );
+       });
+
+      }
+
+      function deleteUser(hash){
+         $.get( "manage_users.php?action=delete_user&hash=" + hash, function( data ) {
+          $( "#main_content_pane" ).html( data );
+        //alert( data );
+       });
+
+      }
+      /* end manage users */
+
+
+
       function loadInitialContent (){
         var action = findGetParameter("action");
         if ( "show_message" == action ){
 		updateContentPaneMessage();
 	}else if ("show_manage_roles" == action){
 		updateContentPaneRoles();
+        }else if ("show_manage_users" == action){
+                updateContentPaneUsers();
         }
       }
 
@@ -332,7 +355,9 @@ $con=getConnection($servername,$username,$password,$dbname);
   <br/>
   <b>Settings</b>
   <div class="li_settings" id="div_settings">
-    <span class="sp_nav_set_roles" onclick="updateContentPaneRoles()">Roles</a>
+    <span class="sp_nav_set_roles" onclick="updateContentPaneRoles()">Roles</a></span>
+
+    <span class="sp_nav_set_users" onclick="updateContentPaneUsers()">Users</a></span>
   </div>
 
   </div><!--navigation-->

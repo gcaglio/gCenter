@@ -2,10 +2,10 @@
 session_start();
 
 
-   if ( isset($_SESSION["successfull_message"]) ){
+   if ( isset($_SESSION["successful_message"]) ){
 ?>
     <span class="success_message">
-      <?php print $_SESSION["successfull_message"]; unset($_SESSION["successfull_message"]); ?>
+      <?php print $_SESSION["successful_message"]; unset($_SESSION["successful_message"]); ?>
     </span>
 <?php
    }

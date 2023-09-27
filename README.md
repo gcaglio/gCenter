@@ -136,6 +136,7 @@ Micrososft Hyper-V
   - check vm cpu and memory statistics/graphs
 
 # Main steps
+2023-09-27 Feature : added user creation/deletion<br/>
 2023-09-27 Feature : event logging<br/>
 2023-09-27 Feature : added support for SNAP_MGMT roles (plus some bugfix about roles)<br/>
 2023-09-17 Feature : added support for ROLES (see ROLES.md file for more details)<br/>

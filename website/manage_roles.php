@@ -24,10 +24,10 @@ if ( isAdmin($con) && "get_roles"==$_GET["action"]  ) {
 
 
 <?php 
-   if ( isset($_SESSION["successfull_message"]) ){
+   if ( isset($_SESSION["successful_message"]) ){
 ?>
     <span class="success_message">
-      <?php print $_SESSION["successfull_message"]; unset($_SESSION["successfull_message"]); ?>
+      <?php print $_SESSION["successful_message"]; unset($_SESSION["successful_message"]); ?>
     </span>
 <?php
    }
@@ -204,7 +204,7 @@ if ( isAdmin($con) && "get_roles"==$_GET["action"]  ) {
   $sql_delete_role="delete from roles where '".$hash."' =  md5( concat(username,concat(';',concat(role,concat(';',object)))) );";
 #  echo $sql_delete_role;
   if (mysqli_query($con,$sql_delete_role)) {
-    $_SESSION["successfull_message"]="Role deleted";
+    $_SESSION["successful_message"]="Role deleted";
     
   }else{
     $_SESSION["error_message"]="Error deleting role";
@@ -226,7 +226,7 @@ if ( isAdmin($con) && "get_roles"==$_GET["action"]  ) {
 
   $sql_insert="insert into roles (username,object,role) values ('".$username."','".$object."','".$role."'); ";
   if (mysqli_query($con,$sql_insert)) {
-    $_SESSION["successfull_message"]="Role inserted";
+    $_SESSION["successful_message"]="Role inserted";
   }else{
     $_SESSION["error_message"]="Error inserting role";
   }
