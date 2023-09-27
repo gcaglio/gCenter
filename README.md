@@ -136,11 +136,11 @@ Micrososft Hyper-V
   - check vm cpu and memory statistics/graphs
 
 # Main steps
-2023-09-27 Feature : event logging
-2023-09-27 Feature : added support for SNAP_MGMT roles (plus some bugfix about roles)
-2023-09-17 Feature : added support for ROLES (see ROLES.md file for more details)
-2023-09-14 Feature : added "open console" on ESXi virtual machines and "open ESXi host web UI" on ESXi host
-2023-09-14 Bugfix  : fixed housekeeping script to apply data retention
+2023-09-27 Feature : event logging<br/>
+2023-09-27 Feature : added support for SNAP_MGMT roles (plus some bugfix about roles)<br/>
+2023-09-17 Feature : added support for ROLES (see ROLES.md file for more details)<br/>
+2023-09-14 Feature : added "open console" on ESXi virtual machines and "open ESXi host web UI" on ESXi host<br/>
+2023-09-14 Bugfix  : fixed housekeeping script to apply data retention<br/>
 2023-06-20 Feature : added housekeeping script in gatherer/housekeeping.php to keep tables size under control<br>
 2023-06-20 Feature : added VM network interfaces and portgroup details<br>
 2023-06-14 Feature : added vswitch and portgroup gatherer feature <br>
