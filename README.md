@@ -52,7 +52,7 @@ i. schedule the gatherer to get information from your ESXi hosts. <br/>
    ```
    # m h  dom mon dow   command
    */5 * * * * cd /var/www/gCenter/gatherer/; php /var/www/gCenter/gatherer/gather.php > /tmp/gatherer.log 2>&1
-
+   ```
 ii. you can insert ESXi hosts using the Settings->ESXi hosts feature in the web interface
    
 
