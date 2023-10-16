@@ -131,9 +131,11 @@ Micrososft Hyper-V
   - poweron/poweroff vms
   - taking vms snapshots
   - listing vms snapshots
+  - listing virtual switches
   - check vm cpu and memory statistics/graphs
 
 # Main steps
+2023-10-16 Feature : added virtualswitch listing on Hyper-V wmi agent (require updating .exe file on all Hyper-V hosts)<br/>
 2023-09-27 Feature : added esxi hosts creation/deletion<br/>
 2023-09-27 Feature : added user creation/deletion<br/>
 2023-09-27 Feature : event logging<br/>

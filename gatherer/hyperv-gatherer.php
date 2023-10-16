@@ -170,6 +170,46 @@ function getVmSnapshots( $db_con, $date, $time, $hostname, $ip, $port, $apikey, 
 
 }
 
+function getVSwitch( $db_con, $date, $time, $hostname, $ip, $port, $apikey ){
+
+  $debug=true;
+  $output=null;
+  $retval=null;
+  $protocol="http";
+
+  $json = file_get_contents($protocol.'://'.$ip.":".$port."/hyperv/api_v1/getvirtualswitches");
+  $obj = json_decode($json);
+
+  echo "INFO : getting virtual switches from host '$hostname'. ";
+
+  if ($debug){
+    echo "DEBUG : output:\n";
+    print_r($json."\n");
+
+  }
+
+  // replace a lot of string to have a valid json
+  for ($i=0;$i<count($obj);$i++){
+    $element=$obj[$i];
+
+    $health_state=$element->health_state;
+    $name=$element->name;
+    $status_description=implode(";",$element->status_description);
+    $creation_date=$element->install_date;
+    $creation_time=$element->install_time;
+    $enabled_state=$element->enabled_state;
+
+    $sql="insert into hyperv_vswitch_informations (timestamp,date,time, hostname, vswitch_name, health_state, enabled_state, status_descriptions) values ('$date $time', '$date','$time','$hostname','$name', '$health_state', '$enabled_state','$status_description');";
+
+    if ($db_con->query($sql) === TRUE) {
+      echo "INFO : vswitch '$name' on host '$hostname' informations inserted.\n";
+    } else {
+      echo "ERROR :  " . $sql . "\n" . $db_con->error."\n";
+    }
+
+  }
+
+}
 
 
 #date and time of this scan
@@ -191,6 +231,8 @@ while ($row = $result->fetch_assoc()) {
   getHostInfo($con, $date, $time, $host, $ip, $port, $api_key);
   echo "INFO : gathering vms from '".$host."'\n";
   getVirtualMachines($con, $date, $time, $host, $ip, $port, $api_key);
+  echo "INFO : gathering vswitches from '".$host."'\n";
+  getVSwitch($con, $date, $time, $host, $ip, $port, $api_key);
   echo "\n";
 }
 
