@@ -63,7 +63,7 @@ i. schedule the gatherer to get information from your Hyper-V hosts. <br/>
    # m h  dom mon dow   command
    */5 * * * * cd /var/www/gCenter/gatherer/; php /var/www/gCenter/gatherer/hyperv-gatherer.php > /tmp/hyperv-gatherer.log 2>&1
    ```
-ii. install on the Hyper-V host(s) the hyperv-wmi-http-adapter-services. Please read installation instructions in the adapter folder.
+ii. install on the Hyper-V host(s) the hyperv-wmi-http-adapter-services. Please read installation instructions in the adapter folder.<br>
 iii. you can insert Hyper-V host(s) using the Settings->Hyper-V hosts feature in the web interface
 
 
