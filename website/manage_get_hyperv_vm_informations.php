@@ -64,6 +64,35 @@ if (  isset($_GET["hostname"]) && isset($_GET["vmid"]) && "get_vm_info"==$_GET["
        <tr><th>Last seen</th><td><?php print $last_seen_ts ?></td></tr>
       </table>
       <br/>
+
+      <table class="tbl_vm_info">
+       <tr><td class="tbl_info_header" colspan="2">Network info</td></tr>
+<?php
+
+        $sql_switch_ports="select hyperv_vm_network_devices.timestamp, hyperv_vm_network_devices.port_id, hyperv_vm_network_devices.macaddress, hyperv_vm_network_devices.vswitch_id,hyperv_vswitch_informations.vswitch_name, hyperv_virtual_machines.vm_name, hyperv_virtual_machines.vm_id  from hyperv_vm_network_devices join hyperv_vswitch_informations on hyperv_vm_network_devices.timestamp=hyperv_vswitch_informations.timestamp and  hyperv_vm_network_devices.hostname = hyperv_vswitch_informations.hostname and hyperv_vm_network_devices.vswitch_id = hyperv_vswitch_informations.vswitch_id join hyperv_virtual_machines on hyperv_virtual_machines.timestamp=hyperv_vm_network_devices.timestamp and hyperv_vm_network_devices.hostname=hyperv_virtual_machines.hostname and hyperv_virtual_machines.vm_id=hyperv_vm_network_devices.vmid  where hyperv_vswitch_informations.timestamp = (select max(timestamp) from hyperv_vswitch_informations) and  hyperv_vm_network_devices.vmid='$vm_id' and hyperv_vswitch_informations.hostname='$host';";
+
+         $result_vs_p=mysqli_query($con,$sql_switch_ports);
+         while ($row = $result_vs_p->fetch_assoc()) {
+           $vswitch_name=$row["vswitch_name"];
+           $macaddress=$row["macaddress"];
+           $portid=$row["port_id"];
+
+?>
+         <tr><th>Port ID</th><td><?php print $portid ?></td></tr>
+         <tr><th>MAC</th><td><?php print $macaddress ?></td></tr>
+	 <tr><th>Vswitch name</th>
+             <td>
+                <span class="sp_nav_vswitch" onclick="updateContentPaneVswitchInfo('<?php print $host ?>','hyperv','<?php print $vswitch_name ?>')"><?php print $vswitch_name ?></span>
+             </td>
+         </tr>
+	 <tr height="10px"></tr>
+
+<?php   } ?>
+      </table>
+      <br/>
+
+      
+
     </span>
 
     <span class="spn_50">

@@ -181,6 +181,25 @@ CREATE TABLE `hyperv_virtual_machines` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `hyperv_vm_network_devices`
+--
+
+DROP TABLE IF EXISTS `hyperv_vm_network_devices`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `hyperv_vm_network_devices` (
+  `timestamp` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `date` date NOT NULL DEFAULT '0000-00-00',
+  `time` time NOT NULL DEFAULT '00:00:00',
+  `hostname` varchar(100) NOT NULL DEFAULT '',
+  `vmid` varchar(100) NOT NULL DEFAULT '',
+  `port_id` varchar(100) NOT NULL DEFAULT '',
+  `macaddress` varchar(32) NOT NULL DEFAULT '',
+  `vswitch_id` varchar(100) NOT NULL DEFAULT ''
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `hyperv_vm_snapshots`
 --
 
@@ -235,6 +254,7 @@ CREATE TABLE `hyperv_vswitch_informations` (
   `date` date NOT NULL DEFAULT '0000-00-00',
   `time` time NOT NULL DEFAULT '00:00:00',
   `hostname` varchar(100) NOT NULL DEFAULT '',
+  `vswitch_id` varchar(100) NOT NULL DEFAULT '',
   `vswitch_name` varchar(100) NOT NULL DEFAULT '',
   `health_state` varchar(3) NOT NULL DEFAULT '',
   `status_descriptions` varchar(255) NOT NULL DEFAULT '',
@@ -393,4 +413,4 @@ CREATE TABLE `vswitch_informations` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-10-16 22:35:06
+-- Dump completed on 2023-10-22  0:49:32

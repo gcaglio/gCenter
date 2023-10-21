@@ -129,12 +129,14 @@ Micrososft Hyper-V
   - collect hosts informations
   - collect vms informations
   - poweron/poweroff vms
-  - taking vms snapshots
   - listing vms snapshots
+  - taking vms snapshots
+  - list vm network interface and vswitch connections
   - listing virtual switches
   - check vm cpu and memory statistics/graphs
 
 # Main steps
+2023-10-22 Feature : update Hyper-V wmi agent to version 1.0.7 with vm network port and vswitch informations (require updating .exe file on all Hyper-V hosts)<br/>
 2023-10-16 Feature : added virtualswitch listing on Hyper-V wmi agent (require updating .exe file on all Hyper-V hosts)<br/>
 2023-09-27 Feature : added esxi hosts creation/deletion<br/>
 2023-09-27 Feature : added user creation/deletion<br/>
@@ -184,6 +186,8 @@ Micrososft Hyper-V
 ![ESXi virtual machine details](/docs/images/gCenter_show_esxi_vm.png "ESXi virtual machine details")
 
 ![HyperV virtual machine details](/docs/images/gCenter_show_hyperv_vm.png "Hyper-V virtual machine details")
+
+![HyperV virtual switch details](/docs/images/gCenter_show_hyperv_vswitch.png "Hyper-V virtual switch details")
 
 ![Add ESXi hosts](/docs/images/gCenter_add_esxi_hosts.png "Add ESXi hosts")
 

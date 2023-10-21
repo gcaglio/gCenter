@@ -364,6 +364,28 @@ $con=getConnection($servername,$username,$password,$dbname);
 <?php
   }
 ?>
+
+    <b>Network</b>
+
+<?php
+  # recupero i vswitch
+  $vs_sql="select vswitch_name from hyperv_vswitch_informations where timestamp=(select max(timestamp) from hyperv_vswitch_informations where hostname='$host') and hostname='$host' group by vswitch_name;";
+  $vs_result=mysqli_query($con,$vs_sql);
+  while ($row = $vs_result->fetch_assoc()) {
+          $name=$row["vswitch_name"];
+?>
+    <div class="li_vswitch">
+      <span class="sp_nav_vswitch" onclick="updateContentPaneVswitchInfo('<?php print $host ?>','hyperv','<?php print $name ?>')" ><?php print $name ?></span><br/>
+    </div><!--vs-->
+<?php
+  }
+?>
+
+
+
+
+
+
   </div> <!-- li host -->
 <?php
   }

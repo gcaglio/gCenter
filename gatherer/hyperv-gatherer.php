@@ -89,6 +89,7 @@ function getVirtualMachines( $db_con, $date, $time, $hostname, $ip, $port, $apik
     $memory_available=$summary->memory_available;
     $available_memory_buffer=$summary->available_memory_buffer;
 
+    $interfaces=$element->interfaces;
 
     if (strlen($cpu_load)==0)
     {
@@ -116,7 +117,7 @@ function getVirtualMachines( $db_con, $date, $time, $hostname, $ip, $port, $apik
 
 
     $sql_stat="insert into hyperv_vm_stat (timestamp,hostname,vmid,cpu_load,memory_usage,memory_available,available_memory_buffer,heartbeat,memory_limit,memory_reservation,memory_virtualquantity) values ('$date $time','$hostname','$vm_id', $cpu_load,$memory_usage,$memory_available,$available_memory_buffer,$heartbeat,$memory_limit,$memory_reservation,$memory_virtualquantity ); ";
-    echo $sql_stat;
+#    echo $sql_stat;
     if ($db_con->query($sql_stat) === TRUE) {
       echo "INFO : vm stat '$vm_name' on host '$hostname' informations inserted.\n";
     } else {
@@ -124,7 +125,33 @@ function getVirtualMachines( $db_con, $date, $time, $hostname, $ip, $port, $apik
     }
 
 
+    //insert network interface details
+    for ($n=0;$n<count($interfaces);$n++){
+	    
+	    $net_element=$interfaces[$n];
+      $port_id=$net_element->port_id;	    
+      $mac_addr=$net_element->mac_address;
+      $switch_id=$net_element->switch_id;
+
+      $sql_net="insert into hyperv_vm_network_devices ( timestamp, date, time, hostname, vmid, port_id, macaddress, vswitch_id ) values ( '$date $time', '$date', '$time','$hostname', '$vm_id','$port_id','$mac_addr','$switch_id' ) ";
+
+      if ($db_con->query($sql_net) === TRUE) {
+        echo "INFO : vm net informations for '$vm_name', port '$port_id' on host '$hostname' informations inserted.\n";
+      } else {
+        echo "ERROR :  " . $sql_net . "\n" . $db_con->error."\n";
+      }
+
+    }
+
+    // get vm snapshots
     getVmSnapshots( $db_con, $date, $time, $hostname, $ip, $port, $apikey, $vm_name );
+
+
+   
+
+
+
+
   }
 
 }
@@ -198,8 +225,9 @@ function getVSwitch( $db_con, $date, $time, $hostname, $ip, $port, $apikey ){
     $creation_date=$element->install_date;
     $creation_time=$element->install_time;
     $enabled_state=$element->enabled_state;
+    $instance_id=$element->instance_id;
 
-    $sql="insert into hyperv_vswitch_informations (timestamp,date,time, hostname, vswitch_name, health_state, enabled_state, status_descriptions) values ('$date $time', '$date','$time','$hostname','$name', '$health_state', '$enabled_state','$status_description');";
+    $sql="insert into hyperv_vswitch_informations (timestamp,date,time, hostname, vswitch_id, vswitch_name, health_state, enabled_state, status_descriptions) values ('$date $time', '$date','$time','$hostname','$instance_id','$name', '$health_state', '$enabled_state','$status_description');";
 
     if ($db_con->query($sql) === TRUE) {
       echo "INFO : vswitch '$name' on host '$hostname' informations inserted.\n";
