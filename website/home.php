@@ -204,6 +204,15 @@ $con=getConnection($servername,$username,$password,$dbname);
 
       }
 
+      function updateContentPaneHyperv(){
+         $.get( "manage_hosts_hyperv.php?action=get_hosts_hyperv", function( data ) {
+          $( "#main_content_pane" ).html( data );
+        //alert( data );
+       });
+
+      }
+
+
       function deleteHostEsxi(hash){
          $.get( "manage_hosts_esxi.php?action=delete_host_esxi&hash=" + hash, function( data ) {
           $( "#main_content_pane" ).html( data );
@@ -211,6 +220,16 @@ $con=getConnection($servername,$username,$password,$dbname);
        });
 
       }
+
+      function deleteHostHyperv(hash){
+         $.get( "manage_hosts_hyperv.php?action=delete_host_hyperv&hash=" + hash, function( data ) {
+          $( "#main_content_pane" ).html( data );
+        //alert( data );
+       });
+
+      }
+      
+
       /* end manage users */
 
 
@@ -402,6 +421,7 @@ $con=getConnection($servername,$username,$password,$dbname);
 
     <span class="sp_nav_set_users" onclick="updateContentPaneUsers()">Users</a></span>
     <span class="sp_nav_set_hosts_esxi" onclick="updateContentPaneEsxi()">ESXi hosts</a></span>
+    <span class="sp_nav_set_hosts_hyperv" onclick="updateContentPaneHyperv()">HyperV hosts</a></span>
   </div>
 
   </div><!--navigation-->

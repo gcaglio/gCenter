@@ -53,21 +53,18 @@ i. schedule the gatherer to get information from your ESXi hosts. <br/>
    # m h  dom mon dow   command
    */5 * * * * cd /var/www/gCenter/gatherer/; php /var/www/gCenter/gatherer/gather.php > /tmp/gatherer.log 2>&1
    ```
-ii. you can insert ESXi hosts using the Settings->ESXi hosts feature in the web interface
+ii. you can insert ESXi host(s) using the Settings->ESXi hosts feature in the web interface
    
 
 Hyper-V<br>
-i. insert into the db your hosts :
-   ```
-   insert into hyperv_hosts values ('myhostname','ip-wmi-http-adapter-service-binding','port-wmi-http-adapter-service-binding', '');
-   ```
-ii. schedule the gatherer to get information from your Hyper-V hosts. <br/>
+i. schedule the gatherer to get information from your Hyper-V hosts. <br/>
    Here the example of a crontab entry to query your Hyper-V hosts every 5 minutes, assuming that the gCenter was installed in folder ```/var/www/gCenter/``` <br>
    ```
    # m h  dom mon dow   command
    */5 * * * * cd /var/www/gCenter/gatherer/; php /var/www/gCenter/gatherer/hyperv-gatherer.php > /tmp/hyperv-gatherer.log 2>&1
    ```
-iii. install on the Hyper-V host(s) the hyperv-wmi-http-adapter-services. Please read installation instructions in the adapter folder.
+ii. install on the Hyper-V host(s) the hyperv-wmi-http-adapter-services. Please read installation instructions in the adapter folder.
+iii. you can insert Hyper-V host(s) using the Settings->Hyper-V hosts feature in the web interface
 
 
 
@@ -136,9 +133,10 @@ Micrososft Hyper-V
   - check vm cpu and memory statistics/graphs
 
 # Main steps
+2023-10-23 Feature : added hyper-v host creation/deletion from web interface<br/>
 2023-10-22 Feature : update Hyper-V wmi agent to version 1.0.7 with vm network port and vswitch informations (require updating .exe file on all Hyper-V hosts)<br/>
 2023-10-16 Feature : added virtualswitch listing on Hyper-V wmi agent (require updating .exe file on all Hyper-V hosts)<br/>
-2023-09-27 Feature : added esxi hosts creation/deletion<br/>
+2023-09-27 Feature : added esxi hosts creation/deletion from web interface<br/>
 2023-09-27 Feature : added user creation/deletion<br/>
 2023-09-27 Feature : event logging<br/>
 2023-09-27 Feature : added support for SNAP_MGMT roles (plus some bugfix about roles)<br/>

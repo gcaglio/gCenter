@@ -147,6 +147,9 @@ body{
 .sp_nav_set_hosts_esxi:hover{
   cursor: pointer;
 }
+.sp_nav_set_hosts_hyperv:hover{
+  cursor: pointer;
+}
 
 
 .tbl_user_info th {

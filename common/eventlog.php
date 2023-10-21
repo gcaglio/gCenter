@@ -24,21 +24,42 @@ function logEventLogout($con, $resource, $additional_notes ){
   return logEvent($con,"LOGOUT",$resource,$additional_notes);
 }
 
+
+
 function logEventAddHostEsxiSuccessful($con, $resource, $additional_notes ){
-  return logEvent($con,"ADD_HOST_OK",$resource,$additional_notes);
+  return logEvent($con,"ADD_HOST_E_OK",$resource,$additional_notes);
 }
 
 function logEventAddHostEsxiError($con, $resource, $additional_notes ){
-  return logEvent($con,"ADD_HOST_ERR",$resource,$additional_notes);
+  return logEvent($con,"ADD_HOST_E_ERR",$resource,$additional_notes);
 }
 
 function logEventDeleteHostEsxiSuccessful($con, $resource, $additional_notes ){
-  return logEvent($con,"DEL_HOST_OK",$resource,$additional_notes);
+  return logEvent($con,"DEL_HOST_E_OK",$resource,$additional_notes);
 }
 
 function logEventDeleteHostEsxiError($con, $resource, $additional_notes ){
-  return logEvent($con,"DEL_HOST_ERR",$resource,$additional_notes);
+  return logEvent($con,"DEL_HOST_E_ERR",$resource,$additional_notes);
 }
+
+
+function logEventAddHostHypervSuccessful($con, $resource, $additional_notes ){
+  return logEvent($con,"ADD_HOST_H_OK",$resource,$additional_notes);
+}
+
+function logEventAddHostHypervError($con, $resource, $additional_notes ){
+  return logEvent($con,"ADD_HOST_H_ERR",$resource,$additional_notes);
+}
+
+function logEventDeleteHostHypervSuccessful($con, $resource, $additional_notes ){
+  return logEvent($con,"DEL_HOST_H_OK",$resource,$additional_notes);
+}
+
+function logEventDeleteHostHypervError($con, $resource, $additional_notes ){
+  return logEvent($con,"DEL_HOST_H_ERR",$resource,$additional_notes);
+}
+
+
 
 
 
