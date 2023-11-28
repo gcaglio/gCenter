@@ -281,7 +281,7 @@ function getNetwork( $db_con, $date, $time, $host, $user, $passwd, $private_key)
       $sql="insert into vswitch_informations (timestamp,date, time, hostname, vswitch_name, portgroup_name, active_clients, vlan_id ) values ('$date $time', '$date','$time', '$host', '$vswitch_name', '$portgroup_name','$active_client','$vlan_id'); ";
 
        if ($db_con->query($sql) === TRUE) {
-         echo "INFO : vswitch/portgroup '$vswitch_name'/'$porgroup_name' on '$host' inserted.\n";
+         echo "INFO : vswitch/portgroup '$vswitch_name'/'$portgroup_name' on '$host' inserted.\n";
        } else {
          echo "ERROR :  " . $sql . "\n" . $db_con->error."\n";
        }
@@ -394,7 +394,7 @@ function getDatastoreContent(  $db_con, $date, $time, $host, $user, $passwd, $pr
 
     $sql_ds_content="insert into ds_content (timestamp,date,time,hostname, datastore, content_ls) values ('$ds_ts', '$ds_date','$ds_time','$host','$ds_name', '".mysqli_real_escape_string($db_con, implode("\n",$output))."'  ) ; ";
     if ($db_con->query($sql_ds_content) === TRUE) {
-      echo "INFO : datastore content for datastore '$name' on '$host' inserted.\n";
+      echo "INFO : datastore content for datastore '$ds_name' on '$host' inserted.\n";
     } else {
       echo "ERROR : insert datastore :  " . $sql_ds_content . "\n" . $db_con->error."\n";
     }
@@ -407,7 +407,7 @@ function getDatastoreContent(  $db_con, $date, $time, $host, $user, $passwd, $pr
 
 function getVmDevices(  $db_con, $date, $time, $host, $user, $passwd, $private_key, $vm_id) {
   $debug=true;
-
+  echo "INFO : getting VM Devices for vm=$vm_id on host=$host\n";
   $output=null;
   $retval=null;
   $command="vim-cmd vmsvc/device.getdevices $vm_id | sed 's/= (.*)/:/g' ";
@@ -426,29 +426,60 @@ function getVmDevices(  $db_con, $date, $time, $host, $user, $passwd, $private_k
   if ( json_last_error()===JSON_ERROR_NONE ) {
 
       if ($debug){
-        echo "DEBUG : found config\n";
-        echo "  ".$vmconfig_output."\n";
+        echo "DEBUG : jsonified config\n";
+	echo "  ".$vmconfig_output."\n";
       }
 
       foreach($vmconfig_json->device as $device) {
-        echo "INFO : device ".$device->deviceInfo->label."\n";
+        
+        echo "INFO : found device ".$device->deviceInfo->label."\n";
 	// is network interface
 	if (isset($device->macAddress)){
 	  $backing_portgroup=$device->backing->deviceName;
+	  $netdevice_id=$device->deviceInfo->label;
           $mac_address=$device->macAddress;
 	  echo "INFO : device type = network interface '".$mac_address."' connected to '".$backing_portgroup."' \n";
 
-          $sql_vm_net="insert into vm_network_devices (timestamp,date,time,hostname,vmid,netdevice_id ,macaddress , backing_portgroup) values ('$date $time','$date','$time', '$host' ,'$vm_id', '','$mac_address','$backing_portgroup'   ) ; ";
+          $sql_vm_net="insert into vm_network_devices (timestamp,date,time,hostname,vmid,netdevice_id ,macaddress , backing_portgroup) values ('$date $time','$date','$time', '$host' ,'$vm_id', '$netdevice_id','$mac_address','$backing_portgroup'   ) ; ";
           if ($db_con->query($sql_vm_net) === TRUE) {
             echo "INFO : vm net device for vm  '$vm_id' on '$host' inserted.\n";
           } else {
             echo "ERROR insert vm_network_devices :  " . $sql_vm_net . "\n" . $db_con->error."\n";
           }
 	  
-	}	
+	}else if ( $device->gcenter_type === "vim.vm.device.VirtualDisk" )
+	{
+	  // is a disk
+	  $label=$device->deviceInfo->label;
+	  $backing_ds=$device->backing->datastore;
+	  $backing_file=$device->backing->fileName;
+	  $backing_uuid=$device->backing->uuid;
+	  $backing_mode=$device->backing->diskMode;
+	  $capacity_byte=$device->capacityInBytes;
+	  
+	  echo "INFO : found disk\n";
+	  echo "       label = $label\n";
+	  echo "       ds = $backing_ds\n";
+	  echo "       file = $backing_file\n";
+	  echo "       uuid = $backing_uuid\n";
+	  echo "       mode = $backing_mode\n";
+	  echo "       byte = $capacity_byte\n";
+
+          $sql_vm_disk="insert into vm_disk_devices ( timestamp, date, time, hostname, vmid, label, datastore_id, filepath, uuid, mode, size_bytes) values ('$date $time','$date','$time', '$host' ,'$vm_id', '$label','$backing_ds','$backing_file','$backing_uuid','$backing_mode','$capacity_byte'   ) ; ";
+          if ($db_con->query($sql_vm_disk) === TRUE) {
+            echo "INFO : vm disk '$label' device for vm  '$vm_id' on '$host' inserted.\n";
+          } else {
+            echo "ERROR insert vm_disk_devices :  " . $sql_vm_disk . "\n" . $db_con->error."\n";
+	  }
+
+	}
 
       }
       
+  }else{
+    echo "ERROR :unable to parse JSONified command output (below)";
+    var_dump($output);
+    echo "\n";
   }
 }
 

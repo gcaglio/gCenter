@@ -67,6 +67,13 @@ if (  isset($_GET["hostname"]) && isset($_GET["vmid"]) && "get_vm_info"==$_GET["
        <tr><th>Open console</th><td><a href="https://<?php print $host ?>/ui/#/console/<?php print $vmid ?>" target="_blank">open console on <?php print $host ?></a></td></tr>
       </table>
       <br/>
+      <table class="tbl_vm_info">
+        <tr><td class="tbl_info_header" colspan="2">HW summary</td></tr>
+        <tr><th>CPU</th><td><?php print $cfg_numCpu ?></td></tr>
+        <tr><th>Memory (Mb)</th><td><?php print $cfg_memoryMb ?></td></tr>
+        <tr><th>Guest OS full name</th><td><?php print $guest_guestfullname ?></td></tr>
+        <tr><th>Last boot time</th><td><?php print $runtime_lastboottime ?></td></tr>
+      </table>
     </span>
 
     <span class="spn_50">
@@ -94,37 +101,52 @@ if (  isset($_GET["hostname"]) && isset($_GET["vmid"]) && "get_vm_info"==$_GET["
       </table>
       <br/>
       <table class="tbl_vm_info">
-        <tr><td class="tbl_info_header" colspan="2">HW summary</td></tr>
-        <tr><th>CPU</th><td><?php print $cfg_numCpu ?></td></tr>
-        <tr><th>Memory (Mb)</th><td><?php print $cfg_memoryMb ?></td></tr>
-        <tr><th>Guest OS full name</th><td><?php print $guest_guestfullname ?></td></tr>
-        <tr><th>Last boot time</th><td><?php print $runtime_lastboottime ?></td></tr>
-      </table>
-    </span>
+       <tr><td class="tbl_info_header" colspan="2">Network info</td></tr>
 
-    <span class="spn_50">
-      <table class="tbl_vm_info">
-       <tr><td class="tbl_info_header" colspan="2">Network interfaces</td></tr>
-       <tr><th>macAddress</th><th>Portgroup</th></tr>
 <?php
       $sql_net_devices="select * from vm_network_devices where timestamp='".mysqli_real_escape_string($con,$timestamp)."' and vmid='".mysqli_real_escape_string($con,$vmid)."' and hostname='".mysqli_real_escape_string($con,$host)."' order by backing_portgroup; ";
 
       $result_net=mysqli_query($con,$sql_net_devices);
       while ($row = $result_net->fetch_assoc()) {
         $macaddress=$row["macaddress"];
+        $netdevice_id=$row["netdevice_id"];
         $backing_portgroup=$row["backing_portgroup"];
 
+
 ?>
-       <tr>
-         <td><?php print $macaddress; ?></td>
-         <td><?php print $backing_portgroup; ?></td>
-       </tr>
+         <tr><th>Net device ID</th><td><?php print $netdevice_id ?></td></tr>
+         <tr><th>MAC</th><td><?php print $macaddress ?></td></tr>
+         <tr><th>Portgroup</th><td><?php print $backing_portgroup; ?></td>
+         <tr height="10px"></tr>
 <?php } ?>
 
       </table>
-      <br/>
-    </span>
+      <br />
 
+      <table class="tbl_vm_info">
+       <tr><td class="tbl_info_header" colspan="2">Disks info</td></tr>
+
+<?php
+      $sql_disk_devices="select * from vm_disk_devices where timestamp='".mysqli_real_escape_string($con,$timestamp)."' and vmid='".mysqli_real_escape_string($con,$vmid)."' and hostname='".mysqli_real_escape_string($con,$host)."' order by label; ";
+
+      $result_disks=mysqli_query($con,$sql_disk_devices);
+      while ($row = $result_disks->fetch_assoc()) {
+        $label=$row["label"]." (".$row["mode"].")";
+        $size_byte=$row["size_bytes"];
+        $backing_datastore=$row["datastore_id"];
+        $filepath=$row["filepath"];
+
+
+?>
+         <tr><th>Label (mode)</th><td><?php print $label ?></td></tr>
+         <tr><th>Size (Gb)</th><td><?php print $size_byte/1024/1024/1024 ?></td></tr>
+         <tr><th>Datastore (path)</th><td><?php print $backing_datastore."[".$filepath."]"; ?></td>
+         <tr height="10px"></tr>
+<?php } ?>
+
+      </table>
+      <br />
+    </span>
 
 
     <br/>

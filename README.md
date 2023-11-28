@@ -120,6 +120,7 @@ Vmware ESXI
   - list datastore content (filesystem tree)
   - list vswitch/portgroup informations
   - list network interfaces and porgroup assignation
+  - list vm disks
 
 Micrososft Hyper-V 
   - hyperv-wmi-http-adapter-service windows service to interface WMI
@@ -133,6 +134,7 @@ Micrososft Hyper-V
   - check vm cpu and memory statistics/graphs
 
 # Main steps
+2023-11-28 Feature : added esxi vm disk gatering and listing on web interface<br/>
 2023-10-23 Feature : added hyper-v host creation/deletion from web interface<br/>
 2023-10-22 Feature : update Hyper-V wmi agent to version 1.0.7 with vm network port and vswitch informations (require updating .exe file on all Hyper-V hosts)<br/>
 2023-10-16 Feature : added virtualswitch listing on Hyper-V wmi agent (require updating .exe file on all Hyper-V hosts)<br/>

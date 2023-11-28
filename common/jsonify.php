@@ -1,12 +1,48 @@
 <?php
 
 function jsonify($a_output){
-#$a_output = explode("\n",$cmd_output);
+
+$custom_tag_type="gcenter_type";	
+# first scan all the lines to split lines as
+#      (my.type.of.node) {
+# adding a special key_value 'gcenter_type' : 'my.type.of.node'
+$b_output=array();
+foreach($a_output as $line){
+
+  if (trim(strlen($line))>0){
+    if (preg_match('@(\\(.*?\\)) *({)@',$line) ){
+     // match the case we need to split the lines adding the custom tag
+     $new_line=preg_replace('@(\\(.*?\\)) *({)@', '${2} '.$custom_tag_type.' = "${1}",', $line);
+#     echo "PRELINE : $line\r\n";
+#     echo "NEWLINE : $new_line\r\n";
+
+     $gcenter_type_line=substr($new_line,strpos($new_line,$custom_tag_type));
+     $gcenter_type_line=str_replace("(","",$gcenter_type_line);
+     $gcenter_type_line=str_replace(")","",$gcenter_type_line);
+
+     $gcenter_type_line_pre=substr($new_line,0, strpos($new_line,$custom_tag_type));
+     echo "INFO : pre_line = $gcenter_type_line_pre\r\n";
+     echo "INFO : line = $gcenter_type_line\r\n";
+
+     $b_output[count($b_output)] = $gcenter_type_line_pre;
+     $b_output[count($b_output)] = $gcenter_type_line;
+
+    }else{
+      $b_output[count($b_output)] = $line;
+    }
+  }
+}
+
+
 
 $j_output="";
-foreach ($a_output as $line) {
+$line_num=0;
+foreach ($b_output as $line) {
+  $line_num++;
+
   if (trim(strlen($line))>0){
      $n_line=preg_replace("@\(.*?\)@", "", $line);
+
      $n2_line=preg_replace("/=/", ":", $n_line);
      $n3_line=preg_replace("/ +/", " ", $n2_line);
      $n4_line=preg_replace("/^ +/", "", $n3_line);
